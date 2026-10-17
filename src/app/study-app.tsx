@@ -102,6 +102,11 @@ export default function StudyApp() {
     [recordRequest, setRecordRequest] = useState(""),
     [dmPeer, setDmPeer] = useState("");
   const loadVersion = useRef(0);
+  useEffect(() => {
+    if (!notice) return;
+    const timer = window.setTimeout(() => setNotice(""), 4000);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
   function openProfile(id: string) {
     setData(null);
     setOwner(id);
