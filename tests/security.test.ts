@@ -1,0 +1,82 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { randomBytes } from "node:crypto";
+import { encrypt, decrypt, equal } from "../src/lib/session-crypto";
+import {
+  signupSchema,
+  profileSchema,
+  studySchema,
+  postSchema,
+  recommendationScore,
+  type Profile,
+} from "../src/lib/validation";
+test("sealed tokens cannot be read or tampered with; wrong keys fail closed", () => {
+  const key = randomBytes(32).toString("base64"),
+    other = randomBytes(32).toString("base64"),
+    payload = { access_token: "sensitive-value", user_id: "A" };
+  const value = encrypt(payload, key);
+  assert(!value.includes(payload.access_token));
+  assert.deepEqual(decrypt(value, key), payload);
+  assert.equal(decrypt(value, other), null);
+  const raw = Buffer.from(value, "base64url");
+  raw[raw.length - 1] ^= 1;
+  assert.equal(decrypt(raw.toString("base64url"), key), null);
+  assert.equal(decrypt("malformed", key), null);
+});
+test("CSRF equality handles mismatched lengths safely", () => {
+  assert(equal("same", "same"));
+  assert(!equal("same", "other"));
+  assert(!equal("same", ""));
+});
+test("registration cannot override role and must select a valid global visibility", () => {
+  const base = {
+    email: "a@example.com",
+    password: "123456789012",
+    visibility: "mutual",
+  };
+  assert(signupSchema.safeParse(base).success);
+  assert(!signupSchema.safeParse({ ...base, visibility: "everyone" }).success);
+  assert(!signupSchema.safeParse({ ...base, is_admin: true }).success);
+  assert(!signupSchema.safeParse({ ...base, password: "short" }).success);
+});
+test("profile cannot accept administrative or ownership fields", () => {
+  const base = {
+    display_name: "A",
+    field: "Python",
+    level: 0,
+    goal: "",
+    bio: "",
+    recommend: true,
+    visibility: "mutual",
+    dm_policy: "mutual",
+  };
+  assert(profileSchema.safeParse(base).success);
+  assert(!profileSchema.safeParse({ ...base, id: "other" }).success);
+  assert(!profileSchema.safeParse({ ...base, role: "admin" }).success);
+  assert(!profileSchema.safeParse({ ...base, level: 4 }).success);
+});
+test("study is separate from text and images, with finite duration and idempotency key", () => {
+  const base = {
+    field: "Python",
+    date: "2026-10-17",
+    minutes: 30,
+    request_id: "12345678-1234-4234-8234-123456789abc",
+  };
+  assert(studySchema.safeParse(base).success);
+  for (const minutes of [-1, 0, 1441, NaN, Infinity])
+    assert(!studySchema.safeParse({ ...base, minutes }).success);
+  assert(!studySchema.safeParse({ ...base, image: "anything" }).success);
+  assert(!studySchema.safeParse({ ...base, body: "private note" }).success);
+  assert(!studySchema.safeParse({ ...base, date: "2026-02-30" }).success);
+});
+test("post requires nonblank text and rejects extra owner fields", () => {
+  assert(!postSchema.safeParse({ body: "  " }).success);
+  assert(!postSchema.safeParse({ body: "hello", owner_id: "other" }).success);
+  assert(!postSchema.safeParse({ body: "x".repeat(2001) }).success);
+});
+test("recommendations depend only on declared public fields", () => {
+  const a = { field: "Python", level: 0, goal: "試験" } as Profile,
+    b = { field: "Python", level: 0, goal: "試験" } as Profile,
+    c = { field: "AWS", level: 3, goal: "" } as Profile;
+  assert(recommendationScore(a, b) > recommendationScore(a, c));
+});

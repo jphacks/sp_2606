@@ -1,0 +1,745 @@
+{
+  "version": 1,
+  "requirements": [
+    {
+      "id": "PRIV-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PRIV-02",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PRIV-03",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PRIV-04",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PRIV-05",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AUTH-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AUTH-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AUTH-03",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PROF-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PROF-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PROF-03",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "STUDY-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "STUDY-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "STUDY-03",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "VIS-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "VIS-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "VIS-03",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "IMG-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "IMG-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "IMG-03",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "IMG-04",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "IMG-05",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "POST-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "POST-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "COM-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "COM-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "FOLLOW-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "REC-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "REC-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "FEED-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "FEED-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "REC-03",
+      "priority": "P2",
+      "level": "SHOULD",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DM-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DM-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DM-03",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DM-04",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DM-05",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DM-06",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "BLOCK-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "STOP-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "NOTIF-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "NOTIF-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PUSH-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PUSH-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PUSH-03",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "PUSH-04",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DEL-01",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DEL-02",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DEL-03",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "DEL-04",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-03",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-04",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-05",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-06",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-07",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-08",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-09",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-10",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-11",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-12",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-13",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-14",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-15",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "SYS-16",
+      "priority": "P2",
+      "level": "SHOULD",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AI-01",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AI-02",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AI-03",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AI-04",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AI-05",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AI-06",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AI-07",
+      "priority": "P0",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    },
+    {
+      "id": "AI-08",
+      "priority": "P1",
+      "level": "MUST",
+      "status": "unverified",
+      "implementation": [],
+      "tests": [],
+      "evidence": [],
+      "reason": null
+    }
+  ]
+}
