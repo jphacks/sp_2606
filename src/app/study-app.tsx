@@ -469,6 +469,7 @@ export default function StudyApp() {
             <span className="dot" />
             あなたの小さな一歩が、誰かの力になる。
           </span>
+          <div className="topbar-actions">
           <button
             className="icon-button"
             onClick={() => setNotice("通知機能は現在準備中です。")}
@@ -476,6 +477,10 @@ export default function StudyApp() {
           >
             <Bell size={20} />
           </button>
+          <button className="topbar-logout" onClick={logout} disabled={busy}>
+            <LogOut size={16} />ログアウト
+          </button>
+          </div>
         </header>
         <div className="mobile-nav">
           {nav.map((n) => (
