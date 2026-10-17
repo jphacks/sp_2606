@@ -1417,7 +1417,8 @@ label textarea {
 /* Profile navigation and directional follow requests. */
 .profile-link { border: 0; background: transparent; padding: 0; cursor: pointer; border-radius: 50%; flex-shrink: 0; }
 .topbar-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.topbar-logout { display: inline-flex; align-items: center; gap: 6px; padding: 8px; background: transparent; border: 0; cursor: pointer; white-space: nowrap; font-size: 12px; }
+.topbar-logout { display: none; align-items: center; gap: 6px; padding: 8px; background: transparent; border: 0; cursor: pointer; white-space: nowrap; font-size: 12px; }
+@media (max-width: 720px) { .topbar-logout { display: inline-flex; } }
 @media (max-width: 720px) { .topbar > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; } .topbar-actions { gap: 4px; } }
 .profile-link:focus-visible { outline: 3px solid var(--sage, #3b715e); outline-offset: 4px; }
 .profile-details { margin-bottom: 20px; }
