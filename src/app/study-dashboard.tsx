@@ -32,6 +32,7 @@ const weekdays = ["月", "火", "水", "木", "金", "土", "日"];
 const today = () => new Date().toLocaleDateString("sv-SE");
 export default function StudyDashboard({
   owner,
+  initialDay,
   userId,
   name,
   refreshKey,
@@ -39,14 +40,15 @@ export default function StudyDashboard({
   onDelete,
 }: {
   owner: string;
+  initialDay?: string;
   userId: string;
   name: string;
   refreshKey: Study[];
   onAdd: (day: string) => void;
   onDelete: (id: string) => Promise<boolean>;
 }) {
-  const [month, setMonth] = useState(() => today().slice(0, 7));
-  const [selected, setSelected] = useState(today);
+  const [month, setMonth] = useState(() => (initialDay || today()).slice(0, 7));
+  const [selected, setSelected] = useState(() => initialDay || today());
   const [period, setPeriod] = useState("week");
   const [data, setData] = useState<Dashboard | null>(null);
   const [error, setError] = useState("");

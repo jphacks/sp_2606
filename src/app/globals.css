@@ -1976,3 +1976,34 @@ label textarea {
 .app-shell .message p.deleted { background: #f5f7fb; color: #65738a; }
 .app-shell .learning-fields-editor, .app-shell .goals-editor { border-color: #dce3ee; }
 .app-shell .goal-search-results button, .app-shell .selected-goal button, .app-shell .learning-field-row .section-title button { background: #f1f5ff; border-color: #d5e0f5; color: #385a99; }
+
+/* Mobile-first study calendar and shared activity feed. */
+.topbar-brand { display: inline-flex; align-items: center; min-height: 44px; }
+.topbar-brand .costep-logo { width: 132px; }
+.sidebar .nav-caption { margin-top: 8px; }
+.sd-calendar-grid { min-width: 0; gap: clamp(2px, .65vw, 6px); }
+.sd-calendar-main { overflow-x: visible; }
+.sd-day { min-width: 0; min-height: 40px; width: 100%; max-width: 48px; }
+.sd-month-nav { position: static; }
+.study-feed-card { margin: 18px 0; border: 1px solid #dce5f6; border-radius: 14px; background: #f7f9ff; padding: 18px; }
+.study-feed-label { display: flex; align-items: center; gap: 7px; color: #315aa8; font-size: 12px; margin-bottom: 12px; }
+.study-feed-summary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; }
+.study-feed-summary strong { font-size: 17px; color: #243c63; }
+.study-feed-summary > span { font-size: 24px; font-weight: 700; color: #285dcb; }
+.study-feed-card > time { display: block; color: #61718a; font-size: 12px; margin-top: 4px; }
+.study-feed-memo { white-space: pre-wrap; overflow-wrap: anywhere; color: #32435b; font-size: 14px; line-height: 1.8; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid #e0e7f5; }
+.study-feed-card > button { min-height: 44px; margin-top: 16px; font-size: 13px; }
+@media (max-width: 720px) {
+ .app-shell .topbar { height: 64px; padding: 0 16px; }
+ .topbar-brand .costep-logo { width: 126px; }
+ .sd-calendar-card { padding: 12px; }
+ .sd-calendar-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+ .sd-day { font-size: 14px; min-height: 38px; aspect-ratio: 1; border-radius: 50%; }
+ .sd-calendar-main { padding: 2px; }
+ .sd-chart-grid { grid-template-columns: minmax(0, 1fr); }
+ .sd-bar-chart { min-width: 0; gap: 3px; }
+ .sd-bar-col { min-width: 0; min-height: 44px; }
+ .sd-week-card { overflow-x: visible; }
+ .sd-records .sd-card-heading > h3 { font-size: 16px; }
+ .study-feed-card { padding: 15px; }
+}

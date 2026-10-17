@@ -8,7 +8,7 @@
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
-    "test:db": "tsx --test tests/database.integration.ts tests/conversations.integration.ts tests/follow-approval.integration.ts tests/learning-fields.integration.ts tests/recommendations.integration.ts tests/goals.integration.ts tests/reactions.integration.ts tests/field-search.integration.ts tests/study-dashboard.integration.ts",
+    "test:db": "tsx --test tests/database.integration.ts tests/conversations.integration.ts tests/follow-approval.integration.ts tests/learning-fields.integration.ts tests/recommendations.integration.ts tests/goals.integration.ts tests/reactions.integration.ts tests/field-search.integration.ts tests/study-dashboard.integration.ts tests/activity-feed.integration.ts",
     "test:http": "node --import tsx --test tests/http.integration.ts",
     "security:gate": "node scripts/security-gate.mjs"
   },

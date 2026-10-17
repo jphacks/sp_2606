@@ -65,7 +65,13 @@ type Data = {
   me: Profile;
   profile?: Profile;
   profiles: Profile[];
-  posts: Post[];
+  posts: (Post & {
+    kind: "post" | "study";
+    field: string | null;
+    study_date: string | null;
+    minutes: number | null;
+    memo: string | null;
+  })[];
   reactions: { post_id: string; total: number; liked: boolean }[];
   studies: Study[];
   connections: {
@@ -99,6 +105,7 @@ export default function StudyApp() {
     [mode, setMode] = useState("similar"),
     [searchField, setSearchField] = useState(""),
     [owner, setOwner] = useState(""),
+    [studyDay, setStudyDay] = useState(""),
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
     [error, setError] = useState(""),
@@ -116,6 +123,14 @@ export default function StudyApp() {
     const timer = window.setTimeout(() => setNotice(""), 4000);
     return () => window.clearTimeout(timer);
   }, [notice]);
+  function openStudy(id: string, day = "") {
+    setData(null);
+    setOwner(id);
+    setStudyDay(day);
+    setSearchField("");
+    setView("study");
+    setError("");
+  }
   function openProfile(id: string) {
     setData(null);
     setOwner(id);
@@ -471,17 +486,6 @@ export default function StudyApp() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <a href="/" className="brand">
-          <span className="costep-logo">
-            <Image
-              src="/costep-logo.png"
-              alt="CoStep"
-              fill
-              sizes="200px"
-              priority
-            />
-          </span>
-        </a>
         <p className="nav-caption">メニュー</p>
         <nav>
           {nav.map((n) => (
@@ -490,6 +494,7 @@ export default function StudyApp() {
               className={view === n.id ? "nav-item active" : "nav-item"}
               onClick={() => {
                 setView(n.id);
+                setStudyDay("");
                 setOwner("");
                 setError("");
               }}
@@ -539,10 +544,17 @@ export default function StudyApp() {
       </aside>
       <div className="workspace">
         <header className="topbar">
-          <span>
-            <span className="dot" />
-            CoStep
-          </span>
+          <a href="/" className="topbar-brand" aria-label="CoStep ホーム">
+            <span className="costep-logo">
+              <Image
+                src="/costep-logo.png"
+                alt="CoStep"
+                fill
+                sizes="136px"
+                priority
+              />
+            </span>
+          </a>
           <div className="topbar-actions">
             <button
               className="icon-button"
@@ -563,6 +575,7 @@ export default function StudyApp() {
               key={n.id}
               onClick={() => {
                 setView(n.id);
+                setStudyDay("");
                 setOwner("");
               }}
               className={view === n.id ? "selected" : ""}
@@ -624,6 +637,7 @@ export default function StudyApp() {
                     field={searchField}
                     onField={setSearchField}
                     onProfile={openProfile}
+                    onStudy={openStudy}
                   />
                 )}
                 {((view === "feed" && !searchField) || view === "profile") && (
@@ -673,7 +687,7 @@ export default function StudyApp() {
                         )}
                         <button
                           className="text-button"
-                          onClick={() => setView("study")}
+                          onClick={() => openStudy(data.profile!.id)}
                         >
                           学習記録を見る
                         </button>
@@ -690,7 +704,7 @@ export default function StudyApp() {
                           </button>
                         )}
                         <p className="form-note">
-                          この人の閲覧可能なつぶやきを表示します。
+                          この人の閲覧可能なつぶやき・学習記録を表示します。
                         </p>
                       </div>
                     )}
@@ -735,7 +749,7 @@ export default function StudyApp() {
                           <BookOpen size={32} />
                           <h3>投稿はありません。</h3>
                           <p>
-                            まだ表示できるつぶやきがありません。
+                            まだ表示できるつぶやき・学習記録がありません。
                             <br />
                             公開範囲によって表示されない投稿があります。
                           </p>
@@ -753,7 +767,10 @@ export default function StudyApp() {
                             (x) => x.id === p.owner_id,
                           );
                           return (
-                            <article className="post-card" key={p.id}>
+                            <article
+                              className="post-card"
+                              key={`${p.kind}-${p.id}`}
+                            >
                               <div className="post-head">
                                 <button
                                   className="profile-link"
@@ -805,48 +822,80 @@ export default function StudyApp() {
                                     </time>
                                   </div>
                                 </div>
-                                {p.owner_id === me?.id && (
+                                {p.kind !== "study" &&
+                                  p.owner_id === me?.id && (
+                                    <button
+                                      className="icon-button"
+                                      aria-label="つぶやきを削除"
+                                      onClick={() => {
+                                        if (
+                                          confirm(
+                                            "このつぶやきを削除しますか？",
+                                          )
+                                        )
+                                          void mutate("delete-post", {
+                                            id: p.id,
+                                          });
+                                      }}
+                                    >
+                                      <Trash2 size={15} />
+                                    </button>
+                                  )}
+                              </div>
+                              {p.kind === "study" ? (
+                                <div className="study-feed-card">
+                                  <span className="study-feed-label">
+                                    <ChartNoAxesColumn size={16} />
+                                    学習記録
+                                  </span>
+                                  <div className="study-feed-summary">
+                                    <strong>
+                                      {learningFieldLabel(p.field || "")}
+                                    </strong>
+                                    <span>{p.minutes}分</span>
+                                  </div>
+                                  <time dateTime={p.study_date || ""}>
+                                    {p.study_date?.replaceAll("-", "/")}
+                                  </time>
+                                  {p.memo && (
+                                    <p className="study-feed-memo">{p.memo}</p>
+                                  )}
                                   <button
-                                    className="icon-button"
-                                    aria-label="つぶやきを削除"
-                                    onClick={() => {
-                                      if (
-                                        confirm("このつぶやきを削除しますか？")
-                                      )
-                                        void mutate("delete-post", {
-                                          id: p.id,
-                                        });
-                                    }}
+                                    className="secondary"
+                                    onClick={() =>
+                                      openStudy(p.owner_id, p.study_date || "")
+                                    }
                                   >
-                                    <Trash2 size={15} />
+                                    カレンダー・グラフを見る
+                                    <ArrowUpRight size={16} />
                                   </button>
-                                )}
-                              </div>
-                              <p className="post-body">{p.body}</p>
-                              {reactionButton(p)}
-                              <CommentsPanel
-                                key={p.id + data.connections.blocked.join()}
-                                postId={p.id}
-                                userId={me.id}
-                                csrf={session.csrf}
-                                people={data.profiles}
-                                openProfile={openProfile}
-                              />
-                              <div className="post-footer">
-                                <span>
-                                  <BookOpen size={14} />
-                                  つぶやき
-                                </span>
-                                <button
-                                  onClick={() => {
-                                    setOwner(p.owner_id);
-                                    setView("study");
-                                  }}
-                                >
-                                  学習記録を見る
-                                  <ArrowUpRight size={14} />
-                                </button>
-                              </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <p className="post-body">{p.body}</p>
+                                  {reactionButton(p)}
+                                  <CommentsPanel
+                                    key={p.id + data.connections.blocked.join()}
+                                    postId={p.id}
+                                    userId={me.id}
+                                    csrf={session.csrf}
+                                    people={data.profiles}
+                                    openProfile={openProfile}
+                                  />
+                                </>
+                              )}
+                              {p.kind === "post" && (
+                                <div className="post-footer">
+                                  <span>
+                                    <BookOpen size={14} />
+                                    つぶやき
+                                  </span>
+                                  <button onClick={() => openStudy(p.owner_id)}>
+                                    学習記録を見る
+                                    <ArrowUpRight size={14} />
+                                  </button>
+                                </div>
+                              )}
                             </article>
                           );
                         })
@@ -856,7 +905,8 @@ export default function StudyApp() {
                 )}
                 {view === "study" && !searchField && (
                   <StudyDashboard
-                    key={owner || me.id}
+                    key={(owner || me.id) + studyDay}
+                    initialDay={studyDay}
                     owner={owner || me.id}
                     userId={me.id}
                     name={
@@ -877,6 +927,7 @@ export default function StudyApp() {
                     field={searchField}
                     onField={setSearchField}
                     onProfile={openProfile}
+                    onStudy={openStudy}
                   />
                 )}
                 {view === "people" && (
@@ -1008,12 +1059,7 @@ export default function StudyApp() {
                               メッセージを送る
                             </button>
                             <div className="person-actions">
-                              <button
-                                onClick={() => {
-                                  setOwner(p.id);
-                                  setView("study");
-                                }}
-                              >
+                              <button onClick={() => openStudy(p.id)}>
                                 学習時間
                                 <ArrowUpRight size={12} />
                               </button>

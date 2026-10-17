@@ -33,9 +33,10 @@ export async function GET(request: Request) {
       recommendations,
     ] = await Promise.all([
       s.db.rpc("read_profiles"),
-      q.get("scope") === "profile"
-        ? s.db.rpc("read_profile_posts", { p_id: owner })
-        : s.db.rpc("read_posts", { p_mode: mode }),
+      s.db.rpc("read_activity_feed", {
+        p_mode: mode,
+        p_owner: q.get("scope") === "profile" ? owner : null,
+      }),
       s.db.rpc("read_study", { p_owner: owner, p_from: from, p_to: to }),
       s.db.rpc("get_connections"),
       s.db.rpc("profile_counts", { p_id: owner }),
@@ -61,7 +62,9 @@ export async function GET(request: Request) {
         { status: 400 },
       );
     const reactions = await s.db.rpc("read_post_reactions", {
-      p_posts: (posts.data || []).map((post: { id: string }) => post.id),
+      p_posts: (posts.data || [])
+        .filter((post: { kind: string }) => post.kind === "post")
+        .map((post: { id: string }) => post.id),
     });
     if (reactions.error)
       return NextResponse.json(
@@ -72,6 +75,10 @@ export async function GET(request: Request) {
     const profile = selected.data?.[0] as Profile | undefined;
     if (profile && !people.some((p) => p.id === profile.id))
       people.push(profile);
+    for (const activity of posts.data || []) {
+      if (activity.author && !people.some((p) => p.id === activity.author.id))
+        people.push(activity.author as Profile);
+    }
     const me = people.find((p) => p.id === s.user.id);
     const recommended = (recommendations.data || []) as Profile[];
     for (const candidate of recommended)

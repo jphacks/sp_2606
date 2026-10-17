@@ -25,15 +25,30 @@ export async function GET(request: Request) {
         { status: 400, headers },
       );
     const result = await s.db.rpc(
-      kind === "posts" ? "search_field_posts" : "search_field_studies",
-      { p_field: field },
+      kind === "posts" ? "read_activity_feed" : "search_field_studies",
+      kind === "posts"
+        ? { p_mode: "recommended", p_field: field }
+        : { p_field: field },
     );
     if (result.error)
       return NextResponse.json(
         { error: "検索できませんでした。少し待ってから再度お試しください。" },
         { status: 400, headers },
       );
-    return NextResponse.json({ results: result.data || [] }, { headers });
+    return NextResponse.json(
+      {
+        results:
+          kind === "posts"
+            ? (result.data || []).map(
+                (r: { author?: { display_name?: string } }) => ({
+                  ...r,
+                  display_name: r.author?.display_name || "学習者",
+                }),
+              )
+            : result.data || [],
+      },
+      { headers },
+    );
   } catch {
     return NextResponse.json(
       { error: "検索できませんでした。" },

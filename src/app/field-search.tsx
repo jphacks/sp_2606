@@ -17,15 +17,19 @@ type Result = {
   study_date?: string;
   minutes?: number;
   field?: string;
+  kind?: "post" | "study";
+  memo?: string | null;
 };
 export default function FieldSearch({
   field,
   onField,
   onProfile,
+  onStudy,
 }: {
   field: string;
   onField: (field: string) => void;
   onProfile: (id: string) => void;
+  onStudy: (id: string, day?: string) => void;
 }) {
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState("posts");
@@ -135,7 +139,7 @@ export default function FieldSearch({
           </div>
           <p className="form-note">
             {kind === "posts"
-              ? "この分野を登録している人の投稿を新着順で最大20件表示します。"
+              ? "この分野を登録している人の投稿・学習記録を新着順で最大20件表示します。"
               : "この分野を登録している人の学習記録を、直近31日間から最大50件表示します。"}
           </p>
           {loading ? (
@@ -157,7 +161,7 @@ export default function FieldSearch({
                   >
                     {r.display_name}
                   </button>
-                  {kind === "posts" ? (
+                  {kind === "posts" && r.kind !== "study" ? (
                     <>
                       <small>
                         {new Date(r.created_at!).toLocaleString("ja-JP")}
@@ -170,6 +174,13 @@ export default function FieldSearch({
                         {learningFieldLabel(r.field || field)} · {r.study_date}
                       </p>
                       <strong>{r.minutes}分</strong>
+                      {r.memo && <p className="search-post-body">{r.memo}</p>}
+                      <button
+                        className="secondary"
+                        onClick={() => onStudy(r.owner_id, r.study_date)}
+                      >
+                        カレンダー・グラフを見る
+                      </button>
                     </>
                   )}
                 </article>
