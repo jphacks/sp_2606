@@ -685,24 +685,28 @@ export default function StudyApp() {
                                 : "フォロー申請"}
                           </button>
                         )}
-                        <button
-                          className="text-button"
-                          onClick={() => openStudy(data.profile!.id)}
-                        >
-                          学習記録を見る
-                        </button>
-                        {data.profile.id !== me.id && (
+                        <div className="profile-destination-actions">
                           <button
-                            className="text-button"
-                            onClick={() => {
-                              setDmPeer(data.profile!.id);
-                              setOwner("");
-                              setView("messages");
-                            }}
+                            className="secondary"
+                            onClick={() => openStudy(data.profile!.id)}
                           >
-                            メッセージ
+                            <ChartNoAxesColumn size={18} aria-hidden="true" />
+                            学習記録を見る
                           </button>
-                        )}
+                          {data.profile.id !== me.id && (
+                            <button
+                              className="secondary"
+                              onClick={() => {
+                                setDmPeer(data.profile!.id);
+                                setOwner("");
+                                setView("messages");
+                              }}
+                            >
+                              <MessageCircle size={18} aria-hidden="true" />
+                              メッセージを送る
+                            </button>
+                          )}
+                        </div>
                         <p className="form-note">
                           この人の閲覧可能なつぶやき・学習記録を表示します。
                         </p>

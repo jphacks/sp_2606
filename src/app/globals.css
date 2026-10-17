@@ -2007,3 +2007,27 @@ label textarea {
  .sd-records .sd-card-heading > h3 { font-size: 16px; }
  .study-feed-card { padding: 15px; }
 }
+
+/* Keep profile destinations distinct and easy to tap on narrow screens. */
+.profile-destination-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.profile-destination-actions > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+}
+@media (max-width: 480px) {
+  .profile-destination-actions {
+    flex-direction: column;
+  }
+  .profile-destination-actions > button {
+    width: 100%;
+  }
+}
