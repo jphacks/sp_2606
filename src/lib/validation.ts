@@ -83,7 +83,7 @@ export const deleteSchema = z.object({ id: z.uuid() }).strict();
 export const levels = targetLevels;
 export const visibilityLabels = {
   public: "ログイン済み全員",
-  mutual: "相互フォローのみ",
+  mutual: "フォロワーのみ",
   private: "自分のみ",
 };
 export type Profile = {

@@ -86,7 +86,7 @@ export async function POST(
       });
     } else if (action === "study") {
       const p = studySchema.parse(body);
-      result = await s.db.rpc("record_study_with_memo", {
+      result = await s.db.rpc("record_study_with_visibility", {
         p_field: p.field,
         p_date: p.date,
         p_minutes: p.minutes,

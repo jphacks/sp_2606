@@ -423,7 +423,7 @@ export default function StudyApp() {
               </div>
               {signup && (
                 <p className="form-note">
-                  メール確認後、プロフィールと公開範囲を設定します。初期の文章公開範囲は相互フォローのみです。
+                  メール確認後、プロフィールと公開範囲を設定します。初期の文章公開範囲は承認済みフォロワーのみです。
                 </p>
               )}
               {error && (
@@ -1151,7 +1151,7 @@ export default function StudyApp() {
                       </select>
                     </label>
                     <p className="form-note">
-                      過去のつぶやきにも適用します。学習時間とプロフィールの公開範囲は変わりません。
+                      過去のつぶやき・学習メモにも適用します。「フォロワーのみ」は承認済みのフォロワーが閲覧できます。フォローバックは不要です。学習時間とプロフィールの公開範囲は変わりません。
                     </p>
                     <label>
                       DMの受信範囲
@@ -1386,7 +1386,7 @@ export default function StudyApp() {
                     </label>
                   </div>
                   <label>
-                    学習メモ（任意・自分だけに表示）
+                    学習メモ（任意）
                     <textarea
                       name="memo"
                       maxLength={500}
@@ -1395,7 +1395,10 @@ export default function StudyApp() {
                     />
                   </label>
                   <p className="form-note">
-                    学習分野・日付・時間はログイン済み全員に公開されます。メモは本人だけが閲覧できます。
+                    学習分野・日付・時間はログイン済み全員に公開されます。
+                    メモの公開範囲：
+                    {data ? visibilityLabels[data.settings.visibility] : ""}
+                    （つぶやきと共通）
                   </p>
                 </>
               ) : (

@@ -440,10 +440,10 @@ export default function StudyDashboard({
                     </button>
                   )}
                 </div>
-                {own && r.memo && (
+                {r.memo && (
                   <p className="sd-record-memo">
                     {r.memo}
-                    <small>自分だけに表示</small>
+                    <small>学習メモ</small>
                   </p>
                 )}
               </article>

@@ -14,7 +14,7 @@ Apple Human Interface Guidelinesを参考に、Web/PWAの標準HTML・CSSで実�
 - 棒グラフの積み上げ部分には境界線を付ける。
 - `prefers-reduced-motion` でスムーズスクロールと動きを抑える。
 - `prefers-contrast: more` ではカード・日付の境界を強める。
-- メモは任意・本人限定を明示する。削除は既存の確認を維持する。
+- メモは任意で、つぶやきと共通の公開範囲に従うことを明示する。削除は既存の確認を維持する。
 
 ## 継続確認
 
@@ -28,3 +28,7 @@ Apple Human Interface Guidelinesを参考に、Web/PWAの標準HTML・CSSで実�
 - [Typography](https://developer.apple.com/design/human-interface-guidelines/typography)
 - [Charts](https://developer.apple.com/design/human-interface-guidelines/charts)
 - [Color](https://developer.apple.com/design/human-interface-guidelines/color)
+
+## 文章の公開範囲
+
+「フォロワーのみ」は、投稿者がフォロー申請を承認した閲覧者に公開する。フォローバックは不要。既存DBのvisibility値 `mutual` は互換性のため維持し、表示と判定をフォロワー向けに変更する。DMの `dm_policy=mutual` は従来どおり相互フォローを要求する。つぶやき・コメント・公開を選択した学習メモには、共通のDBアクセス判定を適用する。
