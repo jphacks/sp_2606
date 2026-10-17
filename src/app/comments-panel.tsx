@@ -13,11 +13,13 @@ export default function CommentsPanel({
   userId,
   csrf,
   people,
+  openProfile,
 }: {
   postId: string;
   userId: string;
   csrf: string;
   people: Profile[];
+  openProfile: (id: string) => void;
 }) {
   const [open, setOpen] = useState(false),
     [comments, setComments] = useState<Comment[]>([]),
@@ -94,10 +96,15 @@ export default function CommentsPanel({
           {comments.map((c) => (
             <div className="comment" key={c.id}>
               <div>
-                <strong>
-                  {people.find((p) => p.id === c.owner_id)?.display_name ||
-                    "学習者"}
-                </strong>
+                <button
+                  className="text-button"
+                  onClick={() => openProfile(c.owner_id)}
+                >
+                  <strong>
+                    {people.find((p) => p.id === c.owner_id)?.display_name ||
+                      "学習者"}
+                  </strong>
+                </button>
                 <small>
                   {new Date(c.created_at).toLocaleDateString("ja-JP")}
                 </small>

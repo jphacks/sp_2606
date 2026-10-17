@@ -22,14 +22,22 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "対象が不正です。" }, { status: 400 });
     const to = new Date().toISOString().slice(0, 10),
       from = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10);
-    const [profiles, posts, studies, connections, counts] = await Promise.all([
-      s.db.rpc("read_profiles"),
-      s.db.rpc("read_posts", { p_mode: mode }),
-      s.db.rpc("read_study", { p_owner: owner, p_from: from, p_to: to }),
-      s.db.rpc("get_connections"),
-      s.db.rpc("profile_counts", { p_id: owner }),
-    ]);
-    if ([profiles, posts, studies, connections, counts].some((r) => r.error))
+    const [profiles, posts, studies, connections, counts, selected] =
+      await Promise.all([
+        s.db.rpc("read_profiles"),
+        q.get("scope") === "profile"
+          ? s.db.rpc("read_profile_posts", { p_id: owner })
+          : s.db.rpc("read_posts", { p_mode: mode }),
+        s.db.rpc("read_study", { p_owner: owner, p_from: from, p_to: to }),
+        s.db.rpc("get_connections"),
+        s.db.rpc("profile_counts", { p_id: owner }),
+        s.db.rpc("read_profile", { p_id: owner }),
+      ]);
+    if (
+      [profiles, posts, studies, connections, counts, selected].some(
+        (r) => r.error,
+      )
+    )
       return NextResponse.json(
         {
           error:
@@ -37,8 +45,11 @@ export async function GET(request: Request) {
         },
         { status: 400 },
       );
-    const people = (profiles.data || []) as Profile[],
-      me = people.find((p) => p.id === s.user.id);
+    const people = (profiles.data || []) as Profile[];
+    const profile = selected.data?.[0] as Profile | undefined;
+    if (profile && !people.some((p) => p.id === profile.id))
+      people.push(profile);
+    const me = people.find((p) => p.id === s.user.id);
     const recommended = me
       ? people
           .filter((p) => p.id !== me.id && p.recommend)
@@ -50,6 +61,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         me,
+        profile,
         profiles: people,
         posts: posts.data,
         studies: studies.data,

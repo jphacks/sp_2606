@@ -58,6 +58,12 @@ export async function POST(
     } else if (action === "dm-delete") {
       const p = deleteSchema.parse(body);
       result = await s.db.rpc("remove_message", { p_id: p.id });
+    } else if (action === "follow-respond") {
+      const p = targetSchema.parse(body);
+      result = await s.db.rpc("respond_follow", {
+        p_sender: p.target,
+        p_accept: p.enabled,
+      });
     } else if (action === "profile") {
       const p = profileSchema.parse(body);
       result = await s.db.rpc("save_profile", {

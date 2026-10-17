@@ -1,5 +1,11 @@
 "use client";
-import { useEffect, useState, useCallback, type FormEvent } from "react";
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  type FormEvent,
+} from "react";
 import {
   BookOpen,
   ArrowUpRight,
@@ -44,12 +50,23 @@ type SessionInfo = {
 };
 type Data = {
   me: Profile;
+  profile?: Profile;
   profiles: Profile[];
   posts: Post[];
   studies: Study[];
-  connections: { following: string[]; followers: string[]; blocked: string[] };
+  connections: {
+    following: string[];
+    followers: string[];
+    blocked: string[];
+    incoming: string[];
+    outgoing: string[];
+  };
   counts: { following: number; followers: number };
-  settings: { visibility: keyof typeof visibilityLabels; dm_policy: string };
+  settings: {
+    visibility: keyof typeof visibilityLabels;
+    dm_policy: string;
+    profile_completed: boolean;
+  };
   recommended: Profile[];
   owner: string;
   from: string;
@@ -84,6 +101,13 @@ export default function StudyApp() {
     [authLoading, setAuthLoading] = useState(true),
     [recordRequest, setRecordRequest] = useState(""),
     [dmPeer, setDmPeer] = useState("");
+  const loadVersion = useRef(0);
+  function openProfile(id: string) {
+    setData(null);
+    setOwner(id);
+    setView("profile");
+    setError("");
+  }
   useEffect(() => {
     const flag = new URLSearchParams(window.location.search).get("auth");
     if (flag === "failed")
@@ -109,20 +133,28 @@ export default function StudyApp() {
   }, [refreshSession]);
   const load = useCallback(async () => {
     if (!session?.user) return;
+    const version = ++loadVersion.current;
     const r = await fetch(
-      `/api/data?mode=${mode}${owner ? "&owner=" + encodeURIComponent(owner) : ""}`,
+      `/api/data?mode=${mode}${owner ? "&owner=" + encodeURIComponent(owner) : ""}${view === "profile" ? "&scope=profile" : ""}`,
       { cache: "no-store" },
     );
     const d = await r.json();
     if (!r.ok) throw new Error(d.error);
+    if (version !== loadVersion.current) return;
     setData(d);
-    if (d.me?.display_name === "新しい学習者") setView("settings");
-  }, [session?.user, mode, owner]);
+    if (!d.settings.profile_completed) setView("settings");
+  }, [session?.user, mode, owner, view]);
   useEffect(() => {
     load().catch((e) => setError(e.message));
   }, [load]);
   async function mutate(action: string, body: unknown) {
     if (busy) return false;
+    if (action === "post" && !data?.settings.profile_completed) {
+      setComposer(false);
+      setView("settings");
+      setError("プロフィールと公開範囲を先に保存してください。");
+      return false;
+    }
     setBusy(true);
     setError("");
     setNotice("");
@@ -162,7 +194,6 @@ export default function StudyApp() {
         body: JSON.stringify({
           email: f.get("email"),
           password: f.get("password"),
-          ...(signup ? { visibility: f.get("visibility") } : {}),
         }),
       });
       const d = await r.json();
@@ -201,7 +232,7 @@ export default function StudyApp() {
   const nav = [
     { id: "feed", label: "タイムライン", icon: BookOpen },
     { id: "study", label: "学習のきろく", icon: ChartNoAxesColumn },
-    { id: "people", label: "仲間を見つける", icon: Users },
+    { id: "people", label: "仲間・フォロー申請", icon: Users },
     { id: "messages", label: "メッセージ", icon: MessageCircle },
     { id: "settings", label: "プロフィールと設定", icon: Settings },
   ];
@@ -318,26 +349,9 @@ export default function StudyApp() {
                 />
               </label>
               {signup && (
-                <>
-                  <label>
-                    文章と画像を見せる相手
-                    <select name="visibility" defaultValue="mutual">
-                      {Object.entries(visibilityLabels).map(([k, v]) => (
-                        <option value={k} key={k}>
-                          {v}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <p className="form-note">
-                    つぶやきと画像に共通の設定です。基本プロフィールと学習時間はログイン済みの人に公開されます。
-                  </p>
-                  {!session?.signup_enabled && (
-                    <p className="form-note">
-                      登録受付は、メール確認・不正利用対策の設定後に開始します。
-                    </p>
-                  )}
-                </>
+                <p className="form-note">
+                  メール確認後、プロフィールと公開範囲を設定します。初期の文章公開範囲は相互フォローのみです。
+                </p>
               )}
               {error && (
                 <p className="alert error" role="alert">
@@ -367,7 +381,9 @@ export default function StudyApp() {
                 <ArrowRight size={17} />
               </button>
             </form>
-            <p><a href="/reset-password">パスワードを忘れた方・再設定する方</a></p>
+            <p>
+              <a href="/reset-password">パスワードを忘れた方・再設定する方</a>
+            </p>
             <p className="auth-foot">
               <LockKeyhole size={14} />
               メールアドレスは他のユーザーに公開されません。
@@ -485,13 +501,15 @@ export default function StudyApp() {
                         : "LEARN, SHARE, GROW"}
                 </span>
                 <h1>
-                  {view === "study"
-                    ? "学習のきろく"
-                    : view === "people"
-                      ? "同じ目線の、仲間たち。"
-                      : view === "settings"
-                        ? "あなたのプロフィール"
-                        : "今日も、となりで。"}
+                  {view === "profile"
+                    ? "プロフィール"
+                    : view === "study"
+                      ? "学習のきろく"
+                      : view === "people"
+                        ? "同じ目線の、仲間たち。"
+                        : view === "settings"
+                          ? "あなたのプロフィール"
+                          : "今日も、となりで。"}
                   <span className="heading-leaf">✳</span>
                 </h1>
                 <p>
@@ -533,39 +551,110 @@ export default function StudyApp() {
               </div>
             ) : (
               <>
-                {view === "feed" && (
+                {(view === "feed" || view === "profile") && (
                   <>
-                    <button
-                      className="composer-card"
-                      onClick={() => setComposer(true)}
-                    >
-                      <Avatar name={me?.display_name || ""} />
-                      <span>
-                        今日は、どんな発見がありましたか？
-                        <small>
-                          <LockKeyhole size={12} />
-                          {visibilityLabels[data.settings.visibility]}
-                        </small>
-                      </span>
-                      <span className="compose-plus">
-                        <Plus size={20} />
-                      </span>
-                    </button>
-                    <div className="feed-tabs">
-                      {[
-                        ["recommended", "おすすめ"],
-                        ["similar", "学習レベルが近い"],
-                        ["following", "フォロー中"],
-                      ].map(([k, v]) => (
+                    {view === "profile" && data.profile && (
+                      <div className="card profile-details">
+                        <Avatar name={data.profile.display_name} />
+                        <h2>{data.profile.display_name}</h2>
+                        <p>
+                          {data.profile.field} · {levels[data.profile.level]}
+                        </p>
+                        {data.profile.goal && <p>目標：{data.profile.goal}</p>}
+                        <p className="post-body">
+                          {data.profile.bio || "自己紹介は未設定です。"}
+                        </p>
+                        <p>
+                          フォロー {data.counts.following} · フォロワー{" "}
+                          {data.counts.followers}
+                        </p>
+                        {data.profile.id !== me.id && (
+                          <button
+                            className="secondary"
+                            disabled={busy}
+                            onClick={() =>
+                              void mutate("follow", {
+                                target: data.profile!.id,
+                                enabled:
+                                  !data.connections.following.includes(
+                                    data.profile!.id,
+                                  ) &&
+                                  !data.connections.outgoing.includes(
+                                    data.profile!.id,
+                                  ),
+                              })
+                            }
+                          >
+                            {data.connections.following.includes(
+                              data.profile.id,
+                            )
+                              ? "フォロー解除"
+                              : data.connections.outgoing.includes(
+                                    data.profile.id,
+                                  )
+                                ? "申請を取り消す"
+                                : "フォロー申請"}
+                          </button>
+                        )}
                         <button
-                          key={k}
-                          onClick={() => setMode(k)}
-                          className={mode === k ? "active" : ""}
+                          className="text-button"
+                          onClick={() => setView("study")}
                         >
-                          {k === "recommended" && <Sparkles size={15} />} {v}
+                          学習のきろくを見る
                         </button>
-                      ))}
-                    </div>
+                        {data.profile.id !== me.id && (
+                          <button
+                            className="text-button"
+                            onClick={() => {
+                              setDmPeer(data.profile!.id);
+                              setOwner("");
+                              setView("messages");
+                            }}
+                          >
+                            メッセージ
+                          </button>
+                        )}
+                        <p className="form-note">
+                          この人の閲覧可能なつぶやきを表示します。
+                        </p>
+                      </div>
+                    )}
+                    {view === "feed" && (
+                      <>
+                        <button
+                          className="composer-card"
+                          onClick={() => setComposer(true)}
+                        >
+                          <Avatar name={me?.display_name || ""} />
+                          <span>
+                            今日は、どんな発見がありましたか？
+                            <small>
+                              <LockKeyhole size={12} />
+                              {visibilityLabels[data.settings.visibility]}
+                            </small>
+                          </span>
+                          <span className="compose-plus">
+                            <Plus size={20} />
+                          </span>
+                        </button>
+                        <div className="feed-tabs">
+                          {[
+                            ["recommended", "おすすめ"],
+                            ["similar", "学習レベルが近い"],
+                            ["following", "フォロー中"],
+                          ].map(([k, v]) => (
+                            <button
+                              key={k}
+                              onClick={() => setMode(k)}
+                              className={mode === k ? "active" : ""}
+                            >
+                              {k === "recommended" && <Sparkles size={15} />}{" "}
+                              {v}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
                     <div className="feed-list">
                       {data.posts.length === 0 ? (
                         <div className="card empty">
@@ -592,9 +681,25 @@ export default function StudyApp() {
                           return (
                             <article className="post-card" key={p.id}>
                               <div className="post-head">
-                                <Avatar name={a?.display_name || "学習者"} />
+                                <button
+                                  className="profile-link"
+                                  aria-label={
+                                    (a?.display_name || "学習者") +
+                                    "のプロフィール"
+                                  }
+                                  onClick={() => openProfile(p.owner_id)}
+                                >
+                                  <Avatar name={a?.display_name || "学習者"} />
+                                </button>
                                 <div>
-                                  <strong>{a?.display_name || "学習者"}</strong>
+                                  <button
+                                    className="text-button"
+                                    onClick={() => openProfile(p.owner_id)}
+                                  >
+                                    <strong>
+                                      {a?.display_name || "学習者"}
+                                    </strong>
+                                  </button>
                                   <small>
                                     {a?.field} · {levels[a?.level || 0]}{" "}
                                     <span className="time">
@@ -634,6 +739,7 @@ export default function StudyApp() {
                                 userId={me.id}
                                 csrf={session.csrf}
                                 people={data.profiles}
+                                openProfile={openProfile}
                               />
                               <div className="post-footer">
                                 <span>
@@ -788,6 +894,50 @@ export default function StudyApp() {
                         </small>
                       </span>
                     </div>
+                    <div className="card follow-requests">
+                      <h2>届いたフォロー申請</h2>
+                      {data.connections.incoming.length === 0 && (
+                        <p className="muted">申請はありません。</p>
+                      )}
+                      {data.connections.incoming.map((id) => (
+                        <div className="request-row" key={id}>
+                          <button
+                            className="text-button"
+                            onClick={() => openProfile(id)}
+                          >
+                            {data.profiles.find((p) => p.id === id)
+                              ?.display_name || "プロフィールを見る"}
+                          </button>
+                          <button
+                            className="secondary"
+                            disabled={busy}
+                            onClick={() =>
+                              void mutate("follow-respond", {
+                                target: id,
+                                enabled: true,
+                              })
+                            }
+                          >
+                            承認
+                          </button>
+                          <button
+                            className="text-button"
+                            disabled={busy}
+                            onClick={() =>
+                              void mutate("follow-respond", {
+                                target: id,
+                                enabled: false,
+                              })
+                            }
+                          >
+                            拒否
+                          </button>
+                        </div>
+                      ))}
+                      <p className="form-note">
+                        承認しても自動でフォローバックはしません。
+                      </p>
+                    </div>
                     <div className="people-grid">
                       {data.recommended.length === 0 ? (
                         <div className="card empty">
@@ -798,8 +948,21 @@ export default function StudyApp() {
                       ) : (
                         data.recommended.map((p) => (
                           <div className="card person-card" key={p.id}>
-                            <Avatar name={p.display_name} />
-                            <h3>{p.display_name}</h3>
+                            <button
+                              className="profile-link"
+                              aria-label={p.display_name + "のプロフィール"}
+                              onClick={() => openProfile(p.id)}
+                            >
+                              <Avatar name={p.display_name} />
+                            </button>
+                            <h3>
+                              <button
+                                className="text-button"
+                                onClick={() => openProfile(p.id)}
+                              >
+                                {p.display_name}
+                              </button>
+                            </h3>
                             <div className="tag-list">
                               <span className="tag">{p.field}</span>
                               <span className="tag lilac">
@@ -817,9 +980,11 @@ export default function StudyApp() {
                               onClick={() =>
                                 void mutate("follow", {
                                   target: p.id,
-                                  enabled: !data.connections.following.includes(
-                                    p.id,
-                                  ),
+                                  enabled:
+                                    !data.connections.following.includes(
+                                      p.id,
+                                    ) &&
+                                    !data.connections.outgoing.includes(p.id),
                                 })
                               }
                             >
@@ -829,8 +994,10 @@ export default function StudyApp() {
                                 <UserPlus size={16} />
                               )}{" "}
                               {data.connections.following.includes(p.id)
-                                ? "フォロー中"
-                                : "フォローする"}
+                                ? "フォロー解除"
+                                : data.connections.outgoing.includes(p.id)
+                                  ? "申請を取り消す"
+                                  : "フォロー申請"}
                             </button>
                             <button
                               className="text-button"
@@ -879,6 +1046,7 @@ export default function StudyApp() {
                     csrf={session.csrf}
                     initialPeer={dmPeer}
                     notify={setNotice}
+                    openProfile={openProfile}
                   />
                 )}
                 {view === "settings" && (
@@ -904,11 +1072,21 @@ export default function StudyApp() {
                         dm_policy: f.get("dm_policy"),
                         recommend: f.get("recommend") === "on",
                       });
-                      if (ok)
+                      if (ok) {
                         setNotice("プロフィールと公開設定を保存しました。");
+                        if (!data.settings.profile_completed) {
+                          setOwner("");
+                          setView("feed");
+                        }
+                      }
                     }}
                     key={me.id + data.settings.visibility}
                   >
+                    {!data.settings.profile_completed && (
+                      <p className="form-note">
+                        最初にプロフィールと文章の公開範囲を設定してください。保存後に投稿できます。
+                      </p>
+                    )}
                     <div className="section-title">
                       <h2>基本プロフィール</h2>
                       <span className="tag">ログイン済み全員に公開</span>
@@ -1005,7 +1183,9 @@ export default function StudyApp() {
                     </button>
                     <hr />
                     <h2>ブロック中</h2>
-                    <p><a href="/reset-password">パスワードを再設定する</a></p>
+                    <p>
+                      <a href="/reset-password">パスワードを再設定する</a>
+                    </p>
                     {data.connections.blocked.length ? (
                       data.connections.blocked.map((id) => (
                         <div className="blocked-row" key={id}>
@@ -1087,7 +1267,7 @@ export default function StudyApp() {
                 <button
                   className="mini-person"
                   key={p.id}
-                  onClick={() => setView("people")}
+                  onClick={() => openProfile(p.id)}
                 >
                   <Avatar name={p.display_name} small />
                   <span>

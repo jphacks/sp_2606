@@ -37,11 +37,13 @@ export default function MessagesPanel({
   csrf,
   initialPeer,
   notify,
+  openProfile,
 }: {
   userId: string;
   csrf: string;
   initialPeer: string;
   notify: (message: string) => void;
+  openProfile: (id: string) => void;
 }) {
   const [inbox, setInbox] = useState<Inbox[]>([]),
     [peer, setPeer] = useState(initialPeer),
@@ -123,21 +125,29 @@ export default function MessagesPanel({
           </p>
         )}
         {inbox.map((c) => (
-          <button
+          <div
             key={c.peer}
             className={"inbox-item " + (peer === c.peer ? "active" : "")}
-            onClick={() => {
-              setPeer(c.peer);
-              setKey(crypto.randomUUID());
-              setError("");
-            }}
           >
-            <span className="avatar small">{c.display_name.slice(0, 1)}</span>
-            <span>
+            <button
+              className="profile-link"
+              aria-label={c.display_name + "のプロフィール"}
+              onClick={() => openProfile(c.peer)}
+            >
+              <span className="avatar small">{c.display_name.slice(0, 1)}</span>
+            </button>
+            <button
+              className="text-button"
+              onClick={() => {
+                setPeer(c.peer);
+                setKey(crypto.randomUUID());
+                setError("");
+              }}
+            >
               {c.display_name}
               {c.incoming_status === "pending" && <small>リクエスト</small>}
-            </span>
-          </button>
+            </button>
+          </div>
         ))}
       </div>
       <div className="card conversation">
@@ -154,10 +164,16 @@ export default function MessagesPanel({
                 <ArrowLeft size={14} />
                 一覧
               </button>
-              <strong>
-                {inbox.find((c) => c.peer === peer)?.display_name ||
-                  "選択した仲間"}
-              </strong>
+              <button
+                className="text-button"
+                onClick={() => openProfile(peer)}
+                aria-label="相手のプロフィールを開く"
+              >
+                <strong>
+                  {inbox.find((c) => c.peer === peer)?.display_name ||
+                    "選択した仲間"}
+                </strong>
+              </button>
               <LockKeyhole size={14} />
             </div>
             {error && (

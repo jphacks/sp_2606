@@ -16,7 +16,6 @@ export const signupSchema = z
   .object({
     email: z.email().max(254),
     password: z.string().min(12).max(128),
-    visibility: visibilitySchema,
   })
   .strict();
 export const loginSchema = z

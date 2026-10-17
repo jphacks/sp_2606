@@ -1413,3 +1413,12 @@ label textarea {
   margin-top: 8px;
   padding: 8px 12px;
 }
+
+/* Profile navigation and directional follow requests. */
+.profile-link { border: 0; background: transparent; padding: 0; cursor: pointer; border-radius: 50%; flex-shrink: 0; }
+.profile-link:focus-visible { outline: 3px solid var(--sage, #3b715e); outline-offset: 4px; }
+.profile-details { margin-bottom: 20px; }
+.profile-details h2 { margin-top: 12px; }
+.follow-requests { margin-bottom: 20px; }
+.request-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e6e9e5; }
+.request-row > :first-child { margin-right: auto; }

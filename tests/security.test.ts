@@ -28,14 +28,13 @@ test("CSRF equality handles mismatched lengths safely", () => {
   assert(!equal("same", "other"));
   assert(!equal("same", ""));
 });
-test("registration cannot override role and must select a valid global visibility", () => {
+test("registration accepts credentials only; visibility is chosen during profile setup", () => {
   const base = {
     email: "a@example.com",
     password: "123456789012",
-    visibility: "mutual",
   };
   assert(signupSchema.safeParse(base).success);
-  assert(!signupSchema.safeParse({ ...base, visibility: "everyone" }).success);
+  assert(!signupSchema.safeParse({ ...base, visibility: "public" }).success);
   assert(!signupSchema.safeParse({ ...base, is_admin: true }).success);
   assert(!signupSchema.safeParse({ ...base, password: "short" }).success);
 });

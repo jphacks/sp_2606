@@ -85,7 +85,7 @@ export async function POST(
         password: parsed.data.password,
         options: {
           emailRedirectTo: c.origin + "/auth/callback",
-          data: { visibility: parsed.data.visibility },
+          data: { visibility: "mutual" },
         },
       });
       persist();
