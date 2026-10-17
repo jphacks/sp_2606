@@ -1425,3 +1425,9 @@ label textarea {
 .follow-requests { margin-bottom: 20px; }
 .request-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e6e9e5; }
 .request-row > :first-child { margin-right: auto; }
+
+.learning-fields-editor { border: 1px solid #dce3dd; border-radius: 14px; padding: 18px; margin: 20px 0; min-width: 0; }
+.learning-fields-editor legend { font-weight: 700; padding: 0 6px; }
+.field-options { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+.learning-field-row { border-top: 1px solid #e6e9e5; margin-top: 16px; padding-top: 14px; }
+.learning-field-row h3 { margin: 0 0 12px; }

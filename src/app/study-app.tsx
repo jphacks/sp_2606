@@ -34,8 +34,13 @@ import {
 } from "lucide-react";
 import MessagesPanel from "./messages-panel";
 import CommentsPanel from "./comments-panel";
+import LearningFieldsEditor from "./learning-fields-editor";
 import {
-  levels,
+  fieldOptions,
+  profileFields,
+  profileSummary,
+  fieldExperience,
+  learningFieldsSchema,
   visibilityLabels,
   type Profile,
   type Post,
@@ -72,15 +77,7 @@ type Data = {
   from: string;
   to: string;
 };
-const fields = [
-  "Python",
-  "JavaScript",
-  "TypeScript",
-  "AWS",
-  "基本情報",
-  "応用情報",
-  "その他",
-];
+const fields = fieldOptions;
 function Avatar({ name, small = false }: { name: string; small?: boolean }) {
   return (
     <span className={`avatar ${small ? "small" : ""}`}>{name.slice(0, 1)}</span>
@@ -453,7 +450,13 @@ export default function StudyApp() {
             <Avatar name={me?.display_name || "？"} small />
             <span>
               {me?.display_name || "読み込み中"}
-              <small>{me?.field || "あなたのプロフィール"}</small>
+              <small>
+                {me
+                  ? profileFields(me)
+                      .map((item) => item.field)
+                      .join(" / ")
+                  : "あなたのプロフィール"}
+              </small>
             </span>
             <Settings size={16} />
           </button>
@@ -470,16 +473,17 @@ export default function StudyApp() {
             あなたの小さな一歩が、誰かの力になる。
           </span>
           <div className="topbar-actions">
-          <button
-            className="icon-button"
-            onClick={() => setNotice("通知機能は現在準備中です。")}
-            aria-label="通知の対応状況"
-          >
-            <Bell size={20} />
-          </button>
-          <button className="topbar-logout" onClick={logout} disabled={busy}>
-            <LogOut size={16} />ログアウト
-          </button>
+            <button
+              className="icon-button"
+              onClick={() => setNotice("通知機能は現在準備中です。")}
+              aria-label="通知の対応状況"
+            >
+              <Bell size={20} />
+            </button>
+            <button className="topbar-logout" onClick={logout} disabled={busy}>
+              <LogOut size={16} />
+              ログアウト
+            </button>
           </div>
         </header>
         <div className="mobile-nav">
@@ -567,9 +571,7 @@ export default function StudyApp() {
                       <div className="card profile-details">
                         <Avatar name={data.profile.display_name} />
                         <h2>{data.profile.display_name}</h2>
-                        <p>
-                          {data.profile.field} · {levels[data.profile.level]}
-                        </p>
+                        <p>{profileSummary(data.profile)}</p>
                         {data.profile.goal && <p>目標：{data.profile.goal}</p>}
                         <p className="post-body">
                           {data.profile.bio || "自己紹介は未設定です。"}
@@ -650,7 +652,7 @@ export default function StudyApp() {
                         <div className="feed-tabs">
                           {[
                             ["recommended", "おすすめ"],
-                            ["similar", "学習レベルが近い"],
+                            ["similar", "学習経験が近い"],
                             ["following", "フォロー中"],
                           ].map(([k, v]) => (
                             <button
@@ -711,7 +713,7 @@ export default function StudyApp() {
                                     </strong>
                                   </button>
                                   <small>
-                                    {a?.field} · {levels[a?.level || 0]}{" "}
+                                    {a ? profileSummary(a) : ""}{" "}
                                     <span className="time">
                                       {new Date(p.created_at).toLocaleString(
                                         "ja-JP",
@@ -897,7 +899,7 @@ export default function StudyApp() {
                     <div className="tip">
                       <Sparkles size={19} />
                       <span>
-                        分野・自己申告のレベル・目標からおすすめしています。
+                        登録した学習分野・経験・目標からおすすめしています。
                         <br />
                         <small>
                           DMや限定公開の文章は、おすすめに使用しません。
@@ -974,10 +976,11 @@ export default function StudyApp() {
                               </button>
                             </h3>
                             <div className="tag-list">
-                              <span className="tag">{p.field}</span>
-                              <span className="tag lilac">
-                                {levels[p.level]}
-                              </span>
+                              {profileFields(p).map((item) => (
+                                <span className="tag" key={item.field}>
+                                  {item.field} · {fieldExperience(item)}
+                                </span>
+                              ))}
                             </div>
                             <p>{p.goal || "自分のペースで学習中"}</p>
                             <button
@@ -1072,10 +1075,18 @@ export default function StudyApp() {
                         )
                       )
                         return;
+                      const learningFields = learningFieldsSchema.safeParse(
+                        JSON.parse(String(f.get("learning_fields") || "[]")),
+                      );
+                      if (!learningFields.success) {
+                        setError(
+                          "学習分野を1つ以上選び、経験を入力してください。",
+                        );
+                        return;
+                      }
                       const ok = await mutate("profile", {
                         display_name: f.get("display_name"),
-                        field: f.get("field"),
-                        level: Number(f.get("level")),
+                        learning_fields: learningFields.data,
                         goal: f.get("goal"),
                         bio: f.get("bio"),
                         visibility: f.get("visibility"),
@@ -1112,24 +1123,6 @@ export default function StudyApp() {
                         />
                       </label>
                       <label>
-                        学習分野
-                        <select name="field" defaultValue={me.field}>
-                          {fields.map((f) => (
-                            <option key={f}>{f}</option>
-                          ))}
-                        </select>
-                      </label>
-                      <label>
-                        習熟度（自己申告）
-                        <select name="level" defaultValue={me.level}>
-                          {levels.map((v, i) => (
-                            <option key={i} value={i}>
-                              {v}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                      <label>
                         目標
                         <input
                           name="goal"
@@ -1139,6 +1132,10 @@ export default function StudyApp() {
                         />
                       </label>
                     </div>
+                    <LearningFieldsEditor
+                      key={JSON.stringify(profileFields(me))}
+                      initialFields={profileFields(me)}
+                    />
                     <label>
                       自己紹介
                       <textarea
@@ -1282,9 +1279,7 @@ export default function StudyApp() {
                   <Avatar name={p.display_name} small />
                   <span>
                     <strong>{p.display_name}</strong>
-                    <small>
-                      {p.field} · {levels[p.level]}
-                    </small>
+                    <small>{profileSummary(p)}</small>
                   </span>
                   <Plus size={15} />
                 </button>

@@ -41,6 +41,15 @@ test("current migrations: follow approval, migration consent reset, onboarding a
         "utf8",
       ),
     );
+    await db.exec(
+      await readFile(
+        new URL(
+          "../supabase/migrations/202610170004_learning_fields.sql",
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+    );
     await db.query(
       `insert into auth.users(id,raw_user_meta_data) values($1,'{"visibility":"public","profile_completed":true}')`,
       [C],

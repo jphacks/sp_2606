@@ -1,10 +1,46 @@
 import { z } from "zod";
 export const visibilitySchema = z.enum(["public", "mutual", "private"]);
+export const fieldOptions = [
+  "Python",
+  "JavaScript",
+  "TypeScript",
+  "AWS",
+  "基本情報",
+  "応用情報",
+  "その他",
+];
+export const learningFieldSchema = z.discriminatedUnion("mode", [
+  z
+    .object({
+      field: z.string().trim().min(1).max(30),
+      mode: z.literal("level"),
+      level: z.number().int().min(0).max(3),
+      total_minutes: z.null(),
+    })
+    .strict(),
+  z
+    .object({
+      field: z.string().trim().min(1).max(30),
+      mode: z.literal("time"),
+      level: z.null(),
+      total_minutes: z.number().int().min(0).max(6000000),
+    })
+    .strict(),
+]);
+export const learningFieldsSchema = z
+  .array(learningFieldSchema)
+  .min(1)
+  .max(10)
+  .refine(
+    (items) =>
+      new Set(items.map((x) => x.field.toLowerCase())).size === items.length,
+    "分野が重複しています。",
+  );
+export type LearningField = z.infer<typeof learningFieldSchema>;
 export const profileSchema = z
   .object({
     display_name: z.string().trim().min(1).max(30),
-    field: z.string().trim().min(1).max(30),
-    level: z.number().int().min(0).max(3),
+    learning_fields: learningFieldsSchema,
     goal: z.string().trim().max(100),
     bio: z.string().trim().max(500),
     recommend: z.boolean(),
@@ -47,6 +83,7 @@ export type Profile = {
   display_name: string;
   field: string;
   level: number;
+  learning_fields?: LearningField[];
   goal: string;
   bio: string;
   recommend: boolean;
@@ -66,9 +103,43 @@ export type Study = {
   minutes: number;
 };
 export function recommendationScore(viewer: Profile, candidate: Profile) {
-  return (
-    (viewer.field === candidate.field ? 100 : 0) +
-    Math.max(0, 3 - Math.abs(viewer.level - candidate.level)) * 10 +
-    (viewer.goal && viewer.goal === candidate.goal ? 20 : 0)
-  );
+  let best = 0;
+  for (const a of profileFields(viewer))
+    for (const b of profileFields(candidate)) {
+      if (a.field !== b.field) continue;
+      let score = 100;
+      if (a.mode === "level" && b.mode === "level")
+        score += Math.max(0, 3 - Math.abs(a.level - b.level)) * 10;
+      if (a.mode === "time" && b.mode === "time")
+        score +=
+          30 /
+          (1 +
+            Math.abs(
+              Math.log((a.total_minutes + 60) / (b.total_minutes + 60)),
+            ));
+      best = Math.max(best, score);
+    }
+  return best + (viewer.goal && viewer.goal === candidate.goal ? 20 : 0);
+}
+export function profileFields(profile: Profile): LearningField[] {
+  return profile.learning_fields?.length
+    ? profile.learning_fields
+    : [
+        {
+          field: profile.field,
+          mode: "level",
+          level: profile.level,
+          total_minutes: null,
+        },
+      ];
+}
+export function fieldExperience(item: LearningField) {
+  return item.mode === "level"
+    ? levels[item.level]
+    : `累計${(item.total_minutes / 60).toLocaleString("ja-JP", { maximumFractionDigits: 1 })}時間`;
+}
+export function profileSummary(profile: Profile) {
+  return profileFields(profile)
+    .map((item) => `${item.field} · ${fieldExperience(item)}`)
+    .join(" / ");
 }

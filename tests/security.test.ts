@@ -8,6 +8,8 @@ import {
   studySchema,
   postSchema,
   recommendationScore,
+  learningFieldsSchema,
+  profileSummary,
   type Profile,
 } from "../src/lib/validation";
 test("sealed tokens cannot be read or tampered with; wrong keys fail closed", () => {
@@ -41,8 +43,9 @@ test("registration accepts credentials only; visibility is chosen during profile
 test("profile cannot accept administrative or ownership fields", () => {
   const base = {
     display_name: "A",
-    field: "Python",
-    level: 0,
+    learning_fields: [
+      { field: "Python", mode: "level", level: 0, total_minutes: null },
+    ],
     goal: "",
     bio: "",
     recommend: true,
@@ -52,7 +55,14 @@ test("profile cannot accept administrative or ownership fields", () => {
   assert(profileSchema.safeParse(base).success);
   assert(!profileSchema.safeParse({ ...base, id: "other" }).success);
   assert(!profileSchema.safeParse({ ...base, role: "admin" }).success);
-  assert(!profileSchema.safeParse({ ...base, level: 4 }).success);
+  assert(
+    !profileSchema.safeParse({
+      ...base,
+      learning_fields: [
+        { field: "Python", mode: "level", level: 4, total_minutes: null },
+      ],
+    }).success,
+  );
 });
 test("study is separate from text and images, with finite duration and idempotency key", () => {
   const base = {
@@ -78,4 +88,42 @@ test("recommendations depend only on declared public fields", () => {
     b = { field: "Python", level: 0, goal: "試験" } as Profile,
     c = { field: "AWS", level: 3, goal: "" } as Profile;
   assert(recommendationScore(a, b) > recommendationScore(a, c));
+});
+
+test("multiple fields validate one experience type per field and reject duplicates/invalid time", () => {
+  const a = { field: "Python", mode: "level", level: 1, total_minutes: null };
+  const b = { field: "AWS", mode: "time", level: null, total_minutes: 7200 };
+  assert(learningFieldsSchema.safeParse([a, b]).success);
+  for (const items of [
+    [],
+    [a, a],
+    [a, { ...a, field: "python" }],
+    [{ ...a, total_minutes: 100 }],
+    [{ ...b, level: 1 }],
+    [{ ...b, total_minutes: -1 }],
+    [{ ...b, total_minutes: 0.5 }],
+    [{ ...b, total_minutes: 6000001 }],
+    [{ ...b, total_minutes: Infinity }],
+    [{ ...b, owner_id: "other" }],
+  ])
+    assert(!learningFieldsSchema.safeParse(items).success);
+  const viewer = {
+    field: "Python",
+    level: 0,
+    goal: "",
+    learning_fields: [a, b],
+  } as Profile;
+  const close = {
+    ...viewer,
+    learning_fields: [{ ...b, total_minutes: 7260 }],
+  } as Profile;
+  const distant = {
+    ...viewer,
+    learning_fields: [{ ...b, total_minutes: 60000 }],
+  } as Profile;
+  assert(
+    recommendationScore(viewer, close) > recommendationScore(viewer, distant),
+  );
+  assert(profileSummary(viewer).includes("AWS · 累計120時間"));
+  assert(!profileSummary(close).includes("未経験"));
 });
