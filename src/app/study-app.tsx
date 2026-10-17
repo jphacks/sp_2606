@@ -37,6 +37,7 @@ import MessagesPanel from "./messages-panel";
 import CommentsPanel from "./comments-panel";
 import LearningFieldsEditor from "./learning-fields-editor";
 import GoalsEditor from "./goals-editor";
+import FieldSearch from "./field-search";
 import { learningFieldLabel } from "@/lib/learning-catalog";
 import { goalsSchema, profileGoalSummary } from "@/lib/goals";
 import {
@@ -93,6 +94,7 @@ export default function StudyApp() {
     [data, setData] = useState<Data | null>(null),
     [view, setView] = useState("feed"),
     [mode, setMode] = useState("similar"),
+    [searchField, setSearchField] = useState(""),
     [owner, setOwner] = useState(""),
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
@@ -554,7 +556,10 @@ export default function StudyApp() {
               </div>
             ) : (
               <>
-                {(view === "feed" || view === "profile") && (
+                {(view === "feed" || view === "study") && (
+                  <FieldSearch field={searchField} onField={setSearchField} onProfile={openProfile} />
+                )}
+                {((view === "feed" && !searchField) || view === "profile") && (
                   <>
                     {view === "profile" && data.profile && (
                       <div className="card profile-details">
@@ -767,7 +772,7 @@ export default function StudyApp() {
                     </div>
                   </>
                 )}
-                {view === "study" && (
+                {view === "study" && !searchField && (
                   <>
                     <div className="card study-card">
                       <div className="section-title">

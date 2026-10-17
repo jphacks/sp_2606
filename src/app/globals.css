@@ -1663,3 +1663,11 @@ label textarea {
 }
 .month-picker-controls label { min-width: 0; }
 .month-picker-controls select { width: 100%; }
+
+.field-search { margin-bottom: 18px; }
+.field-search-box { padding: 16px; margin-bottom: 12px; }
+.field-search-label { display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: center; }
+.field-search-label input { grid-column: 1 / -1; width: 100%; }
+.field-search .goal-search-results button { width: 100%; text-align: left; }
+.field-search .post-card { display: flex; flex-direction: column; gap: 10px; }
+.search-post-body { white-space: pre-wrap; overflow-wrap: anywhere; }

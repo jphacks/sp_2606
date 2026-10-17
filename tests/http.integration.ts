@@ -17,6 +17,8 @@ test("HTTP: unauthenticated access and CSRF/Origin protections fail closed", asy
     Origin: base,
   };
   assert.equal((await fetch(base + "/api/data")).status, 401);
+  assert.equal((await fetch(base + "/api/search?field=Python&kind=posts")).status, 401);
+  assert.equal((await fetch(base + "/api/search?field=Python&kind=studies")).status, 401);
   assert.equal(
     (
       await fetch(base + "/api/mutate/post", {
