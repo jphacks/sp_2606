@@ -9,6 +9,8 @@ import {
 } from "react";
 import {
   Heart,
+  Eye,
+  EyeOff,
   BookOpen,
   ArrowUpRight,
   Sparkles,
@@ -38,6 +40,7 @@ import CommentsPanel from "./comments-panel";
 import LearningFieldsEditor from "./learning-fields-editor";
 import GoalsEditor from "./goals-editor";
 import FieldSearch from "./field-search";
+import StudyDashboard from "./study-dashboard";
 import { learningFieldLabel } from "@/lib/learning-catalog";
 import { goalsSchema, profileGoalSummary } from "@/lib/goals";
 import {
@@ -100,10 +103,12 @@ export default function StudyApp() {
     [notice, setNotice] = useState(""),
     [error, setError] = useState(""),
     [signup, setSignup] = useState(false),
+    [showPassword, setShowPassword] = useState(false),
     [composer, setComposer] = useState(false),
     [record, setRecord] = useState(false),
     [authLoading, setAuthLoading] = useState(true),
     [recordRequest, setRecordRequest] = useState(""),
+    [recordDate, setRecordDate] = useState(""),
     [dmPeer, setDmPeer] = useState("");
   const loadVersion = useRef(0);
   useEffect(() => {
@@ -268,43 +273,84 @@ export default function StudyApp() {
   ];
   if (!session?.user)
     return (
-      <main className="auth-page">
-        <section className="welcome">
-          <a className="brand" href="/">
+      <main className="auth-page auth-redesign">
+        <section className="auth-intro" aria-label="CoStepについて">
+          <a className="auth-brand" href="/" aria-label="CoStep ホーム">
             <span className="costep-logo">
               <Image
                 src="/costep-logo.png"
                 alt="CoStep"
                 fill
-                sizes="260px"
+                sizes="230px"
                 priority
               />
             </span>
           </a>
-          <div className="welcome-copy">
-            <h1>学習記録・交流SNS</h1>
-            <p>学習時間の記録、投稿、メッセージを利用できます。</p>
+          <div className="auth-intro-content">
+            <span className="auth-kicker">学習記録・交流SNS</span>
+            <h1>
+              学習を記録。
+              <br />
+              仲間と共有。
+            </h1>
+            <ul className="auth-features">
+              <li>
+                <span className="auth-feature-icon">
+                  <ChartNoAxesColumn size={22} />
+                </span>
+                <div>
+                  <strong>学習記録</strong>
+                  <p>時間を記録して、グラフで振り返る</p>
+                </div>
+              </li>
+              <li>
+                <span className="auth-feature-icon">
+                  <Users size={22} />
+                </span>
+                <div>
+                  <strong>仲間を探す</strong>
+                  <p>学習分野・経験・目標が近い人を見つける</p>
+                </div>
+              </li>
+              <li>
+                <span className="auth-feature-icon">
+                  <MessageCircle size={22} />
+                </span>
+                <div>
+                  <strong>つぶやき・DM</strong>
+                  <p>進捗や疑問を共有する</p>
+                </div>
+              </li>
+            </ul>
           </div>
-          <div className="illustration" aria-hidden="true">
-            <div className="orbit one" />
-            <div className="orbit two" />
-            <div className="illus-book">
-              <BookOpen size={66} strokeWidth={1.3} />
-            </div>
-            <span className="float-dot fd1" />
-            <span className="float-dot fd2" />
+          <div className="auth-intro-footer">
+            <span className="auth-status-dot" />
+            CoStep<span>学習のためのコミュニティ</span>
           </div>
-          <div className="welcome-bottom">
-            <ShieldCheck size={17} />
-            文章の公開範囲を設定できます。
+          <div className="auth-step-art" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
           </div>
         </section>
         <section className="auth-form-area">
           <div className="auth-card">
-            <h2>{signup ? "新規登録" : "ログイン"}</h2>
+            <div className="auth-card-heading">
+              <span className="auth-card-eyebrow">CoStep</span>
+              <h2>{signup ? "アカウントを作成" : "ログイン"}</h2>
+              <p>
+                {signup
+                  ? "メールアドレスで登録できます。"
+                  : "登録したメールアドレスでログインできます。"}
+              </p>
+            </div>
             <div className="auth-switch">
               <button
+                type="button"
+                aria-pressed={!signup}
                 onClick={() => {
+                  setShowPassword(false);
                   setSignup(false);
                   setError("");
                 }}
@@ -313,7 +359,10 @@ export default function StudyApp() {
                 ログイン
               </button>
               <button
+                type="button"
+                aria-pressed={signup}
                 onClick={() => {
+                  setShowPassword(false);
                   setSignup(true);
                   setError("");
                 }}
@@ -347,18 +396,31 @@ export default function StudyApp() {
                   maxLength={254}
                 />
               </label>
-              <label>
-                パスワード
-                <input
-                  type="password"
-                  name="password"
-                  autoComplete={signup ? "new-password" : "current-password"}
-                  required
-                  minLength={signup ? 12 : 1}
-                  maxLength={128}
-                  placeholder={signup ? "12文字以上" : "パスワードを入力"}
-                />
-              </label>
+              <div className="auth-password-field">
+                <label htmlFor="auth-password">パスワード</label>
+                <span className="auth-password-input">
+                  <input
+                    id="auth-password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    autoComplete={signup ? "new-password" : "current-password"}
+                    required
+                    minLength={signup ? 12 : 1}
+                    maxLength={128}
+                    placeholder={signup ? "12文字以上" : "パスワードを入力"}
+                  />
+                  <button
+                    type="button"
+                    aria-label={
+                      showPassword ? "パスワードを隠す" : "パスワードを表示"
+                    }
+                    aria-pressed={showPassword}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
+                  </button>
+                </span>
+              </div>
               {signup && (
                 <p className="form-note">
                   メール確認後、プロフィールと公開範囲を設定します。初期の文章公開範囲は相互フォローのみです。
@@ -392,8 +454,8 @@ export default function StudyApp() {
                 <ArrowRight size={17} />
               </button>
             </form>
-            <p>
-              <a href="/reset-password">パスワードを忘れた方・再設定する方</a>
+            <p className="auth-recovery">
+              <a href="/reset-password">パスワードを忘れた方</a>
             </p>
             <p className="auth-foot">
               <LockKeyhole size={14} />
@@ -441,6 +503,7 @@ export default function StudyApp() {
         <button
           className="primary"
           onClick={() => {
+            setRecordDate("");
             setRecordRequest(crypto.randomUUID());
             setRecord(true);
           }}
@@ -556,8 +619,12 @@ export default function StudyApp() {
               </div>
             ) : (
               <>
-                {(view === "feed" || view === "study") && (
-                  <FieldSearch field={searchField} onField={setSearchField} onProfile={openProfile} />
+                {(view === "feed" || (view === "study" && !!searchField)) && (
+                  <FieldSearch
+                    field={searchField}
+                    onField={setSearchField}
+                    onProfile={openProfile}
+                  />
                 )}
                 {((view === "feed" && !searchField) || view === "profile") && (
                   <>
@@ -656,8 +723,7 @@ export default function StudyApp() {
                               onClick={() => setMode(k)}
                               className={mode === k ? "active" : ""}
                             >
-                              {k === "similar" && <Sparkles size={15} />}{" "}
-                              {v}
+                              {k === "similar" && <Sparkles size={15} />} {v}
                             </button>
                           ))}
                         </div>
@@ -708,9 +774,25 @@ export default function StudyApp() {
                                       {a?.display_name || "学習者"}
                                     </strong>
                                   </button>
-                                  <small>
-                                    {a ? profileSummary(a) : ""}{" "}
-                                    <span className="time">
+                                  <div className="post-field-meta">
+                                    {a &&
+                                      profileFields(a).map((item) => (
+                                        <span
+                                          className="post-field-badge"
+                                          key={item.field}
+                                        >
+                                          <span>
+                                            {learningFieldLabel(item.field)}
+                                          </span>
+                                          <span className="post-field-level">
+                                            {fieldExperience(item)}
+                                          </span>
+                                        </span>
+                                      ))}
+                                    <time
+                                      className="time"
+                                      dateTime={p.created_at}
+                                    >
                                       {new Date(p.created_at).toLocaleString(
                                         "ja-JP",
                                         {
@@ -720,8 +802,8 @@ export default function StudyApp() {
                                           minute: "2-digit",
                                         },
                                       )}
-                                    </span>
-                                  </small>
+                                    </time>
+                                  </div>
                                 </div>
                                 {p.owner_id === me?.id && (
                                   <button
@@ -773,122 +855,29 @@ export default function StudyApp() {
                   </>
                 )}
                 {view === "study" && !searchField && (
-                  <>
-                    <div className="card study-card">
-                      <div className="section-title">
-                        <div>
-                          <h2>
-                            {owner && owner !== me.id
-                              ? data.profiles.find((p) => p.id === owner)
-                                  ?.display_name + "さんの学習時間"
-                              : "直近7日間"}
-                          </h2>
-                        </div>
-                        <span className="tag">ログイン済み全員に公開</span>
-                      </div>
-                      <div className="study-total">
-                        <strong>
-                          {Math.floor(
-                            data.studies.reduce((a, b) => a + b.minutes, 0) /
-                              60,
-                          )}
-                          <span>時間</span>
-                          {data.studies.reduce((a, b) => a + b.minutes, 0) % 60}
-                          <span>分</span>
-                        </strong>
-                        <span>期間内の合計</span>
-                      </div>
-                      <div className="chart">
-                        {Array.from({ length: 7 }, (_, i) => {
-                          const d = new Date(data.from + "T00:00:00Z");
-                          d.setUTCDate(d.getUTCDate() + i);
-                          const key = d.toISOString().slice(0, 10),
-                            mins = data.studies
-                              .filter((x) => x.study_date === key)
-                              .reduce((a, b) => a + b.minutes, 0),
-                            max = Math.max(
-                              60,
-                              ...data.studies.map((x) =>
-                                data.studies
-                                  .filter((y) => y.study_date === x.study_date)
-                                  .reduce((a, b) => a + b.minutes, 0),
-                              ),
-                            );
-                          return (
-                            <div className="chart-col" key={key}>
-                              <span className="chart-value">
-                                {mins > 0 ? mins + "分" : ""}
-                              </span>
-                              <div className="bar-track">
-                                <span
-                                  className="bar"
-                                  style={{
-                                    height: `${Math.max(mins ? 3 : 0, (mins / max) * 100)}%`,
-                                  }}
-                                />
-                              </div>
-                              <span className="chart-label">
-                                {d.getUTCMonth() + 1}/{d.getUTCDate()}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <p className="form-note">
-                        この初期版は直近7日間を表示します。画像や文章はこのタブに含みません。
-                      </p>
-                    </div>
-                    <div className="section-title">
-                      <h2>学習記録一覧</h2>
-                      {(!owner || owner === me.id) && (
-                        <button
-                          className="text-button"
-                          onClick={() => {
-                            setRecordRequest(crypto.randomUUID());
-                            setRecord(true);
-                          }}
-                        >
-                          <Plus size={16} />
-                          記録する
-                        </button>
-                      )}
-                    </div>
-                    {data.studies.length === 0 ? (
-                      <div className="card empty">
-                        <Clock3 size={30} />
-                        <h3>最初の15分から。</h3>
-                        <p>学習時間を記録すると表示されます。</p>
-                      </div>
-                    ) : (
-                      data.studies.map((r) => (
-                        <div className="record-row card" key={r.id}>
-                          <span className="record-icon">
-                            <BookOpen size={20} />
-                          </span>
-                          <div>
-                            <strong>{learningFieldLabel(r.field)}</strong>
-                            <small>{r.study_date}</small>
-                          </div>
-                          <span className="minutes">
-                            {r.minutes}
-                            <small>分</small>
-                          </span>
-                          {r.owner_id === me.id && (
-                            <button
-                              className="icon-button"
-                              aria-label="学習記録を削除"
-                              onClick={() => {
-                                if (confirm("この記録を削除しますか？"))
-                                  void mutate("delete-study", { id: r.id });
-                              }}
-                            >
-                              <Trash2 size={15} />
-                            </button>
-                          )}
-                        </div>
-                      ))
-                    )}
-                  </>
+                  <StudyDashboard
+                    key={owner || me.id}
+                    owner={owner || me.id}
+                    userId={me.id}
+                    name={
+                      data.profiles.find((p) => p.id === (owner || me.id))
+                        ?.display_name || "ユーザー"
+                    }
+                    refreshKey={data.studies}
+                    onAdd={(day) => {
+                      setRecordDate(day);
+                      setRecordRequest(crypto.randomUUID());
+                      setRecord(true);
+                    }}
+                    onDelete={(id) => mutate("delete-study", { id })}
+                  />
+                )}
+                {view === "study" && !searchField && (
+                  <FieldSearch
+                    field={searchField}
+                    onField={setSearchField}
+                    onProfile={openProfile}
+                  />
                 )}
                 {view === "people" && (
                   <>
@@ -1226,6 +1215,7 @@ export default function StudyApp() {
               <p>学習分野・日付・時間を保存します。</p>
               <button
                 onClick={() => {
+                  setRecordDate("");
                   setRecordRequest(crypto.randomUUID());
                   setRecord(true);
                 }}
@@ -1332,6 +1322,7 @@ export default function StudyApp() {
                       field: f.get("field"),
                       date: f.get("date"),
                       minutes: Number(f.get("minutes")),
+                      memo: f.get("memo") || "",
                       request_id: f.get("request_id"),
                     })
                   : await mutate("post", { body: f.get("body") });
@@ -1376,7 +1367,9 @@ export default function StudyApp() {
                       <input
                         name="date"
                         type="date"
-                        defaultValue={new Date().toLocaleDateString("sv-SE")}
+                        defaultValue={
+                          recordDate || new Date().toLocaleDateString("sv-SE")
+                        }
                         required
                       />
                     </label>
@@ -1392,8 +1385,17 @@ export default function StudyApp() {
                       />
                     </label>
                   </div>
+                  <label>
+                    学習メモ（任意・自分だけに表示）
+                    <textarea
+                      name="memo"
+                      maxLength={500}
+                      rows={3}
+                      placeholder="学んだこと、次に取り組むことなど（500文字まで）"
+                    />
+                  </label>
                   <p className="form-note">
-                    学習分野・日付・時間はログイン済み全員に公開されます。文章・画像は含みません。
+                    学習分野・日付・時間はログイン済み全員に公開されます。メモは本人だけが閲覧できます。
                   </p>
                 </>
               ) : (

@@ -86,11 +86,12 @@ export async function POST(
       });
     } else if (action === "study") {
       const p = studySchema.parse(body);
-      result = await s.db.rpc("record_study", {
+      result = await s.db.rpc("record_study_with_memo", {
         p_field: p.field,
         p_date: p.date,
         p_minutes: p.minutes,
         p_request_id: p.request_id,
+        p_memo: p.memo,
       });
     } else if (action === "post") {
       const p = postSchema.parse(body);

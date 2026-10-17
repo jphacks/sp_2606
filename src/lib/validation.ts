@@ -70,6 +70,7 @@ export const studySchema = z
     date: z.iso.date(),
     minutes: z.number().int().min(1).max(1440),
     request_id: z.uuid(),
+    memo: z.string().trim().max(500).optional().default(""),
   })
   .strict();
 export const postSchema = z

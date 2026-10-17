@@ -64,7 +64,7 @@ test("profile cannot accept administrative or ownership fields", () => {
     }).success,
   );
 });
-test("study is separate from text and images, with finite duration and idempotency key", () => {
+test("study time rejects public prose/images and validates optional private memos", () => {
   const base = {
     field: "Python",
     date: "2026-10-17",
@@ -72,6 +72,9 @@ test("study is separate from text and images, with finite duration and idempoten
     request_id: "12345678-1234-4234-8234-123456789abc",
   };
   assert(studySchema.safeParse(base).success);
+  assert(studySchema.safeParse({ ...base, memo: "" }).success);
+  assert(studySchema.safeParse({ ...base, memo: "x".repeat(500) }).success);
+  assert(!studySchema.safeParse({ ...base, memo: "x".repeat(501) }).success);
   for (const minutes of [-1, 0, 1441, NaN, Infinity])
     assert(!studySchema.safeParse({ ...base, minutes }).success);
   assert(!studySchema.safeParse({ ...base, image: "anything" }).success);
