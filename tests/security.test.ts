@@ -46,7 +46,7 @@ test("profile cannot accept administrative or ownership fields", () => {
     learning_fields: [
       { field: "Python", mode: "level", level: 0, total_minutes: null },
     ],
-    goal: "",
+    goals: [],
     bio: "",
     recommend: true,
     visibility: "mutual",
@@ -59,7 +59,7 @@ test("profile cannot accept administrative or ownership fields", () => {
     !profileSchema.safeParse({
       ...base,
       learning_fields: [
-        { field: "Python", mode: "level", level: 4, total_minutes: null },
+        { field: "Python", mode: "level", level: 5, total_minutes: null },
       ],
     }).success,
   );

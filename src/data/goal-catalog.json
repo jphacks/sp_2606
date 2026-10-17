@@ -1,0 +1,3068 @@
+[
+  {
+    "id": "cert-ipa-ip",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "ITパスポート試験",
+    "aliases": [
+      "ITパスポート",
+      "iパス",
+      "IP",
+      "アイパス"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-sg",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "情報セキュリティマネジメント試験",
+    "aliases": [
+      "SG",
+      "セキュマネ"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-fe",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "基本情報技術者試験",
+    "aliases": [
+      "基本情報",
+      "FE",
+      "基本情報技術者"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-ap",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "応用情報技術者試験",
+    "aliases": [
+      "応用情報",
+      "AP"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-st",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "ITストラテジスト試験",
+    "aliases": [
+      "ST"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-sa",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "システムアーキテクト試験",
+    "aliases": [
+      "SA"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-pm",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "プロジェクトマネージャ試験",
+    "aliases": [
+      "PM"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-nw",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "ネットワークスペシャリスト試験",
+    "aliases": [
+      "NW",
+      "ネスペ"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-db",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "データベーススペシャリスト試験",
+    "aliases": [
+      "DB",
+      "デスペ"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-es",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "エンベデッドシステムスペシャリスト試験",
+    "aliases": [
+      "ES"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-sm",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "ITサービスマネージャ試験",
+    "aliases": [
+      "SM"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-au",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "システム監査技術者試験",
+    "aliases": [
+      "AU"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ipa-sc",
+    "kind": "certification",
+    "category": "IPA・情報処理",
+    "label": "情報処理安全確保支援士試験",
+    "aliases": [
+      "SC",
+      "登録セキスペ",
+      "支援士"
+    ],
+    "source_url": "https://www.ipa.go.jp/shiken/kubun/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-clf",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified Cloud Practitioner",
+    "aliases": [
+      "CLF",
+      "クラウドプラクティショナー",
+      "AWS基礎"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-aif",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified AI Practitioner",
+    "aliases": [
+      "AIF",
+      "AIプラクティショナー"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-saa",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified Solutions Architect - Associate",
+    "aliases": [
+      "SAA",
+      "ソリューションアーキテクトアソシエイト"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-dva",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified Developer - Associate",
+    "aliases": [
+      "DVA",
+      "デベロッパーアソシエイト"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-soa",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified CloudOps Engineer - Associate",
+    "aliases": [
+      "SOA",
+      "SysOps",
+      "クラウドオプス"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-dea",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified Data Engineer - Associate",
+    "aliases": [
+      "DEA",
+      "データエンジニア"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-mla",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified Machine Learning Engineer - Associate",
+    "aliases": [
+      "MLA",
+      "機械学習エンジニア"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-sap",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified Solutions Architect - Professional",
+    "aliases": [
+      "SAP",
+      "ソリューションアーキテクトプロフェッショナル"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-dop",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified DevOps Engineer - Professional",
+    "aliases": [
+      "DOP",
+      "デブオプス"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-aip",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified Generative AI Developer - Professional",
+    "aliases": [
+      "AIP",
+      "生成AIデベロッパー"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-ans",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified Advanced Networking - Specialty",
+    "aliases": [
+      "ANS",
+      "高度ネットワーク"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-aws-scs",
+    "kind": "certification",
+    "category": "AWS認定",
+    "label": "AWS Certified Security - Specialty",
+    "aliases": [
+      "SCS",
+      "セキュリティ専門"
+    ],
+    "source_url": "https://docs.aws.amazon.com/pdfs/aws-certification/latest/examguides/aws-certification-exam-guides.pdf",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-cdl",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Cloud Digital Leader",
+    "aliases": [
+      "GCP",
+      "クラウドデジタルリーダー"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-gail",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Generative AI Leader",
+    "aliases": [
+      "生成AIリーダー"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-ace",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Associate Cloud Engineer",
+    "aliases": [
+      "ACE",
+      "クラウドエンジニア"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-adp",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Associate Data Practitioner",
+    "aliases": [
+      "データプラクティショナー"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-workspace",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Associate Google Workspace Administrator",
+    "aliases": [
+      "ワークスペース管理者"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-pca",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Professional Cloud Architect",
+    "aliases": [
+      "PCA",
+      "クラウドアーキテクト"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-pcd",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Professional Cloud Developer",
+    "aliases": [
+      "PCD",
+      "クラウドデベロッパー"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-pde",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Professional Data Engineer",
+    "aliases": [
+      "PDE",
+      "データエンジニア"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-devops",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Professional Cloud DevOps Engineer",
+    "aliases": [
+      "デブオプス"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-security",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Professional Cloud Security Engineer",
+    "aliases": [
+      "クラウドセキュリティ"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-network",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Professional Cloud Network Engineer",
+    "aliases": [
+      "ネットワークエンジニア"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-ml",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Professional Machine Learning Engineer",
+    "aliases": [
+      "機械学習エンジニア"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-db",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Professional Cloud Database Engineer",
+    "aliases": [
+      "データベースエンジニア"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-gcp-secops",
+    "kind": "certification",
+    "category": "Google Cloud認定",
+    "label": "Google Cloud Professional Security Operations Engineer",
+    "aliases": [
+      "セキュリティオペレーション"
+    ],
+    "source_url": "https://cloud.google.com/learn/certification",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpi-linux",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPI Linux Essentials",
+    "aliases": [
+      "Linux入門",
+      "リナックス"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpi-security",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPI Security Essentials",
+    "aliases": [
+      "セキュリティ入門"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpi-web",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPI Web Development Essentials",
+    "aliases": [
+      "Web開発入門"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpi-open",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPI Open Source Essentials",
+    "aliases": [
+      "オープンソース入門"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpic-1",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPIC-1",
+    "aliases": [
+      "エルピック1",
+      "Linux"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpic-2",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPIC-2",
+    "aliases": [
+      "エルピック2",
+      "Linux"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpic-300",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPIC-3 Mixed Environments",
+    "aliases": [
+      "300",
+      "混在環境"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpic-303",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPIC-3 Security",
+    "aliases": [
+      "303",
+      "セキュリティ"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpic-305",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPIC-3 Virtualization and Containerization",
+    "aliases": [
+      "305",
+      "仮想化",
+      "コンテナ"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpic-306",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPIC-3 High Availability and Storage Clusters",
+    "aliases": [
+      "306",
+      "高可用性"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-lpi-devops",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LPI DevOps Tools Engineer",
+    "aliases": [
+      "デブオプス"
+    ],
+    "source_url": "https://www.lpi.org/our-certifications/summary-of-lpi-certifications/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-linuc-1",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LinuC レベル1",
+    "aliases": [
+      "リナック1",
+      "Linux"
+    ],
+    "source_url": "https://linuc.org/linuc/levels.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-linuc-2",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LinuC レベル2",
+    "aliases": [
+      "リナック2",
+      "Linux"
+    ],
+    "source_url": "https://linuc.org/linuc/levels.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-linuc-3ps",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LinuC レベル3 プラットフォームスペシャリスト",
+    "aliases": [
+      "3PS",
+      "リナック"
+    ],
+    "source_url": "https://linuc.org/linuc/levels.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-linuc-3ss",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LinuC レベル3 セキュリティスペシャリスト",
+    "aliases": [
+      "3SS",
+      "リナック"
+    ],
+    "source_url": "https://linuc.org/linuc/levels.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-linuc-sa",
+    "kind": "certification",
+    "category": "Linux・オープンソース認定",
+    "label": "LinuC システムアーキテクト",
+    "aliases": [
+      "レベル4",
+      "リナック"
+    ],
+    "source_url": "https://linuc.org/linuc/levels.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-html5-1",
+    "kind": "certification",
+    "category": "Web認定",
+    "label": "HTML5プロフェッショナル認定試験 レベル1",
+    "aliases": [
+      "HTML",
+      "CSS",
+      "Web"
+    ],
+    "source_url": "https://html5exam.jp/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-html5-2",
+    "kind": "certification",
+    "category": "Web認定",
+    "label": "HTML5プロフェッショナル認定試験 レベル2",
+    "aliases": [
+      "JavaScript",
+      "Web"
+    ],
+    "source_url": "https://html5exam.jp/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-kcna",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Kubernetes and Cloud Native Associate",
+    "aliases": [
+      "KCNA",
+      "クバネティス"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-kcsa",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Kubernetes and Cloud Security Associate",
+    "aliases": [
+      "KCSA"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-cka",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Certified Kubernetes Administrator",
+    "aliases": [
+      "CKA"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-ckad",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Certified Kubernetes Application Developer",
+    "aliases": [
+      "CKAD"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-cks",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Certified Kubernetes Security Specialist",
+    "aliases": [
+      "CKS"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-pca",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Prometheus Certified Associate",
+    "aliases": [
+      "PCA",
+      "プロメテウス"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-ica",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Istio Certified Associate",
+    "aliases": [
+      "ICA"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-cca",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Cilium Certified Associate",
+    "aliases": [
+      "CCA"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-capa",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Certified Argo Project Associate",
+    "aliases": [
+      "CAPA"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-cgoa",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "GitOps Certified Associate",
+    "aliases": [
+      "CGOA"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-cba",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Certified Backstage Associate",
+    "aliases": [
+      "CBA"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-otca",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "OpenTelemetry Certified Associate",
+    "aliases": [
+      "OTCA"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cncf-kca",
+    "kind": "certification",
+    "category": "クラウドネイティブ認定",
+    "label": "Kyverno Certified Associate",
+    "aliases": [
+      "KCA"
+    ],
+    "source_url": "https://www.cncf.io/training/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccst-network",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCST Networking",
+    "aliases": [
+      "ネットワーク入門"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccst-security",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCST Cybersecurity",
+    "aliases": [
+      "サイバーセキュリティ入門"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccna",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCNA",
+    "aliases": [
+      "シスコ",
+      "ネットワーク"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccnp-enterprise",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCNP Enterprise",
+    "aliases": [
+      "エンタープライズ"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccnp-security",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCNP Security",
+    "aliases": [
+      "セキュリティ"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccnp-dc",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCNP Data Center",
+    "aliases": [
+      "データセンター"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccnp-sp",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCNP Service Provider",
+    "aliases": [
+      "サービスプロバイダー"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccnp-collab",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCNP Collaboration",
+    "aliases": [
+      "コラボレーション"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccnp-auto",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCNP Automation",
+    "aliases": [
+      "自動化",
+      "DevNet"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccnp-cyber",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCNP Cybersecurity",
+    "aliases": [
+      "サイバーセキュリティ"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccie-enterprise",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCIE Enterprise Infrastructure",
+    "aliases": [
+      "エキスパート"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccie-security",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCIE Security",
+    "aliases": [
+      "セキュリティエキスパート"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-cisco-ccde",
+    "kind": "certification",
+    "category": "Cisco認定",
+    "label": "Cisco CCDE",
+    "aliases": [
+      "ネットワーク設計"
+    ],
+    "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-isc2-cc",
+    "kind": "certification",
+    "category": "セキュリティ認定",
+    "label": "ISC2 Certified in Cybersecurity",
+    "aliases": [
+      "CC",
+      "セキュリティ入門"
+    ],
+    "source_url": "https://www.isc2.org/Certifications",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-isc2-sscp",
+    "kind": "certification",
+    "category": "セキュリティ認定",
+    "label": "ISC2 SSCP",
+    "aliases": [
+      "セキュリティ運用"
+    ],
+    "source_url": "https://www.isc2.org/Certifications",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-isc2-cissp",
+    "kind": "certification",
+    "category": "セキュリティ認定",
+    "label": "ISC2 CISSP",
+    "aliases": [
+      "情報セキュリティ"
+    ],
+    "source_url": "https://www.isc2.org/Certifications",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-isc2-ccsp",
+    "kind": "certification",
+    "category": "セキュリティ認定",
+    "label": "ISC2 CCSP",
+    "aliases": [
+      "クラウドセキュリティ"
+    ],
+    "source_url": "https://www.isc2.org/Certifications",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-isc2-csslp",
+    "kind": "certification",
+    "category": "セキュリティ認定",
+    "label": "ISC2 CSSLP",
+    "aliases": [
+      "セキュアソフトウェア"
+    ],
+    "source_url": "https://www.isc2.org/Certifications",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-isc2-cgrc",
+    "kind": "certification",
+    "category": "セキュリティ認定",
+    "label": "ISC2 CGRC",
+    "aliases": [
+      "ガバナンス",
+      "リスク"
+    ],
+    "source_url": "https://www.isc2.org/Certifications",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-jdla-g",
+    "kind": "certification",
+    "category": "AI・データ認定",
+    "label": "G検定",
+    "aliases": [
+      "JDLA",
+      "ジェネラリスト",
+      "AI"
+    ],
+    "source_url": "https://www.jdla.org/certificate/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-jdla-e",
+    "kind": "certification",
+    "category": "AI・データ認定",
+    "label": "E資格",
+    "aliases": [
+      "JDLA",
+      "エンジニア",
+      "深層学習"
+    ],
+    "source_url": "https://www.jdla.org/certificate/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-jdla-genai",
+    "kind": "certification",
+    "category": "AI・データ認定",
+    "label": "JDLA Generative AI Test",
+    "aliases": [
+      "生成AIテスト"
+    ],
+    "source_url": "https://www.jdla.org/certificate/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-python-basic",
+    "kind": "certification",
+    "category": "Python認定",
+    "label": "Python 3 エンジニア認定基礎試験",
+    "aliases": [
+      "Python基礎",
+      "パイソン"
+    ],
+    "source_url": "https://www.pythonic-exam.com/exam",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-python-practical",
+    "kind": "certification",
+    "category": "Python認定",
+    "label": "Python 3 エンジニア認定実践試験",
+    "aliases": [
+      "Python実践"
+    ],
+    "source_url": "https://www.pythonic-exam.com/exam",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-python-data",
+    "kind": "certification",
+    "category": "Python認定",
+    "label": "Python 3 エンジニア認定データ分析試験",
+    "aliases": [
+      "Pythonデータ分析"
+    ],
+    "source_url": "https://www.pythonic-exam.com/exam",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-python-data-practical",
+    "kind": "certification",
+    "category": "Python認定",
+    "label": "Python 3 エンジニア認定データ分析実践試験",
+    "aliases": [
+      "Pythonデータ分析実践"
+    ],
+    "source_url": "https://www.pythonic-exam.com/exam",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ruby-silver",
+    "kind": "certification",
+    "category": "Ruby認定",
+    "label": "Ruby技術者認定試験 Silver version 3",
+    "aliases": [
+      "ルビー",
+      "Ruby Silver"
+    ],
+    "source_url": "https://www.ruby.or.jp/ja/certification/examination/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-ruby-gold",
+    "kind": "certification",
+    "category": "Ruby認定",
+    "label": "Ruby技術者認定試験 Gold version 3",
+    "aliases": [
+      "ルビー",
+      "Ruby Gold"
+    ],
+    "source_url": "https://www.ruby.or.jp/ja/certification/examination/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-stats-4",
+    "kind": "certification",
+    "category": "統計・データ認定",
+    "label": "統計検定4級",
+    "aliases": [
+      "統計",
+      "データ分析"
+    ],
+    "source_url": "https://www.toukei-kentei.jp/grade",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-stats-3",
+    "kind": "certification",
+    "category": "統計・データ認定",
+    "label": "統計検定3級",
+    "aliases": [
+      "統計",
+      "データ分析"
+    ],
+    "source_url": "https://www.toukei-kentei.jp/grade",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-stats-2",
+    "kind": "certification",
+    "category": "統計・データ認定",
+    "label": "統計検定2級",
+    "aliases": [
+      "統計",
+      "データ分析"
+    ],
+    "source_url": "https://www.toukei-kentei.jp/grade",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-stats-pre1",
+    "kind": "certification",
+    "category": "統計・データ認定",
+    "label": "統計検定準1級",
+    "aliases": [
+      "統計",
+      "データ分析"
+    ],
+    "source_url": "https://www.toukei-kentei.jp/grade",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-stats-1",
+    "kind": "certification",
+    "category": "統計・データ認定",
+    "label": "統計検定1級",
+    "aliases": [
+      "統計",
+      "データ分析"
+    ],
+    "source_url": "https://www.toukei-kentei.jp/grade",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-stats-dsb",
+    "kind": "certification",
+    "category": "統計・データ認定",
+    "label": "統計検定 データサイエンス基礎",
+    "aliases": [
+      "DS基礎"
+    ],
+    "source_url": "https://www.toukei-kentei.jp/grade",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-stats-dsa",
+    "kind": "certification",
+    "category": "統計・データ認定",
+    "label": "統計検定 データサイエンス発展",
+    "aliases": [
+      "DS発展"
+    ],
+    "source_url": "https://www.toukei-kentei.jp/grade",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "cert-stats-dse",
+    "kind": "certification",
+    "category": "統計・データ認定",
+    "label": "統計検定 データサイエンスエキスパート",
+    "aliases": [
+      "DSエキスパート"
+    ],
+    "source_url": "https://www.toukei-kentei.jp/grade",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-python",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "Python",
+    "aliases": [
+      "パイソン"
+    ],
+    "source_url": "https://docs.python.org/3/tutorial/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-javascript",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "JavaScript",
+    "aliases": [
+      "JS",
+      "ジャバスクリプト"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-typescript",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "TypeScript",
+    "aliases": [
+      "TS",
+      "タイプスクリプト"
+    ],
+    "source_url": "https://www.typescriptlang.org/docs/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-java",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "Java",
+    "aliases": [
+      "ジャバ"
+    ],
+    "source_url": "https://dev.java/learn/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-go",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "Go",
+    "aliases": [
+      "Golang",
+      "ゴー"
+    ],
+    "source_url": "https://go.dev/doc/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-rust",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "Rust",
+    "aliases": [
+      "ラスト"
+    ],
+    "source_url": "https://doc.rust-lang.org/book/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-ruby",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "Ruby",
+    "aliases": [
+      "ルビー"
+    ],
+    "source_url": "https://www.ruby-lang.org/en/documentation/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-php",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "PHP",
+    "aliases": [
+      "ピーエイチピー"
+    ],
+    "source_url": "https://www.php.net/manual/en/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-csharp",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "C#",
+    "aliases": [
+      "C Sharp",
+      "シーシャープ"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/dotnet/csharp/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-c",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "C言語",
+    "aliases": [
+      "C",
+      "シー"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/cpp/c-language/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-cpp",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "C++",
+    "aliases": [
+      "CPP",
+      "シープラスプラス"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/cpp/cpp/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-kotlin",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "Kotlin",
+    "aliases": [
+      "コトリン"
+    ],
+    "source_url": "https://kotlinlang.org/docs/home.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-swift",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "Swift",
+    "aliases": [
+      "スウィフト"
+    ],
+    "source_url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-dart",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "Dart",
+    "aliases": [
+      "ダート"
+    ],
+    "source_url": "https://dart.dev/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-r",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "R",
+    "aliases": [
+      "R言語",
+      "統計"
+    ],
+    "source_url": "https://www.r-project.org/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-scala",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "Scala",
+    "aliases": [
+      "スカラ"
+    ],
+    "source_url": "https://www.scala-lang.org/documentation/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-powershell",
+    "kind": "technology",
+    "category": "プログラミング言語",
+    "label": "PowerShell",
+    "aliases": [
+      "パワーシェル"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/powershell/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-react",
+    "kind": "technology",
+    "category": "フロントエンド",
+    "label": "React",
+    "aliases": [
+      "リアクト"
+    ],
+    "source_url": "https://react.dev/learn",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-nextjs",
+    "kind": "technology",
+    "category": "フロントエンド",
+    "label": "Next.js",
+    "aliases": [
+      "Next",
+      "ネクスト"
+    ],
+    "source_url": "https://nextjs.org/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-vue",
+    "kind": "technology",
+    "category": "フロントエンド",
+    "label": "Vue.js",
+    "aliases": [
+      "Vue",
+      "ビュー"
+    ],
+    "source_url": "https://vuejs.org/guide/introduction.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-angular",
+    "kind": "technology",
+    "category": "フロントエンド",
+    "label": "Angular",
+    "aliases": [
+      "アンギュラー"
+    ],
+    "source_url": "https://angular.dev/overview",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-svelte",
+    "kind": "technology",
+    "category": "フロントエンド",
+    "label": "Svelte",
+    "aliases": [
+      "スヴェルト"
+    ],
+    "source_url": "https://svelte.dev/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-nodejs",
+    "kind": "technology",
+    "category": "バックエンド",
+    "label": "Node.js",
+    "aliases": [
+      "Node",
+      "ノード"
+    ],
+    "source_url": "https://nodejs.org/en/learn",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-express",
+    "kind": "technology",
+    "category": "バックエンド",
+    "label": "Express",
+    "aliases": [
+      "Express.js",
+      "エクスプレス"
+    ],
+    "source_url": "https://expressjs.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-nestjs",
+    "kind": "technology",
+    "category": "バックエンド",
+    "label": "NestJS",
+    "aliases": [
+      "Nest",
+      "ネスト"
+    ],
+    "source_url": "https://docs.nestjs.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-django",
+    "kind": "technology",
+    "category": "バックエンド",
+    "label": "Django",
+    "aliases": [
+      "ジャンゴ"
+    ],
+    "source_url": "https://docs.djangoproject.com/en/stable/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-fastapi",
+    "kind": "technology",
+    "category": "バックエンド",
+    "label": "FastAPI",
+    "aliases": [
+      "ファストAPI"
+    ],
+    "source_url": "https://fastapi.tiangolo.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-flask",
+    "kind": "technology",
+    "category": "バックエンド",
+    "label": "Flask",
+    "aliases": [
+      "フラスク"
+    ],
+    "source_url": "https://flask.palletsprojects.com/en/stable/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-spring",
+    "kind": "technology",
+    "category": "バックエンド",
+    "label": "Spring Boot",
+    "aliases": [
+      "スプリング",
+      "Java"
+    ],
+    "source_url": "https://spring.io/projects/spring-boot",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-laravel",
+    "kind": "technology",
+    "category": "バックエンド",
+    "label": "Laravel",
+    "aliases": [
+      "ララベル",
+      "PHP"
+    ],
+    "source_url": "https://laravel.com/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-rails",
+    "kind": "technology",
+    "category": "バックエンド",
+    "label": "Ruby on Rails",
+    "aliases": [
+      "Rails",
+      "レイルズ"
+    ],
+    "source_url": "https://guides.rubyonrails.org/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-flutter",
+    "kind": "technology",
+    "category": "モバイル開発",
+    "label": "Flutter",
+    "aliases": [
+      "フラッター"
+    ],
+    "source_url": "https://docs.flutter.dev/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-react-native",
+    "kind": "technology",
+    "category": "モバイル開発",
+    "label": "React Native",
+    "aliases": [
+      "リアクトネイティブ"
+    ],
+    "source_url": "https://reactnative.dev/docs/getting-started",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-postgresql",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "PostgreSQL",
+    "aliases": [
+      "Postgres",
+      "ポスグレ"
+    ],
+    "source_url": "https://www.postgresql.org/docs/current/tutorial.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-mysql",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "MySQL",
+    "aliases": [
+      "マイエスキューエル"
+    ],
+    "source_url": "https://dev.mysql.com/doc/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-sqlite",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "SQLite",
+    "aliases": [
+      "エスキューライト"
+    ],
+    "source_url": "https://www.sqlite.org/docs.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-mongodb",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "MongoDB",
+    "aliases": [
+      "モンゴDB",
+      "NoSQL"
+    ],
+    "source_url": "https://www.mongodb.com/docs/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-redis",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "Redis",
+    "aliases": [
+      "レディス",
+      "キャッシュ"
+    ],
+    "source_url": "https://redis.io/docs/latest/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-elasticsearch",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "Elasticsearch",
+    "aliases": [
+      "エラスティックサーチ",
+      "検索"
+    ],
+    "source_url": "https://www.elastic.co/guide/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-docker",
+    "kind": "technology",
+    "category": "インフラ・運用",
+    "label": "Docker",
+    "aliases": [
+      "ドッカー",
+      "コンテナ"
+    ],
+    "source_url": "https://docs.docker.com/get-started/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-kubernetes",
+    "kind": "technology",
+    "category": "インフラ・運用",
+    "label": "Kubernetes",
+    "aliases": [
+      "K8s",
+      "クバネティス"
+    ],
+    "source_url": "https://kubernetes.io/docs/concepts/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-terraform",
+    "kind": "technology",
+    "category": "インフラ・運用",
+    "label": "Terraform",
+    "aliases": [
+      "テラフォーム",
+      "IaC"
+    ],
+    "source_url": "https://developer.hashicorp.com/terraform/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-ansible",
+    "kind": "technology",
+    "category": "インフラ・運用",
+    "label": "Ansible",
+    "aliases": [
+      "アンシブル",
+      "構成管理"
+    ],
+    "source_url": "https://docs.ansible.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-nginx",
+    "kind": "technology",
+    "category": "インフラ・運用",
+    "label": "Nginx",
+    "aliases": [
+      "エンジンエックス",
+      "Webサーバー"
+    ],
+    "source_url": "https://nginx.org/en/docs/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-apache",
+    "kind": "technology",
+    "category": "インフラ・運用",
+    "label": "Apache HTTP Server",
+    "aliases": [
+      "アパッチ",
+      "Webサーバー"
+    ],
+    "source_url": "https://httpd.apache.org/docs/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-linux",
+    "kind": "technology",
+    "category": "インフラ・運用",
+    "label": "Linux",
+    "aliases": [
+      "リナックス",
+      "リナックスコマンド"
+    ],
+    "source_url": "https://docs.kernel.org/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-git",
+    "kind": "technology",
+    "category": "開発・テスト",
+    "label": "Git",
+    "aliases": [
+      "ギット",
+      "バージョン管理"
+    ],
+    "source_url": "https://git-scm.com/doc",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-github",
+    "kind": "technology",
+    "category": "開発・テスト",
+    "label": "GitHub",
+    "aliases": [
+      "ギットハブ"
+    ],
+    "source_url": "https://docs.github.com/en",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-playwright",
+    "kind": "technology",
+    "category": "開発・テスト",
+    "label": "Playwright",
+    "aliases": [
+      "プレイライト",
+      "E2E"
+    ],
+    "source_url": "https://playwright.dev/docs/intro",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-vitest",
+    "kind": "technology",
+    "category": "開発・テスト",
+    "label": "Vitest",
+    "aliases": [
+      "ヴィーテスト",
+      "単体テスト"
+    ],
+    "source_url": "https://vitest.dev/guide/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-pytest",
+    "kind": "technology",
+    "category": "開発・テスト",
+    "label": "pytest",
+    "aliases": [
+      "パイテスト",
+      "Pythonテスト"
+    ],
+    "source_url": "https://docs.pytest.org/en/stable/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-numpy",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "NumPy",
+    "aliases": [
+      "ナンパイ",
+      "数値計算"
+    ],
+    "source_url": "https://numpy.org/doc/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-pandas",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "pandas",
+    "aliases": [
+      "パンダス",
+      "データ分析"
+    ],
+    "source_url": "https://pandas.pydata.org/docs/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-scipy",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "SciPy",
+    "aliases": [
+      "サイパイ",
+      "科学計算"
+    ],
+    "source_url": "https://docs.scipy.org/doc/scipy/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-matplotlib",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "Matplotlib",
+    "aliases": [
+      "グラフ",
+      "可視化"
+    ],
+    "source_url": "https://matplotlib.org/stable/users/index",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-sklearn",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "scikit-learn",
+    "aliases": [
+      "sklearn",
+      "機械学習"
+    ],
+    "source_url": "https://scikit-learn.org/stable/user_guide.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-pytorch",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "PyTorch",
+    "aliases": [
+      "パイトーチ",
+      "深層学習"
+    ],
+    "source_url": "https://pytorch.org/docs/stable/index.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-tensorflow",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "TensorFlow",
+    "aliases": [
+      "テンソルフロー",
+      "深層学習"
+    ],
+    "source_url": "https://www.tensorflow.org/guide",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-huggingface",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "Hugging Face",
+    "aliases": [
+      "ハギングフェイス",
+      "LLM"
+    ],
+    "source_url": "https://huggingface.co/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-opencv",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "OpenCV",
+    "aliases": [
+      "画像処理",
+      "コンピュータビジョン"
+    ],
+    "source_url": "https://docs.opencv.org/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws",
+    "kind": "technology",
+    "category": "クラウド",
+    "label": "AWS",
+    "aliases": [
+      "Amazon Web Services",
+      "アマゾンウェブサービス"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-gcp",
+    "kind": "technology",
+    "category": "クラウド",
+    "label": "Google Cloud",
+    "aliases": [
+      "GCP",
+      "グーグルクラウド"
+    ],
+    "source_url": "https://cloud.google.com/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-azure",
+    "kind": "technology",
+    "category": "クラウド",
+    "label": "Microsoft Azure",
+    "aliases": [
+      "アジュール",
+      "Azure"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/azure/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-html",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "HTML",
+    "aliases": [
+      "HTML5",
+      "エイチティーエムエル"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-css",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "CSS",
+    "aliases": [
+      "CSS3",
+      "スタイルシート"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-dom",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "DOM操作",
+    "aliases": [
+      "Document Object Model"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-http",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "HTTP・HTTPS",
+    "aliases": [
+      "通信",
+      "Web通信"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-websocket",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "WebSocket",
+    "aliases": [
+      "リアルタイム通信"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-web-components",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "Web Components",
+    "aliases": [
+      "カスタム要素"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-web-storage",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "Web Storage",
+    "aliases": [
+      "localStorage",
+      "sessionStorage"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-indexeddb",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "IndexedDB",
+    "aliases": [
+      "ブラウザDB"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-serviceworker",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "Service Worker",
+    "aliases": [
+      "サービスワーカー"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-pwa",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "PWA",
+    "aliases": [
+      "Progressive Web Apps",
+      "プログレッシブウェブアプリ"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-web-accessibility",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "Webアクセシビリティ",
+    "aliases": [
+      "a11y",
+      "アクセシビリティ"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-responsive",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "レスポンシブデザイン",
+    "aliases": [
+      "モバイル対応"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-canvas",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "Canvas API",
+    "aliases": [
+      "キャンバス",
+      "描画"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-svg",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "SVG",
+    "aliases": [
+      "ベクター画像"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-webgl",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "WebGL",
+    "aliases": [
+      "3D",
+      "グラフィックス"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-fetch",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "Fetch API",
+    "aliases": [
+      "API通信"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-web-security",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "Webセキュリティ",
+    "aliases": [
+      "XSS",
+      "CSRF",
+      "CSP"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-cookies",
+    "kind": "technology",
+    "category": "Webの基礎",
+    "label": "Cookie・セッション",
+    "aliases": [
+      "認証",
+      "セッション管理"
+    ],
+    "source_url": "https://developer.mozilla.org/en-US/docs/Web",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-control-flow",
+    "kind": "technology",
+    "category": "プログラミング基礎",
+    "label": "条件分岐・繰り返し",
+    "aliases": [
+      "if",
+      "for",
+      "while",
+      "プログラミング基礎"
+    ],
+    "source_url": "https://docs.python.org/3/tutorial/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-functions",
+    "kind": "technology",
+    "category": "プログラミング基礎",
+    "label": "関数設計",
+    "aliases": [
+      "関数",
+      "引数",
+      "戻り値"
+    ],
+    "source_url": "https://docs.python.org/3/tutorial/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-oop",
+    "kind": "technology",
+    "category": "プログラミング基礎",
+    "label": "オブジェクト指向",
+    "aliases": [
+      "クラス",
+      "継承",
+      "OOP"
+    ],
+    "source_url": "https://docs.python.org/3/tutorial/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-data-structures",
+    "kind": "technology",
+    "category": "プログラミング基礎",
+    "label": "データ構造",
+    "aliases": [
+      "配列",
+      "辞書",
+      "リスト",
+      "集合"
+    ],
+    "source_url": "https://docs.python.org/3/tutorial/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-exceptions",
+    "kind": "technology",
+    "category": "プログラミング基礎",
+    "label": "例外処理",
+    "aliases": [
+      "エラー処理",
+      "try",
+      "catch"
+    ],
+    "source_url": "https://docs.python.org/3/tutorial/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-modules",
+    "kind": "technology",
+    "category": "プログラミング基礎",
+    "label": "モジュール・パッケージ",
+    "aliases": [
+      "import",
+      "Python"
+    ],
+    "source_url": "https://docs.python.org/3/tutorial/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-file-io",
+    "kind": "technology",
+    "category": "プログラミング基礎",
+    "label": "ファイル入出力",
+    "aliases": [
+      "ファイル操作",
+      "IO"
+    ],
+    "source_url": "https://docs.python.org/3/tutorial/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-venv",
+    "kind": "technology",
+    "category": "プログラミング基礎",
+    "label": "Python仮想環境",
+    "aliases": [
+      "venv",
+      "pip"
+    ],
+    "source_url": "https://docs.python.org/3/tutorial/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-sql",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "SQL",
+    "aliases": [
+      "エスキューエル",
+      "クエリ"
+    ],
+    "source_url": "https://www.postgresql.org/docs/current/tutorial.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-joins",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "SQLの結合・集計",
+    "aliases": [
+      "JOIN",
+      "GROUP BY"
+    ],
+    "source_url": "https://www.postgresql.org/docs/current/tutorial.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-transactions",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "トランザクション",
+    "aliases": [
+      "ACID",
+      "ロールバック"
+    ],
+    "source_url": "https://www.postgresql.org/docs/current/tutorial.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-relational",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "リレーショナルDB設計",
+    "aliases": [
+      "RDB",
+      "データベース設計"
+    ],
+    "source_url": "https://www.postgresql.org/docs/current/tutorial.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-window-functions",
+    "kind": "technology",
+    "category": "データベース",
+    "label": "ウィンドウ関数",
+    "aliases": [
+      "SQL",
+      "分析関数"
+    ],
+    "source_url": "https://www.postgresql.org/docs/current/tutorial.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-prometheus",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "Prometheus",
+    "aliases": [
+      "プロメテウス",
+      "監視"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-envoy",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "Envoy",
+    "aliases": [
+      "プロキシ"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-istio",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "Istio",
+    "aliases": [
+      "サービスメッシュ"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-cilium",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "Cilium",
+    "aliases": [
+      "eBPF",
+      "ネットワーク"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-argo",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "Argo",
+    "aliases": [
+      "GitOps",
+      "CD"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-helm",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "Helm",
+    "aliases": [
+      "ヘルム",
+      "Kubernetes"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-containerd",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "containerd",
+    "aliases": [
+      "コンテナランタイム"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-etcd",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "etcd",
+    "aliases": [
+      "分散キーバリュー"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-opentelemetry",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "OpenTelemetry",
+    "aliases": [
+      "OTel",
+      "可観測性"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-fluentd",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "Fluentd",
+    "aliases": [
+      "ログ収集"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-backstage",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "Backstage",
+    "aliases": [
+      "開発者ポータル"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-kyverno",
+    "kind": "technology",
+    "category": "クラウドネイティブ",
+    "label": "Kyverno",
+    "aliases": [
+      "ポリシー管理"
+    ],
+    "source_url": "https://www.cncf.io/projects/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-ec2",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon EC2",
+    "aliases": [
+      "仮想サーバー",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-s3",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon S3",
+    "aliases": [
+      "ストレージ",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-lambda",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "AWS Lambda",
+    "aliases": [
+      "サーバーレス"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-rds",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon RDS",
+    "aliases": [
+      "マネージドDB",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-dynamodb",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon DynamoDB",
+    "aliases": [
+      "NoSQL",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-vpc",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon VPC",
+    "aliases": [
+      "ネットワーク",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-iam",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "AWS IAM",
+    "aliases": [
+      "アクセス管理",
+      "認可"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-ecs",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon ECS",
+    "aliases": [
+      "コンテナ",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-eks",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon EKS",
+    "aliases": [
+      "Kubernetes",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-cloudwatch",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon CloudWatch",
+    "aliases": [
+      "監視",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-cloudfront",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon CloudFront",
+    "aliases": [
+      "CDN",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-aws-apigateway",
+    "kind": "technology",
+    "category": "AWSサービス",
+    "label": "Amazon API Gateway",
+    "aliases": [
+      "API",
+      "AWS"
+    ],
+    "source_url": "https://docs.aws.amazon.com/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-gcp-compute",
+    "kind": "technology",
+    "category": "Google Cloudサービス",
+    "label": "Google Compute Engine",
+    "aliases": [
+      "GCE",
+      "仮想サーバー"
+    ],
+    "source_url": "https://cloud.google.com/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-gcp-run",
+    "kind": "technology",
+    "category": "Google Cloudサービス",
+    "label": "Cloud Run",
+    "aliases": [
+      "コンテナ",
+      "サーバーレス"
+    ],
+    "source_url": "https://cloud.google.com/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-gcp-gke",
+    "kind": "technology",
+    "category": "Google Cloudサービス",
+    "label": "Google Kubernetes Engine",
+    "aliases": [
+      "GKE"
+    ],
+    "source_url": "https://cloud.google.com/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-gcp-bigquery",
+    "kind": "technology",
+    "category": "Google Cloudサービス",
+    "label": "BigQuery",
+    "aliases": [
+      "ビッグクエリ",
+      "データ分析"
+    ],
+    "source_url": "https://cloud.google.com/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-gcp-storage",
+    "kind": "technology",
+    "category": "Google Cloudサービス",
+    "label": "Cloud Storage",
+    "aliases": [
+      "オブジェクトストレージ"
+    ],
+    "source_url": "https://cloud.google.com/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-gcp-cloudsql",
+    "kind": "technology",
+    "category": "Google Cloudサービス",
+    "label": "Cloud SQL",
+    "aliases": [
+      "データベース"
+    ],
+    "source_url": "https://cloud.google.com/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-gcp-pubsub",
+    "kind": "technology",
+    "category": "Google Cloudサービス",
+    "label": "Pub/Sub",
+    "aliases": [
+      "メッセージング"
+    ],
+    "source_url": "https://cloud.google.com/docs",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-azure-vm",
+    "kind": "technology",
+    "category": "Azureサービス",
+    "label": "Azure Virtual Machines",
+    "aliases": [
+      "仮想サーバー"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/azure/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-azure-appservice",
+    "kind": "technology",
+    "category": "Azureサービス",
+    "label": "Azure App Service",
+    "aliases": [
+      "Webアプリ"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/azure/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-azure-functions",
+    "kind": "technology",
+    "category": "Azureサービス",
+    "label": "Azure Functions",
+    "aliases": [
+      "サーバーレス"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/azure/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-azure-aks",
+    "kind": "technology",
+    "category": "Azureサービス",
+    "label": "Azure Kubernetes Service",
+    "aliases": [
+      "AKS"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/azure/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-azure-cosmos",
+    "kind": "technology",
+    "category": "Azureサービス",
+    "label": "Azure Cosmos DB",
+    "aliases": [
+      "NoSQL"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/azure/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-azure-sql",
+    "kind": "technology",
+    "category": "Azureサービス",
+    "label": "Azure SQL Database",
+    "aliases": [
+      "データベース"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/azure/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-azure-blob",
+    "kind": "technology",
+    "category": "Azureサービス",
+    "label": "Azure Blob Storage",
+    "aliases": [
+      "ストレージ"
+    ],
+    "source_url": "https://learn.microsoft.com/en-us/azure/",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-supervised",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "教師あり学習",
+    "aliases": [
+      "分類",
+      "回帰",
+      "機械学習"
+    ],
+    "source_url": "https://scikit-learn.org/stable/user_guide.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-unsupervised",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "教師なし学習",
+    "aliases": [
+      "クラスタリング",
+      "次元削減"
+    ],
+    "source_url": "https://scikit-learn.org/stable/user_guide.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-model-evaluation",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "機械学習モデルの評価",
+    "aliases": [
+      "交差検証",
+      "精度",
+      "評価指標"
+    ],
+    "source_url": "https://scikit-learn.org/stable/user_guide.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  },
+  {
+    "id": "tech-feature-engineering",
+    "kind": "technology",
+    "category": "AI・データ分析",
+    "label": "特徴量エンジニアリング",
+    "aliases": [
+      "前処理",
+      "特徴量"
+    ],
+    "source_url": "https://scikit-learn.org/stable/user_guide.html",
+    "verified_on": "2026-10-17",
+    "active": true
+  }
+]

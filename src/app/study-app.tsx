@@ -8,6 +8,7 @@ import {
   type FormEvent,
 } from "react";
 import {
+  Heart,
   BookOpen,
   ArrowUpRight,
   Sparkles,
@@ -35,6 +36,9 @@ import {
 import MessagesPanel from "./messages-panel";
 import CommentsPanel from "./comments-panel";
 import LearningFieldsEditor from "./learning-fields-editor";
+import GoalsEditor from "./goals-editor";
+import { learningFieldLabel } from "@/lib/learning-catalog";
+import { goalsSchema, profileGoalSummary } from "@/lib/goals";
 import {
   fieldOptions,
   profileFields,
@@ -58,6 +62,7 @@ type Data = {
   profile?: Profile;
   profiles: Profile[];
   posts: Post[];
+  reactions: { post_id: string; total: number; liked: boolean }[];
   studies: Study[];
   connections: {
     following: string[];
@@ -144,6 +149,7 @@ export default function StudyApp() {
     if (!r.ok) throw new Error(d.error);
     if (version !== loadVersion.current) return;
     setData(d);
+    setError("");
     if (!d.settings.profile_completed) setView("settings");
   }, [session?.user, mode, owner, view]);
   useEffect(() => {
@@ -179,6 +185,26 @@ export default function StudyApp() {
     } finally {
       setBusy(false);
     }
+  }
+  function reactionButton(post: Post) {
+    const reaction = data?.reactions?.find((item) => item.post_id === post.id);
+    const liked = reaction?.liked ?? false;
+    return (
+      <button
+        type="button"
+        className={"reaction-button" + (liked ? " is-liked" : "")}
+        aria-label={liked ? "いいねを取り消す" : "いいねする"}
+        aria-pressed={liked}
+        disabled={busy}
+        onClick={() =>
+          void mutate("reaction", { post: post.id, enabled: !liked })
+        }
+      >
+        <Heart size={17} fill={liked ? "currentColor" : "none"} />
+        <span>いいね</span>
+        <span>{reaction?.total ?? 0}</span>
+      </button>
+    );
   }
   async function authSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -433,7 +459,7 @@ export default function StudyApp() {
               <small>
                 {me
                   ? profileFields(me)
-                      .map((item) => item.field)
+                      .map((item) => learningFieldLabel(item.field))
                       .join(" / ")
                   : "あなたのプロフィール"}
               </small>
@@ -535,7 +561,9 @@ export default function StudyApp() {
                         <Avatar name={data.profile.display_name} />
                         <h2>{data.profile.display_name}</h2>
                         <p>{profileSummary(data.profile)}</p>
-                        {data.profile.goal && <p>目標：{data.profile.goal}</p>}
+                        {profileGoalSummary(data.profile) && (
+                          <p>目標：{profileGoalSummary(data.profile)}</p>
+                        )}
                         <p className="post-body">
                           {data.profile.bio || "自己紹介は未設定です。"}
                         </p>
@@ -708,6 +736,7 @@ export default function StudyApp() {
                                 )}
                               </div>
                               <p className="post-body">{p.body}</p>
+                              {reactionButton(p)}
                               <CommentsPanel
                                 key={p.id + data.connections.blocked.join()}
                                 postId={p.id}
@@ -832,7 +861,7 @@ export default function StudyApp() {
                             <BookOpen size={20} />
                           </span>
                           <div>
-                            <strong>{r.field}</strong>
+                            <strong>{learningFieldLabel(r.field)}</strong>
                             <small>{r.study_date}</small>
                           </div>
                           <span className="minutes">
@@ -861,7 +890,7 @@ export default function StudyApp() {
                     <div className="tip">
                       <Sparkles size={19} />
                       <span>
-                        登録した学習分野・経験・目標からおすすめしています。
+                        学習分野・現在の経験・目標・学習期間の近さからおすすめしています。
                         <br />
                         <small>
                           DMや限定公開の文章は、おすすめに使用しません。
@@ -940,11 +969,12 @@ export default function StudyApp() {
                             <div className="tag-list">
                               {profileFields(p).map((item) => (
                                 <span className="tag" key={item.field}>
-                                  {item.field} · {fieldExperience(item)}
+                                  {learningFieldLabel(item.field)} ·{" "}
+                                  {fieldExperience(item)}
                                 </span>
                               ))}
                             </div>
-                            <p>{p.goal || "目標未設定"}</p>
+                            <p>{profileGoalSummary(p) || "目標未設定"}</p>
                             <button
                               className={
                                 data.connections.following.includes(p.id)
@@ -1046,10 +1076,19 @@ export default function StudyApp() {
                         );
                         return;
                       }
+                      const goals = goalsSchema.safeParse(
+                        JSON.parse(String(f.get("goals") || "[]")),
+                      );
+                      if (!goals.success) {
+                        setError(
+                          "目標の開始月・達成目標月と、技術の到達レベルを確認してください。",
+                        );
+                        return;
+                      }
                       const ok = await mutate("profile", {
                         display_name: f.get("display_name"),
                         learning_fields: learningFields.data,
-                        goal: f.get("goal"),
+                        goals: goals.data,
                         bio: f.get("bio"),
                         visibility: f.get("visibility"),
                         dm_policy: f.get("dm_policy"),
@@ -1084,19 +1123,14 @@ export default function StudyApp() {
                           maxLength={30}
                         />
                       </label>
-                      <label>
-                        目標
-                        <input
-                          name="goal"
-                          defaultValue={me.goal}
-                          maxLength={100}
-                          placeholder="例：基本情報に合格する"
-                        />
-                      </label>
                     </div>
                     <LearningFieldsEditor
                       key={JSON.stringify(profileFields(me))}
                       initialFields={profileFields(me)}
+                    />
+                    <GoalsEditor
+                      key={JSON.stringify(me.goals || [])}
+                      initialGoals={me.goals || []}
                     />
                     <label>
                       自己紹介
@@ -1317,8 +1351,17 @@ export default function StudyApp() {
                   <label>
                     学習分野
                     <select name="field" defaultValue={me?.field}>
-                      {fields.map((f) => (
-                        <option key={f}>{f}</option>
+                      {[
+                        ...new Set([
+                          ...(me
+                            ? profileFields(me).map((item) => item.field)
+                            : []),
+                          ...fields,
+                        ]),
+                      ].map((f) => (
+                        <option key={f} value={f}>
+                          {learningFieldLabel(f)}
+                        </option>
                       ))}
                     </select>
                   </label>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { currentSession } from "@/lib/server";
-import { recommendationScore, type Profile } from "@/lib/validation";
+import { type Profile } from "@/lib/validation";
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   try {
@@ -22,21 +22,35 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "対象が不正です。" }, { status: 400 });
     const to = new Date().toISOString().slice(0, 10),
       from = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10);
-    const [profiles, posts, studies, connections, counts, selected] =
-      await Promise.all([
-        s.db.rpc("read_profiles"),
-        q.get("scope") === "profile"
-          ? s.db.rpc("read_profile_posts", { p_id: owner })
-          : s.db.rpc("read_posts", { p_mode: mode }),
-        s.db.rpc("read_study", { p_owner: owner, p_from: from, p_to: to }),
-        s.db.rpc("get_connections"),
-        s.db.rpc("profile_counts", { p_id: owner }),
-        s.db.rpc("read_profile", { p_id: owner }),
-      ]);
+    const [
+      profiles,
+      posts,
+      studies,
+      connections,
+      counts,
+      selected,
+      recommendations,
+    ] = await Promise.all([
+      s.db.rpc("read_profiles"),
+      q.get("scope") === "profile"
+        ? s.db.rpc("read_profile_posts", { p_id: owner })
+        : s.db.rpc("read_posts", { p_mode: mode }),
+      s.db.rpc("read_study", { p_owner: owner, p_from: from, p_to: to }),
+      s.db.rpc("get_connections"),
+      s.db.rpc("profile_counts", { p_id: owner }),
+      s.db.rpc("read_profile", { p_id: owner }),
+      s.db.rpc("read_recommendations"),
+    ]);
     if (
-      [profiles, posts, studies, connections, counts, selected].some(
-        (r) => r.error,
-      )
+      [
+        profiles,
+        posts,
+        studies,
+        connections,
+        counts,
+        selected,
+        recommendations,
+      ].some((r) => r.error)
     )
       return NextResponse.json(
         {
@@ -45,25 +59,29 @@ export async function GET(request: Request) {
         },
         { status: 400 },
       );
+    const reactions = await s.db.rpc("read_post_reactions", {
+      p_posts: (posts.data || []).map((post: { id: string }) => post.id),
+    });
+    if (reactions.error)
+      return NextResponse.json(
+        { error: "リアクションを取得できませんでした。" },
+        { status: 400 },
+      );
     const people = (profiles.data || []) as Profile[];
     const profile = selected.data?.[0] as Profile | undefined;
     if (profile && !people.some((p) => p.id === profile.id))
       people.push(profile);
     const me = people.find((p) => p.id === s.user.id);
-    const recommended = me
-      ? people
-          .filter((p) => p.id !== me.id && p.recommend)
-          .sort(
-            (a, b) => recommendationScore(me, b) - recommendationScore(me, a),
-          )
-          .slice(0, 12)
-      : [];
+    const recommended = (recommendations.data || []) as Profile[];
+    for (const candidate of recommended)
+      if (!people.some((p) => p.id === candidate.id)) people.push(candidate);
     return NextResponse.json(
       {
         me,
         profile,
         profiles: people,
         posts: posts.data,
+        reactions: reactions.data,
         studies: studies.data,
         connections: connections.data,
         counts: counts.data,

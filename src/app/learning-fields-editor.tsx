@@ -1,6 +1,13 @@
 "use client";
 import { useState } from "react";
-import { fieldOptions, levels, type LearningField } from "@/lib/validation";
+import { levelDescriptions } from "@/lib/goals";
+import { levels, type LearningField } from "@/lib/validation";
+
+import {
+  learningFieldKey,
+  learningFieldLabel,
+  searchLearningFields,
+} from "@/lib/learning-catalog";
 
 export default function LearningFieldsEditor({
   initialFields,
@@ -15,9 +22,15 @@ export default function LearningFieldsEditor({
       hours: item.mode === "time" ? String(item.total_minutes / 60) : "",
     })),
   );
-  const options = [
-    ...new Set([...fieldOptions, ...initialFields.map((x) => x.field)]),
-  ];
+  const [query, setQuery] = useState("");
+  const [kind, setKind] = useState("all");
+  const results = searchLearningFields(query, kind).filter(
+    (option) =>
+      !items.some(
+        (item) =>
+          item.field.toLowerCase() === learningFieldKey(option).toLowerCase(),
+      ),
+  );
   const values = items.map((item) => ({
     field: item.field,
     mode: item.mode,
@@ -42,35 +55,116 @@ export default function LearningFieldsEditor({
         name="learning_fields"
         value={JSON.stringify(values)}
       />
-      <div className="field-options">
-        {options.map((field) => (
-          <label className="check-label" key={field}>
-            <input
-              type="checkbox"
-              checked={items.some((item) => item.field === field)}
-              onChange={(event) =>
-                setItems((current) =>
-                  event.target.checked
-                    ? [
-                        ...current,
-                        { field, mode: "level", level: 0, hours: "" },
-                      ]
-                    : current.filter((item) => item.field !== field),
-                )
-              }
-            />
-            {field}
-          </label>
-        ))}
+      <p className="form-note">
+        資格・認定や技術を検索して選択できます（最大10件）。分野ごとに現在の経験を設定します。
+      </p>
+      <div className="goal-search-controls catalog-search-controls">
+        <label>
+          学習分野の種類
+          <select
+            value={kind}
+            onChange={(e) => {
+              setKind(e.target.value);
+            }}
+          >
+            <option value="all">すべて</option>
+            <option value="certification">資格・認定</option>
+            <option value="technology">技術・学習テーマ</option>
+          </select>
+        </label>
+        <label>
+          学習分野を検索
+          <input
+            type="search"
+            value={query}
+            maxLength={100}
+            placeholder="例：基本情報、FE、Python、AWS"
+            onChange={(e) => {
+              setQuery(e.target.value);
+            }}
+          />
+        </label>
       </div>
+      {!query.trim() && (
+        <p className="form-note">1文字以上入力すると候補を表示します。</p>
+      )}
+      {query.trim() && (
+        <p className="form-note" aria-live="polite">
+          検索結果{results.length}件
+        </p>
+      )}
+      {query.trim() && (
+        <>
+          <ul className="goal-search-results" aria-label="学習分野の検索結果">
+            {results.map((option) => (
+              <li key={option.id}>
+                <div>
+                  <strong>{option.label}</strong>
+                  <small>
+                    {option.kind === "certification"
+                      ? "資格・認定"
+                      : "技術・学習テーマ"}{" "}
+                    · {option.category}
+                  </small>
+                </div>
+                <button
+                  type="button"
+                  disabled={items.length >= 10}
+                  aria-label={`${option.label}を学習分野に追加`}
+                  onClick={() =>
+                    setItems((current) =>
+                      current.some(
+                        (item) =>
+                          item.field.toLowerCase() ===
+                          learningFieldKey(option).toLowerCase(),
+                      ) || current.length >= 10
+                        ? current
+                        : [
+                            ...current,
+                            {
+                              field: learningFieldKey(option),
+                              mode: "level",
+                              level: 0,
+                              hours: "",
+                            },
+                          ],
+                    )
+                  }
+                >
+                  追加
+                </button>
+              </li>
+            ))}
+          </ul>
+          {results.length === 0 && (
+            <p>
+              該当する未選択の分野はありません。別名や略称でも検索できます。
+            </p>
+          )}
+        </>
+      )}
+
       {items.length === 0 && (
         <p className="form-note">学習分野を1つ以上選んでください。</p>
       )}
       {items.map((item) => (
         <div className="learning-field-row" key={item.field}>
-          <h3>{item.field}</h3>
+          <div className="section-title">
+            <h3>{learningFieldLabel(item.field)}</h3>
+            <button
+              type="button"
+              aria-label={`${learningFieldLabel(item.field)}を学習分野から外す`}
+              onClick={() =>
+                setItems((current) =>
+                  current.filter((x) => x.field !== item.field),
+                )
+              }
+            >
+              外す
+            </button>
+          </div>
           <label>
-            経験の入力方法（{item.field}）
+            経験の入力方法（{learningFieldLabel(item.field)}）
             <select
               value={item.mode}
               onChange={(event) =>
@@ -85,7 +179,7 @@ export default function LearningFieldsEditor({
           </label>
           {item.mode === "level" ? (
             <label>
-              習熟度（{item.field}）
+              習熟度（{learningFieldLabel(item.field)}）
               <select
                 value={item.level}
                 onChange={(event) =>
@@ -94,14 +188,17 @@ export default function LearningFieldsEditor({
               >
                 {levels.map((level, index) => (
                   <option key={level} value={index}>
-                    {level}
+                    Lv.{index + 1} {level}
                   </option>
                 ))}
               </select>
+              <small className="form-note">
+                {levelDescriptions[item.level]}
+              </small>
             </label>
           ) : (
             <label>
-              累計学習時間（{item.field}・時間）
+              累計学習時間（{learningFieldLabel(item.field)}・時間）
               <input
                 type="number"
                 min="0"

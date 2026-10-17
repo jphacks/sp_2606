@@ -6,3 +6,6 @@ node_modules/
 coverage/
 *.tsbuildinfo
 .vercel
+
+# Generated local-only synthetic recommendation demo
+public/recommendation-demo.html

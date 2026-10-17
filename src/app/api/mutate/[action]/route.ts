@@ -23,7 +23,16 @@ export async function POST(
     const { action } = await params,
       body = await jsonBody(request);
     let result;
-    if (action === "comment") {
+    if (action === "reaction") {
+      const p = z
+        .object({ post: z.uuid(), enabled: z.boolean() })
+        .strict()
+        .parse(body);
+      result = await s.db.rpc("set_post_reaction", {
+        p_post: p.post,
+        p_enabled: p.enabled,
+      });
+    } else if (action === "comment") {
       const p = z
         .object({ post: z.uuid(), body: z.string().trim().min(1).max(500) })
         .strict()
@@ -66,10 +75,10 @@ export async function POST(
       });
     } else if (action === "profile") {
       const p = profileSchema.parse(body);
-      result = await s.db.rpc("save_profile_fields", {
+      result = await s.db.rpc("save_profile_goals", {
         p_name: p.display_name,
         p_fields: p.learning_fields,
-        p_goal: p.goal,
+        p_goals: p.goals,
         p_bio: p.bio,
         p_recommend: p.recommend,
         p_visibility: p.visibility,

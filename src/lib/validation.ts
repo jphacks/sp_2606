@@ -1,4 +1,11 @@
 import { z } from "zod";
+import { learningFieldLabel } from "./learning-catalog";
+import {
+  goalsSchema,
+  goalSimilarity,
+  targetLevels,
+  type LearningGoal,
+} from "./goals";
 export const visibilitySchema = z.enum(["public", "mutual", "private"]);
 export const fieldOptions = [
   "Python",
@@ -14,7 +21,7 @@ export const learningFieldSchema = z.discriminatedUnion("mode", [
     .object({
       field: z.string().trim().min(1).max(30),
       mode: z.literal("level"),
-      level: z.number().int().min(0).max(3),
+      level: z.number().int().min(0).max(4),
       total_minutes: z.null(),
     })
     .strict(),
@@ -41,7 +48,7 @@ export const profileSchema = z
   .object({
     display_name: z.string().trim().min(1).max(30),
     learning_fields: learningFieldsSchema,
-    goal: z.string().trim().max(100),
+    goals: goalsSchema,
     bio: z.string().trim().max(500),
     recommend: z.boolean(),
     visibility: visibilitySchema,
@@ -72,7 +79,7 @@ export const targetSchema = z
   .object({ target: z.uuid(), enabled: z.boolean() })
   .strict();
 export const deleteSchema = z.object({ id: z.uuid() }).strict();
-export const levels = ["未経験", "初級", "中級", "上級"];
+export const levels = targetLevels;
 export const visibilityLabels = {
   public: "ログイン済み全員",
   mutual: "相互フォローのみ",
@@ -85,6 +92,7 @@ export type Profile = {
   level: number;
   learning_fields?: LearningField[];
   goal: string;
+  goals?: LearningGoal[];
   bio: string;
   recommend: boolean;
   created_at: string;
@@ -109,7 +117,7 @@ export function recommendationScore(viewer: Profile, candidate: Profile) {
       if (a.field !== b.field) continue;
       let score = 100;
       if (a.mode === "level" && b.mode === "level")
-        score += Math.max(0, 3 - Math.abs(a.level - b.level)) * 10;
+        score += Math.max(0, 4 - Math.abs(a.level - b.level)) * 7.5;
       if (a.mode === "time" && b.mode === "time")
         score +=
           30 /
@@ -119,7 +127,7 @@ export function recommendationScore(viewer: Profile, candidate: Profile) {
             ));
       best = Math.max(best, score);
     }
-  return best + (viewer.goal && viewer.goal === candidate.goal ? 20 : 0);
+  return best + goalSimilarity(viewer.goals, candidate.goals);
 }
 export function profileFields(profile: Profile): LearningField[] {
   return profile.learning_fields?.length
@@ -140,6 +148,8 @@ export function fieldExperience(item: LearningField) {
 }
 export function profileSummary(profile: Profile) {
   return profileFields(profile)
-    .map((item) => `${item.field} · ${fieldExperience(item)}`)
+    .map(
+      (item) => `${learningFieldLabel(item.field)} · ${fieldExperience(item)}`,
+    )
     .join(" / ");
 }

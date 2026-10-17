@@ -1528,3 +1528,119 @@ label textarea {
     width: 220px;
   }
 }
+
+.goals-editor {
+  border: 1px solid #dce2df;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 20px 0;
+  min-width: 0;
+}
+.goals-editor legend {
+  font-weight: 700;
+  padding: 0 6px;
+}
+.goal-search-controls {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+}
+.goal-search-results {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+  max-height: 320px;
+  overflow: auto;
+}
+.goal-search-results li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 4px;
+  border-bottom: 1px solid #e6e9e5;
+}
+.goal-search-results small,
+.legacy-goal small {
+  display: block;
+  color: #53665c;
+  margin-top: 4px;
+}
+.goal-search-results button,
+.selected-goal button {
+  flex-shrink: 0;
+  cursor: pointer;
+  padding: 8px 12px;
+  background: #f2f6f3;
+  border: 1px solid #d2ddd5;
+  border-radius: 8px;
+}
+.selected-goal {
+  margin-top: 18px;
+  border-top: 1px solid #dce2df;
+  padding-top: 14px;
+}
+.selected-goal h3 {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.selected-goal a {
+  text-decoration: underline;
+  font-size: 12px;
+}
+.legacy-goal {
+  background: #f5f7f5;
+  padding: 12px;
+  border-radius: 8px;
+}
+@media (max-width: 720px) {
+  .goal-search-controls {
+    grid-template-columns: 1fr;
+  }
+  .goals-editor {
+    padding: 12px;
+  }
+}
+
+.learning-field-row .section-title button {
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid #d2ddd5;
+  border-radius: 8px;
+  background: #f2f6f3;
+  flex-shrink: 0;
+}
+.learning-field-row h3 {
+  overflow-wrap: anywhere;
+}
+
+.catalog-search-controls {
+  grid-template-columns: 1fr;
+}
+.goal-search-results {
+  max-height: 360px;
+}
+
+.reaction-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: 0;
+  padding: 9px 4px;
+  cursor: pointer;
+  color: #65736a;
+  font-size: 13px;
+}
+.reaction-button.is-liked {
+  color: #c73a65;
+}
+.reaction-button:focus-visible {
+  outline: 2px solid #3b715e;
+  outline-offset: 2px;
+  border-radius: 5px;
+}
+.reaction-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
