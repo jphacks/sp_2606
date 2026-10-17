@@ -121,7 +121,7 @@ export default function MessagesPanel({
         </div>
         {inbox.length === 0 && (
           <p className="muted">
-            まだ会話がありません。仲間の画面から相手を選んで送れます。
+            まだ会話がありません。ユーザーのプロフィールから送信できます。
           </p>
         )}
         {inbox.map((c) => (
@@ -154,7 +154,7 @@ export default function MessagesPanel({
         {!peer ? (
           <div className="empty">
             <MessageCircle size={30} />
-            <h3>会話を選びましょう。</h3>
+            <h3>メッセージ一覧</h3>
             <p>メッセージは当事者だけが閲覧できます。</p>
           </div>
         ) : (
@@ -171,7 +171,7 @@ export default function MessagesPanel({
               >
                 <strong>
                   {inbox.find((c) => c.peer === peer)?.display_name ||
-                    "選択した仲間"}
+                    "選択したユーザー"}
                 </strong>
               </button>
               <LockKeyhole size={14} />
@@ -208,7 +208,7 @@ export default function MessagesPanel({
             )}
             <div className="message-history">
               {messages.length === 0 && (
-                <p className="muted">最初のひとことを送ってみましょう。</p>
+                <p className="muted">メッセージはありません。</p>
               )}
               {[...messages].reverse().map((m) => (
                 <div

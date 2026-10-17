@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import {
   useEffect,
   useState,
@@ -21,7 +22,6 @@ import {
   Check,
   LoaderCircle,
   LockKeyhole,
-  Leaf,
   Clock3,
   Send,
   Trash2,
@@ -233,8 +233,8 @@ export default function StudyApp() {
   const me = data?.me as Profile;
   const nav = [
     { id: "feed", label: "タイムライン", icon: BookOpen },
-    { id: "study", label: "学習のきろく", icon: ChartNoAxesColumn },
-    { id: "people", label: "仲間・フォロー申請", icon: Users },
+    { id: "study", label: "学習記録", icon: ChartNoAxesColumn },
+    { id: "people", label: "ユーザー・フォロー申請", icon: Users },
     { id: "messages", label: "メッセージ", icon: MessageCircle },
     { id: "settings", label: "プロフィールと設定", icon: Settings },
   ];
@@ -243,56 +243,37 @@ export default function StudyApp() {
       <main className="auth-page">
         <section className="welcome">
           <a className="brand" href="/">
-            <span className="brand-mark">
-              <Leaf size={23} />
+            <span className="costep-logo">
+              <Image
+                src="/costep-logo.png"
+                alt="CoStep"
+                fill
+                sizes="260px"
+                priority
+              />
             </span>
-            となりで学ぶ<span className="brand-en">STUDY CIRCLE</span>
           </a>
           <div className="welcome-copy">
-            <span className="eyebrow">
-              <span className="dot" /> SMALL STEPS, TOGETHER.
-            </span>
-            <h1>
-              ひとりの一歩を、
-              <br />
-              ふたりの<span>原動力</span>に。
-            </h1>
-            <p>
-              「まだ分からない」を、分かち合える。
-              <br />
-              同じ目線の仲間と、あなたのペースで学ぼう。
-            </p>
+            <h1>学習記録・交流SNS</h1>
+            <p>学習時間の記録、投稿、メッセージを利用できます。</p>
           </div>
           <div className="illustration" aria-hidden="true">
             <div className="orbit one" />
             <div className="orbit two" />
             <div className="illus-book">
               <BookOpen size={66} strokeWidth={1.3} />
-              <span>今日も、ひとつ前へ。</span>
             </div>
-            <span className="floating badge-one">
-              <Sparkles size={16} /> 小さな達成を重ねよう
-            </span>
-            <span className="floating badge-two">
-              <Users size={17} /> 同じ目標の仲間がいる
-            </span>
             <span className="float-dot fd1" />
             <span className="float-dot fd2" />
           </div>
           <div className="welcome-bottom">
             <ShieldCheck size={17} />
-            あなたの公開範囲を、あなたが選べます。
+            文章の公開範囲を設定できます。
           </div>
         </section>
         <section className="auth-form-area">
           <div className="auth-card">
-            <span className="mini-label">YOUR LEARNING SPACE</span>
-            <h2>{signup ? "はじめまして。" : "おかえりなさい。"}</h2>
-            <p className="muted">
-              {signup
-                ? "今日の一歩から、つながっていこう。"
-                : "今日の学びを、仲間と重ねよう。"}
-            </p>
+            <h2>{signup ? "新規登録" : "ログイン"}</h2>
             <div className="auth-switch">
               <button
                 onClick={() => {
@@ -401,14 +382,17 @@ export default function StudyApp() {
     <div className="app-shell">
       <aside className="sidebar">
         <a href="/" className="brand">
-          <span className="brand-mark">
-            <Leaf size={22} />
-          </span>
-          <span>
-            となりで学ぶ<small>STUDY CIRCLE</small>
+          <span className="costep-logo">
+            <Image
+              src="/costep-logo.png"
+              alt="CoStep"
+              fill
+              sizes="200px"
+              priority
+            />
           </span>
         </a>
-        <p className="nav-caption">MY LEARNING SPACE</p>
+        <p className="nav-caption">メニュー</p>
         <nav>
           {nav.map((n) => (
             <button
@@ -440,11 +424,7 @@ export default function StudyApp() {
         <div className="sidebar-bottom">
           <div className="safe-note">
             <ShieldCheck size={18} />
-            <p>
-              自分のペースを、大切に。
-              <br />
-              <span>公開範囲は設定から変更できます。</span>
-            </p>
+            <p>公開範囲は設定から変更できます。</p>
           </div>
           <button className="account" onClick={() => setView("settings")}>
             <Avatar name={me?.display_name || "？"} small />
@@ -470,7 +450,7 @@ export default function StudyApp() {
         <header className="topbar">
           <span>
             <span className="dot" />
-            あなたの小さな一歩が、誰かの力になる。
+            CoStep
           </span>
           <div className="topbar-actions">
             <button
@@ -505,36 +485,19 @@ export default function StudyApp() {
           <section className="main-content">
             <div className="page-heading">
               <div>
-                <span className="eyebrow">
-                  {view === "study"
-                    ? "YOUR SMALL STEPS"
-                    : view === "people"
-                      ? "FIND YOUR PEOPLE"
-                      : view === "settings"
-                        ? "MAKE IT YOURS"
-                        : "LEARN, SHARE, GROW"}
-                </span>
                 <h1>
                   {view === "profile"
                     ? "プロフィール"
                     : view === "study"
-                      ? "学習のきろく"
+                      ? "学習記録"
                       : view === "people"
-                        ? "同じ目線の、仲間たち。"
+                        ? "ユーザー・フォロー申請"
                         : view === "settings"
-                          ? "あなたのプロフィール"
-                          : "今日も、となりで。"}
-                  <span className="heading-leaf">✳</span>
+                          ? "プロフィールと設定"
+                          : view === "messages"
+                            ? "メッセージ"
+                            : "タイムライン"}
                 </h1>
-                <p>
-                  {view === "study"
-                    ? "積み重ねた時間は、ちゃんとあなたの力になる。"
-                    : view === "people"
-                      ? "近い分野やレベルから、一緒に学ぶ仲間を見つけよう。"
-                      : view === "settings"
-                        ? "公開する情報と、つながり方を選びましょう。"
-                        : "小さな気づきも、つまずきも。学びの途中をシェアしよう。"}
-                </p>
               </div>
               <button
                 className="icon-button"
@@ -560,7 +523,7 @@ export default function StudyApp() {
             {!data ? (
               <div className="card empty">
                 <LoaderCircle className="spin" />
-                <h3>あなたの学びを読み込んでいます</h3>
+                <h3>読み込み中…</h3>
                 <p>長く続く場合は接続設定とDBの準備をご確認ください。</p>
               </div>
             ) : (
@@ -612,7 +575,7 @@ export default function StudyApp() {
                           className="text-button"
                           onClick={() => setView("study")}
                         >
-                          学習のきろくを見る
+                          学習記録を見る
                         </button>
                         {data.profile.id !== me.id && (
                           <button
@@ -639,7 +602,7 @@ export default function StudyApp() {
                         >
                           <Avatar name={me?.display_name || ""} />
                           <span>
-                            今日は、どんな発見がありましたか？
+                            投稿する
                             <small>
                               <LockKeyhole size={12} />
                               {visibilityLabels[data.settings.visibility]}
@@ -671,11 +634,11 @@ export default function StudyApp() {
                       {data.posts.length === 0 ? (
                         <div className="card empty">
                           <BookOpen size={32} />
-                          <h3>ここから、学びがつながる。</h3>
+                          <h3>投稿はありません。</h3>
                           <p>
                             まだ表示できるつぶやきがありません。
                             <br />
-                            最初の気づきを投稿したり、仲間をフォローしてみましょう。
+                            公開範囲によって表示されない投稿があります。
                           </p>
                           <button
                             className="secondary"
@@ -756,7 +719,7 @@ export default function StudyApp() {
                               <div className="post-footer">
                                 <span>
                                   <BookOpen size={14} />
-                                  学びのひとこと
+                                  つぶやき
                                 </span>
                                 <button
                                   onClick={() => {
@@ -764,7 +727,7 @@ export default function StudyApp() {
                                     setView("study");
                                   }}
                                 >
-                                  学習のきろくを見る
+                                  学習記録を見る
                                   <ArrowUpRight size={14} />
                                 </button>
                               </div>
@@ -780,12 +743,11 @@ export default function StudyApp() {
                     <div className="card study-card">
                       <div className="section-title">
                         <div>
-                          <span className="mini-label">THIS WEEK</span>
                           <h2>
                             {owner && owner !== me.id
                               ? data.profiles.find((p) => p.id === owner)
                                   ?.display_name + "さんの学習時間"
-                              : "あなたの1週間"}
+                              : "直近7日間"}
                           </h2>
                         </div>
                         <span className="tag">ログイン済み全員に公開</span>
@@ -800,7 +762,7 @@ export default function StudyApp() {
                           {data.studies.reduce((a, b) => a + b.minutes, 0) % 60}
                           <span>分</span>
                         </strong>
-                        <span>一歩ずつ、積み重ねよう。</span>
+                        <span>期間内の合計</span>
                       </div>
                       <div className="chart">
                         {Array.from({ length: 7 }, (_, i) => {
@@ -843,7 +805,7 @@ export default function StudyApp() {
                       </p>
                     </div>
                     <div className="section-title">
-                      <h2>日々のきろく</h2>
+                      <h2>学習記録一覧</h2>
                       {(!owner || owner === me.id) && (
                         <button
                           className="text-button"
@@ -861,7 +823,7 @@ export default function StudyApp() {
                       <div className="card empty">
                         <Clock3 size={30} />
                         <h3>最初の15分から。</h3>
-                        <p>学んだ分野と時間を記録してみましょう。</p>
+                        <p>学習時間を記録すると表示されます。</p>
                       </div>
                     ) : (
                       data.studies.map((r) => (
@@ -954,7 +916,7 @@ export default function StudyApp() {
                       {data.recommended.length === 0 ? (
                         <div className="card empty">
                           <Users size={30} />
-                          <h3>仲間を待っています。</h3>
+                          <h3>おすすめユーザーはいません。</h3>
                           <p>別のユーザーが登録すると、ここに表示されます。</p>
                         </div>
                       ) : (
@@ -982,7 +944,7 @@ export default function StudyApp() {
                                 </span>
                               ))}
                             </div>
-                            <p>{p.goal || "自分のペースで学習中"}</p>
+                            <p>{p.goal || "目標未設定"}</p>
                             <button
                               className={
                                 data.connections.following.includes(p.id)
@@ -1182,7 +1144,7 @@ export default function StudyApp() {
                         name="recommend"
                         defaultChecked={me.recommend}
                       />
-                      仲間のおすすめに自分を表示する
+                      おすすめユーザーに自分を表示する
                     </label>
                     <button className="primary" disabled={busy}>
                       <Check size={17} />
@@ -1221,18 +1183,8 @@ export default function StudyApp() {
           </section>
           <aside className="right-column">
             <div className="card encouragement">
-              <span className="mini-label">A LITTLE REMINDER</span>
-              <Leaf size={26} />
-              <h3>
-                昨日の自分より、
-                <br />
-                ほんの少し先へ。
-              </h3>
-              <p>
-                大きな成果じゃなくてもいい。
-                <br />
-                今日、学んだことを残そう。
-              </p>
+              <h3>学習記録</h3>
+              <p>学習分野・日付・時間を保存します。</p>
               <button
                 onClick={() => {
                   setRecordRequest(crypto.randomUUID());
@@ -1240,7 +1192,7 @@ export default function StudyApp() {
                 }}
                 disabled={!data}
               >
-                今日の学びを記録
+                学習を記録
                 <ChevronRight size={15} />
               </button>
             </div>
@@ -1267,7 +1219,7 @@ export default function StudyApp() {
             )}
             <div className="card mini-people">
               <div className="section-title">
-                <h3>近い目線の仲間</h3>
+                <h3>おすすめユーザー</h3>
                 <Sparkles size={16} />
               </div>
               {data?.recommended.slice(0, 3).map((p) => (
@@ -1285,14 +1237,10 @@ export default function StudyApp() {
                 </button>
               ))}
               {!data?.recommended.length && (
-                <p className="muted">
-                  プロフィールを整えて、
-                  <br />
-                  新しいつながりを待とう。
-                </p>
+                <p className="muted">おすすめユーザーはいません。</p>
               )}
               <button className="text-button" onClick={() => setView("people")}>
-                仲間を見つける
+                ユーザーを探す
                 <ArrowRight size={14} />
               </button>
             </div>
@@ -1302,7 +1250,7 @@ export default function StudyApp() {
               <br />
               画像・通知・退会は未対応。実ユーザー公開前の安全確認は未完了です。
             </p>
-            <p className="copyright">© 2026 Study Circle</p>
+            <p className="copyright">© 2026 CoStep</p>
           </aside>
         </div>
       </div>
@@ -1324,9 +1272,7 @@ export default function StudyApp() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="section-title">
-              <h2 id="dialog-title">
-                {record ? "今日の学びを記録" : "学びのひとこと"}
-              </h2>
+              <h2 id="dialog-title">{record ? "学習を記録" : "つぶやき"}</h2>
               <button
                 className="icon-button"
                 onClick={() => {
@@ -1355,7 +1301,7 @@ export default function StudyApp() {
                   setRecord(false);
                   setNotice(
                     record
-                      ? "今日の一歩を記録しました。"
+                      ? "学習時間を保存しました。"
                       : "つぶやきを投稿しました。",
                   );
                 }
@@ -1409,7 +1355,7 @@ export default function StudyApp() {
                     maxLength={2000}
                     rows={6}
                     required
-                    placeholder="学んだこと、つまずいたこと。あなたの言葉で。"
+                    placeholder="投稿内容を入力"
                     autoFocus
                   />
                   <p className="form-note">

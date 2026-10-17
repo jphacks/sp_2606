@@ -133,7 +133,7 @@ export default function CommentsPanel({
               name="body"
               maxLength={500}
               rows={2}
-              placeholder="気づきや応援を届けよう"
+              placeholder="返信内容を入力"
               required
             />
             <button className="secondary" disabled={busy}>

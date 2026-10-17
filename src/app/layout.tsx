@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
-  title: "となりで学ぶ | Study Circle",
+  title: "CoStep",
   description:
-    "同じ目線の仲間と、今日の一歩を。学習記録とつながりのためのSNS。",
+    "学習時間の記録、投稿、ユーザー検索、メッセージを利用できるSNS。",
   robots: { index: false, follow: false },
 };
 export default function RootLayout({
