@@ -92,7 +92,7 @@ export default function StudyApp() {
   const [session, setSession] = useState<SessionInfo | null>(null),
     [data, setData] = useState<Data | null>(null),
     [view, setView] = useState("feed"),
-    [mode, setMode] = useState("recommended"),
+    [mode, setMode] = useState("similar"),
     [owner, setOwner] = useState(""),
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
@@ -642,16 +642,16 @@ export default function StudyApp() {
                         </button>
                         <div className="feed-tabs">
                           {[
-                            ["recommended", "おすすめ"],
-                            ["similar", "学習経験が近い"],
+                            ["similar", "おすすめ"],
                             ["following", "フォロー中"],
+                            ["recommended", "最新投稿"],
                           ].map(([k, v]) => (
                             <button
                               key={k}
                               onClick={() => setMode(k)}
                               className={mode === k ? "active" : ""}
                             >
-                              {k === "recommended" && <Sparkles size={15} />}{" "}
+                              {k === "similar" && <Sparkles size={15} />}{" "}
                               {v}
                             </button>
                           ))}

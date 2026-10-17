@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import MonthPicker from "./month-picker";
 import {
   goalCatalogById,
   searchGoals,
@@ -153,32 +154,21 @@ export default function GoalsEditor({
                 </label>
               )}
               <div className="goal-search-controls">
-                <label>
-                  開始月（{item?.label}）
-                  <input
-                    type="month"
-                    min="1900-01"
-                    max="2199-12"
-                    required
-                    value={goal.start_month}
-                    onChange={(e) =>
-                      update(goal.catalog_id, { start_month: e.target.value })
-                    }
-                  />
-                </label>
-                <label>
-                  達成目標月（{item?.label}）
-                  <input
-                    type="month"
-                    min={goal.start_month || "1900-01"}
-                    max="2199-12"
-                    required
-                    value={goal.target_month}
-                    onChange={(e) =>
-                      update(goal.catalog_id, { target_month: e.target.value })
-                    }
-                  />
-                </label>
+                <MonthPicker
+                  label={`開始月（${item?.label}）`}
+                  value={goal.start_month}
+                  onChange={(value) =>
+                    update(goal.catalog_id, { start_month: value })
+                  }
+                />
+                <MonthPicker
+                  label={`達成目標月（${item?.label}）`}
+                  value={goal.target_month}
+                  min={goal.start_month || "1900-01"}
+                  onChange={(value) =>
+                    update(goal.catalog_id, { target_month: value })
+                  }
+                />
               </div>
               {validPeriod ? (
                 <p>学習期間：{goalMonths(goal)}か月（開始月・目標月を含む）</p>

@@ -11,7 +11,8 @@ export async function GET(request: Request) {
         { status: 401 },
       );
     const q = new URL(request.url).searchParams;
-    const mode = q.get("mode") || "recommended";
+    // RPC mode names are retained: similar = おすすめ, recommended = 最新投稿.
+    const mode = q.get("mode") || "similar";
     if (!["recommended", "similar", "following"].includes(mode))
       return NextResponse.json(
         { error: "表示条件が不正です。" },
