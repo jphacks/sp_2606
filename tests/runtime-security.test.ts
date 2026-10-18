@@ -30,6 +30,9 @@ test("monitor OIDC requires signature, expiry and exact repository/workflow iden
       .setExpirationTime("2m")
       .sign(privateKey);
   await verifyMonitorToken(await sign(), keys);
+  // A customized subject does not broaden the immutable repository/workflow checks.
+  await verifyMonitorToken(await sign({ sub: "customized-subject" }), keys);
+  await assert.rejects(verifyMonitorToken(await sign({ sub: "" }), keys));
   for (const changes of [
     { repository_id: "1" },
     { repository: "attacker/repo" },

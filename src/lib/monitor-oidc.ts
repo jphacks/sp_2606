@@ -20,7 +20,10 @@ export async function verifyMonitorToken(
     requiredClaims: ["exp", "iat", "sub"],
   });
   if (
-    payload.sub !== "repo:jphacks/sp_2606:ref:refs/heads/main" ||
+    // Organizations can customize the subject format. Trust the separately signed
+    // immutable repository/owner IDs plus the exact ref and workflow, not a legacy sub template.
+    typeof payload.sub !== "string" ||
+    payload.sub.length === 0 ||
     payload.repository !== "jphacks/sp_2606" ||
     payload.repository_id !== "1400418256" ||
     payload.repository_owner_id !== "10176253" ||
