@@ -4,13 +4,30 @@
   <img src="public/costep-logo.png" alt="CoStep ロゴ" width="360">
 </p>
 
+<table>
+  <tr>
+    <th align="center">近い学習仲間を見つける</th>
+    <th align="center">学習をカレンダーで振り返る</th>
+    <th align="center">分野ごとの学習時間を見える化</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/costep-connections-mobile.jpg" alt="学習経験・目標が近い仲間を表示するおすすめ画面" width="220"></td>
+    <td align="center"><img src="docs/images/costep-calendar-mobile.jpg" alt="学習した日と時間を色で確認できるカレンダー" width="220"></td>
+    <td align="center"><img src="docs/images/costep-study-graph-mobile.jpg" alt="分野別の積み上げ棒グラフと学習時間の内訳" width="220"></td>
+  </tr>
+</table>
+
+掲載画面はデモアカウントでの表示例です。
+
 [CoStepを開く](https://study-circle-pi.vercel.app/)
 
-### 新規登録画面
+<details>
+  <summary>新規登録画面を見る</summary>
 
-<a href="https://study-circle-pi.vercel.app/">
-  <img src="docs/images/costep-signup-mobile.png" alt="CoStepの新規登録画面（スマートフォン版）" width="390">
-</a>
+  <a href="https://study-circle-pi.vercel.app/">
+    <img src="docs/images/costep-signup-mobile.png" alt="CoStepの新規登録画面（スマートフォン版）" width="320">
+  </a>
+</details>
 
 ## 製品概要
 
