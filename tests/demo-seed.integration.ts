@@ -30,28 +30,50 @@ test("opt-in demo seed: repeatable, no login credentials, real-data isolation, f
       "utf8",
     );
     await db.exec(seed);
-    const expansion = await readFile(new URL("../supabase/demo/timeline-expand-50.sql", import.meta.url), "utf8");
+    const expansion = await readFile(
+      new URL("../supabase/demo/timeline-expand-50.sql", import.meta.url),
+      "utf8",
+    );
     await db.exec(expansion);
+    const expansion100 = await readFile(
+      new URL("../supabase/demo/timeline-expand-100.sql", import.meta.url),
+      "utf8",
+    );
+    const priorDemos = (
+      await db.query("select * from public.profiles order by id")
+    ).rows;
+    await db.exec(expansion100);
+    await db.exec(expansion100);
+    const priorIds = priorDemos.map((p: any) => p.id);
+    assert.deepEqual(
+      (
+        await db.query(
+          "select * from public.profiles where id=any($1::uuid[]) order by id",
+          [priorIds],
+        )
+      ).rows,
+      priorDemos,
+    );
     await db.exec(seed);
     assert.equal(
       Number(
         (await db.query<any>("select count(*) n from private.demo_seed_users"))
           .rows[0].n,
       ),
-      50,
+      100,
     );
     assert.equal(
       Number(
         (await db.query<any>("select count(*) n from public.posts")).rows[0].n,
       ),
-      100,
+      200,
     );
     assert.equal(
       Number(
         (await db.query<any>("select count(*) n from public.study_records"))
           .rows[0].n,
       ),
-      100,
+      200,
     );
     assert.deepEqual(
       (await db.query("select * from public.profiles where id=$1", [viewer]))
@@ -66,7 +88,7 @@ test("opt-in demo seed: repeatable, no login credentials, real-data isolation, f
           )
         ).rows[0].n,
       ),
-      50,
+      100,
     );
     await db.exec("set role authenticated");
     await db.query("select set_config('request.jwt.claim.sub',$1,false)", [
@@ -85,10 +107,22 @@ test("opt-in demo seed: repeatable, no login credentials, real-data isolation, f
     const similar = (
       await db.query<any>("select * from public.read_posts('similar')")
     ).rows;
-    assert.equal(similar.length, 10);
-    assert.ok(
-      similar.every((p) => / (PY-1-|PY-2-|AZ-1-|AZ-2-|MIX-)/.test(p.body)),
-    );
+    assert.equal(similar.length, 16);
+    for (const post of similar) {
+      const author = (
+        await db.query<any>("select * from public.read_profile($1)", [
+          post.owner_id,
+        ])
+      ).rows[0];
+      assert(
+        author.learning_fields.some(
+          (f: any) =>
+            ["Python", "Microsoft Azure"].includes(f.field) &&
+            f.mode === "level" &&
+            f.level <= 1,
+        ),
+      );
+    }
     assert.equal(
       (await db.query<any>("select * from public.read_posts('following')")).rows
         .length,

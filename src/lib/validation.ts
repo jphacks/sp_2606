@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { learningFieldLabel } from "./learning-catalog";
+import { attributesSchema, type ProfileAttributes } from "./profile-attributes";
+import { learningFieldLabel, learningFieldKind } from "./learning-catalog";
 import {
   goalsSchema,
   goalSimilarity,
@@ -46,8 +47,20 @@ export const learningFieldsSchema = z
 export type LearningField = z.infer<typeof learningFieldSchema>;
 export const profileSchema = z
   .object({
+    attributes: attributesSchema,
     display_name: z.string().trim().min(1).max(30),
-    learning_fields: learningFieldsSchema,
+    learning_fields: learningFieldsSchema.refine(
+      (items) =>
+        items.every((item) => {
+          const kind = learningFieldKind(item.field);
+          return kind === "certification"
+            ? item.mode === "time"
+            : kind === "technology"
+              ? item.mode === "level"
+              : true;
+        }),
+      "技術は習熟度、資格は累計学習時間で入力してください。",
+    ),
     goals: goalsSchema,
     bio: z.string().trim().max(500),
     recommend: z.boolean(),
@@ -87,6 +100,7 @@ export const visibilityLabels = {
   private: "自分のみ",
 };
 export type Profile = {
+  attributes?: ProfileAttributes | null;
   id: string;
   display_name: string;
   field: string;
@@ -143,9 +157,8 @@ export function profileFields(profile: Profile): LearningField[] {
       ];
 }
 export function fieldExperience(item: LearningField) {
-  return item.mode === "level"
-    ? levels[item.level]
-    : `累計${(item.total_minutes / 60).toLocaleString("ja-JP", { maximumFractionDigits: 1 })}時間`;
+  if (item.mode === "level") return levels[item.level];
+  return `累計${Math.round(item.total_minutes / 60).toLocaleString("ja-JP")}時間`;
 }
 export function profileSummary(profile: Profile) {
   return profileFields(profile)

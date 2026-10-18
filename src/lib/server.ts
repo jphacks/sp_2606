@@ -72,7 +72,7 @@ export async function csrf() {
   }
   return token;
 }
-export async function validateMutation(request: Request) {
+export async function validateMutation(request: Request, maxBytes = 16384) {
   const origin =
     config()?.origin || process.env.APP_ORIGIN || "http://127.0.0.1:3000";
   if (request.headers.get("origin") !== origin)
@@ -84,11 +84,11 @@ export async function validateMutation(request: Request) {
   if (!token || !supplied || !equal(token, supplied))
     throw new Error("invalid_csrf");
   const length = Number(request.headers.get("content-length") || 0);
-  if (length > 16384) throw new Error("too_large");
+  if (length > maxBytes) throw new Error("too_large");
 }
-export async function jsonBody(request: Request) {
+export async function jsonBody(request: Request, maxBytes = 16384) {
   const raw = await request.text();
-  if (Buffer.byteLength(raw) > 16384) throw new Error("too_large");
+  if (Buffer.byteLength(raw) > maxBytes) throw new Error("too_large");
   return JSON.parse(raw);
 }
 export async function currentSession() {

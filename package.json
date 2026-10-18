@@ -8,7 +8,7 @@
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
-    "test:db": "tsx --test tests/database.integration.ts tests/conversations.integration.ts tests/follow-approval.integration.ts tests/learning-fields.integration.ts tests/recommendations.integration.ts tests/goals.integration.ts tests/reactions.integration.ts tests/field-search.integration.ts tests/study-dashboard.integration.ts tests/activity-feed.integration.ts",
+    "test:db": "tsx --test tests/database.integration.ts tests/conversations.integration.ts tests/follow-approval.integration.ts tests/learning-fields.integration.ts tests/recommendations.integration.ts tests/goals.integration.ts tests/reactions.integration.ts tests/field-search.integration.ts tests/study-dashboard.integration.ts tests/activity-feed.integration.ts tests/avatar.integration.ts tests/comment-counts.integration.ts tests/experience-feed.integration.ts tests/cumulative-time.integration.ts",
     "test:http": "node --import tsx --test tests/http.integration.ts",
     "security:gate": "node scripts/security-gate.mjs"
   },
@@ -18,7 +18,9 @@
     "next": "16.4.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "react-easy-crop": "^6.2.4",
     "server-only": "0.0.1",
+    "sharp": "^0.35.5",
     "zod": "4.6.7"
   },
   "devDependencies": {

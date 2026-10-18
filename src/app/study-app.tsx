@@ -35,13 +35,16 @@ import {
   Bell,
   Blocks,
 } from "lucide-react";
+import Avatar, { AvatarEditor } from "./profile-avatar";
+import ProfileAttributesEditor from "./profile-attributes-editor";
+import { PwaInstall } from "./pwa";
 import MessagesPanel from "./messages-panel";
 import CommentsPanel from "./comments-panel";
 import LearningFieldsEditor from "./learning-fields-editor";
 import GoalsEditor from "./goals-editor";
 import FieldSearch from "./field-search";
 import StudyDashboard from "./study-dashboard";
-import { learningFieldLabel } from "@/lib/learning-catalog";
+import { learningFieldLabel, learningFieldKind } from "@/lib/learning-catalog";
 import { goalsSchema, profileGoalSummary } from "@/lib/goals";
 import {
   fieldOptions,
@@ -72,6 +75,7 @@ type Data = {
     minutes: number | null;
     memo: string | null;
   })[];
+  commentCounts: { post_id: string; total: number }[];
   reactions: { post_id: string; total: number; liked: boolean }[];
   studies: Study[];
   connections: {
@@ -93,11 +97,6 @@ type Data = {
   to: string;
 };
 const fields = fieldOptions;
-function Avatar({ name, small = false }: { name: string; small?: boolean }) {
-  return (
-    <span className={`avatar ${small ? "small" : ""}`}>{name.slice(0, 1)}</span>
-  );
-}
 export default function StudyApp() {
   const [session, setSession] = useState<SessionInfo | null>(null),
     [data, setData] = useState<Data | null>(null),
@@ -117,6 +116,21 @@ export default function StudyApp() {
     [recordRequest, setRecordRequest] = useState(""),
     [recordDate, setRecordDate] = useState(""),
     [dmPeer, setDmPeer] = useState("");
+  const composerCard = useRef<HTMLButtonElement>(null);
+  const [composerVisible, setComposerVisible] = useState(true);
+  useEffect(() => {
+    const card = composerCard.current;
+    if (view !== "feed" || searchField || !card) {
+      setComposerVisible(false);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setComposerVisible(entry.isIntersecting),
+      { rootMargin: "-64px 0px 0px 0px", threshold: 0 },
+    );
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [view, searchField, !!data]);
   const loadVersion = useRef(0);
   useEffect(() => {
     if (!notice) return;
@@ -282,8 +296,8 @@ export default function StudyApp() {
   const nav = [
     { id: "feed", label: "タイムライン", icon: BookOpen },
     { id: "study", label: "学習記録", icon: ChartNoAxesColumn },
-    { id: "people", label: "ユーザー・フォロー申請", icon: Users },
-    { id: "messages", label: "メッセージ", icon: MessageCircle },
+    { id: "people", label: "つながり", icon: Users },
+    { id: "messages", label: "トーク", icon: MessageCircle },
     { id: "settings", label: "プロフィールと設定", icon: Settings },
   ];
   if (!session?.user)
@@ -494,6 +508,7 @@ export default function StudyApp() {
               className={view === n.id ? "nav-item active" : "nav-item"}
               onClick={() => {
                 setView(n.id);
+                setDmPeer("");
                 setStudyDay("");
                 setOwner("");
                 setError("");
@@ -523,7 +538,7 @@ export default function StudyApp() {
             <p>公開範囲は設定から変更できます。</p>
           </div>
           <button className="account" onClick={() => setView("settings")}>
-            <Avatar name={me?.display_name || "？"} small />
+            <Avatar id={me?.id} name={me?.display_name || "？"} small />
             <span>
               {me?.display_name || "読み込み中"}
               <small>
@@ -575,6 +590,7 @@ export default function StudyApp() {
               key={n.id}
               onClick={() => {
                 setView(n.id);
+                setDmPeer("");
                 setStudyDay("");
                 setOwner("");
               }}
@@ -595,11 +611,11 @@ export default function StudyApp() {
                     : view === "study"
                       ? "学習記録"
                       : view === "people"
-                        ? "ユーザー・フォロー申請"
+                        ? "つながり"
                         : view === "settings"
                           ? "プロフィールと設定"
                           : view === "messages"
-                            ? "メッセージ"
+                            ? "トーク"
                             : "タイムライン"}
                 </h1>
               </div>
@@ -632,19 +648,24 @@ export default function StudyApp() {
               </div>
             ) : (
               <>
-                {(view === "feed" || (view === "study" && !!searchField)) && (
+                {view === "feed" && (
                   <FieldSearch
                     field={searchField}
                     onField={setSearchField}
                     onProfile={openProfile}
                     onStudy={openStudy}
+                    onCompose={() => setComposer(true)}
+                    showCompose={!composerVisible}
                   />
                 )}
                 {((view === "feed" && !searchField) || view === "profile") && (
                   <>
                     {view === "profile" && data.profile && (
                       <div className="card profile-details">
-                        <Avatar name={data.profile.display_name} />
+                        <Avatar
+                          id={data.profile.id}
+                          name={data.profile.display_name}
+                        />
                         <h2>{data.profile.display_name}</h2>
                         <p>{profileSummary(data.profile)}</p>
                         {profileGoalSummary(data.profile) && (
@@ -653,6 +674,43 @@ export default function StudyApp() {
                         <p className="post-body">
                           {data.profile.bio || "自己紹介は未設定です。"}
                         </p>
+                        {data.profile.attributes && (
+                          <dl className="profile-attributes-summary">
+                            <div>
+                              <dt>文系・理系</dt>
+                              <dd>
+                                {data.profile.attributes.background ===
+                                "humanities"
+                                  ? "文系"
+                                  : "理系"}
+                              </dd>
+                            </div>
+                            {data.profile.attributes.university && (
+                              <div>
+                                <dt>所属大学</dt>
+                                <dd>{data.profile.attributes.university}</dd>
+                              </div>
+                            )}
+                            {data.profile.attributes.faculty && (
+                              <div>
+                                <dt>学部</dt>
+                                <dd>{data.profile.attributes.faculty}</dd>
+                              </div>
+                            )}
+                            {data.profile.attributes.work && (
+                              <div>
+                                <dt>業務</dt>
+                                <dd>{data.profile.attributes.work}</dd>
+                              </div>
+                            )}
+                            {data.profile.attributes.prefecture && (
+                              <div>
+                                <dt>居住地</dt>
+                                <dd>{data.profile.attributes.prefecture}</dd>
+                              </div>
+                            )}
+                          </dl>
+                        )}
                         <p>
                           フォロー {data.counts.following} · フォロワー{" "}
                           {data.counts.followers}
@@ -715,10 +773,11 @@ export default function StudyApp() {
                     {view === "feed" && (
                       <>
                         <button
+                          ref={composerCard}
                           className="composer-card"
                           onClick={() => setComposer(true)}
                         >
-                          <Avatar name={me?.display_name || ""} />
+                          <Avatar id={me?.id} name={me?.display_name || ""} />
                           <span>
                             投稿する
                             <small>
@@ -784,7 +843,10 @@ export default function StudyApp() {
                                   }
                                   onClick={() => openProfile(p.owner_id)}
                                 >
-                                  <Avatar name={a?.display_name || "学習者"} />
+                                  <Avatar
+                                    id={a?.id}
+                                    name={a?.display_name || "学習者"}
+                                  />
                                 </button>
                                 <div>
                                   <button
@@ -799,7 +861,7 @@ export default function StudyApp() {
                                     {a &&
                                       profileFields(a).map((item) => (
                                         <span
-                                          className="post-field-badge"
+                                          className={`post-field-badge field-kind-${learningFieldKind(item.field)}`}
                                           key={item.field}
                                         >
                                           <span>
@@ -848,57 +910,60 @@ export default function StudyApp() {
                               </div>
                               {p.kind === "study" ? (
                                 <div className="study-feed-card">
-                                  <span className="study-feed-label">
-                                    <ChartNoAxesColumn size={16} />
-                                    学習記録
-                                  </span>
+                                  <div className="study-feed-heading">
+                                    <span className="study-feed-label">
+                                      <ChartNoAxesColumn size={16} />
+                                      学習記録
+                                    </span>
+                                    <button
+                                      className="text-button"
+                                      onClick={() =>
+                                        openStudy(
+                                          p.owner_id,
+                                          p.study_date || "",
+                                        )
+                                      }
+                                    >
+                                      学習記録を見る <ArrowUpRight size={14} />
+                                    </button>
+                                  </div>
                                   <div className="study-feed-summary">
                                     <strong>
                                       {learningFieldLabel(p.field || "")}
                                     </strong>
                                     <span>{p.minutes}分</span>
                                   </div>
-                                  <time dateTime={p.study_date || ""}>
-                                    {p.study_date?.replaceAll("-", "/")}
-                                  </time>
                                   {p.memo && (
                                     <p className="study-feed-memo">{p.memo}</p>
                                   )}
-                                  <button
-                                    className="secondary"
-                                    onClick={() =>
-                                      openStudy(p.owner_id, p.study_date || "")
-                                    }
-                                  >
-                                    カレンダー・グラフを見る
-                                    <ArrowUpRight size={16} />
-                                  </button>
                                 </div>
                               ) : (
                                 <>
                                   <p className="post-body">{p.body}</p>
-                                  {reactionButton(p)}
                                   <CommentsPanel
                                     key={p.id + data.connections.blocked.join()}
                                     postId={p.id}
+                                    initialTotal={
+                                      data.commentCounts?.find(
+                                        (c) => c.post_id === p.id,
+                                      )?.total ?? 0
+                                    }
+                                    actionsBefore={reactionButton(p)}
+                                    actionsAfter={
+                                      <button
+                                        className="text-button"
+                                        onClick={() => openStudy(p.owner_id)}
+                                      >
+                                        学習記録を見る{" "}
+                                        <ArrowUpRight size={14} />
+                                      </button>
+                                    }
                                     userId={me.id}
                                     csrf={session.csrf}
                                     people={data.profiles}
                                     openProfile={openProfile}
                                   />
                                 </>
-                              )}
-                              {p.kind === "post" && (
-                                <div className="post-footer">
-                                  <span>
-                                    <BookOpen size={14} />
-                                    つぶやき
-                                  </span>
-                                  <button onClick={() => openStudy(p.owner_id)}>
-                                    学習記録を見る
-                                    <ArrowUpRight size={14} />
-                                  </button>
-                                </div>
                               )}
                             </article>
                           );
@@ -907,7 +972,7 @@ export default function StudyApp() {
                     </div>
                   </>
                 )}
-                {view === "study" && !searchField && (
+                {view === "study" && (
                   <StudyDashboard
                     key={(owner || me.id) + studyDay}
                     initialDay={studyDay}
@@ -924,14 +989,6 @@ export default function StudyApp() {
                       setRecord(true);
                     }}
                     onDelete={(id) => mutate("delete-study", { id })}
-                  />
-                )}
-                {view === "study" && !searchField && (
-                  <FieldSearch
-                    field={searchField}
-                    onField={setSearchField}
-                    onProfile={openProfile}
-                    onStudy={openStudy}
                   />
                 )}
                 {view === "people" && (
@@ -1005,7 +1062,7 @@ export default function StudyApp() {
                               aria-label={p.display_name + "のプロフィール"}
                               onClick={() => openProfile(p.id)}
                             >
-                              <Avatar name={p.display_name} />
+                              <Avatar id={p.id} name={p.display_name} />
                             </button>
                             <h3>
                               <button
@@ -1094,6 +1151,10 @@ export default function StudyApp() {
                     userId={me.id}
                     csrf={session.csrf}
                     initialPeer={dmPeer}
+                    initialPeerName={
+                      data.profiles.find((p) => p.id === dmPeer)
+                        ?.display_name || ""
+                    }
                     notify={setNotice}
                     openProfile={openProfile}
                   />
@@ -1130,6 +1191,13 @@ export default function StudyApp() {
                         return;
                       }
                       const ok = await mutate("profile", {
+                        attributes: {
+                          background: f.get("background"),
+                          university: f.get("university"),
+                          faculty: f.get("faculty"),
+                          work: f.get("work"),
+                          prefecture: f.get("prefecture"),
+                        },
                         display_name: f.get("display_name"),
                         learning_fields: learningFields.data,
                         goals: goals.data,
@@ -1146,17 +1214,24 @@ export default function StudyApp() {
                         }
                       }
                     }}
-                    key={me.id + data.settings.visibility}
+                    key={me.id + data.settings.visibility + JSON.stringify(me.learning_fields)}
                   >
                     {!data.settings.profile_completed && (
                       <p className="form-note">
                         最初にプロフィールと文章の公開範囲を設定してください。保存後に投稿できます。
                       </p>
                     )}
+                    <PwaInstall />
                     <div className="section-title">
                       <h2>基本プロフィール</h2>
                       <span className="tag">ログイン済み全員に公開</span>
                     </div>
+                    <ProfileAttributesEditor initial={me.attributes} />
+                    <AvatarEditor
+                      id={me.id}
+                      name={me.display_name}
+                      csrf={session?.csrf || ""}
+                    />
                     <div className="form-grid">
                       <label>
                         表示名
@@ -1307,7 +1382,7 @@ export default function StudyApp() {
                   key={p.id}
                   onClick={() => openProfile(p.id)}
                 >
-                  <Avatar name={p.display_name} small />
+                  <Avatar id={p.id} name={p.display_name} small />
                   <span>
                     <strong>{p.display_name}</strong>
                     <small>{profileSummary(p)}</small>

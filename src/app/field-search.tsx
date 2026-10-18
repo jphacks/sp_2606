@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search, X } from "lucide-react";
+import { Search, X, Plus } from "lucide-react";
+import ProfileAvatar from "./profile-avatar";
 import {
   learningFieldKey,
   learningFieldLabel,
@@ -25,14 +26,17 @@ export default function FieldSearch({
   onField,
   onProfile,
   onStudy,
+  onCompose,
+  showCompose,
 }: {
+  showCompose: boolean;
+  onCompose: () => void;
   field: string;
   onField: (field: string) => void;
   onProfile: (id: string) => void;
   onStudy: (id: string, day?: string) => void;
 }) {
   const [query, setQuery] = useState("");
-  const [kind, setKind] = useState("posts");
   const [results, setResults] = useState<Result[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -43,7 +47,7 @@ export default function FieldSearch({
     setLoading(true);
     setError("");
     setResults([]);
-    void fetch(`/api/search?field=${encodeURIComponent(field)}&kind=${kind}`, {
+    void fetch(`/api/search?field=${encodeURIComponent(field)}&kind=posts`, {
       cache: "no-store",
       signal: controller.signal,
     })
@@ -59,13 +63,14 @@ export default function FieldSearch({
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, [field, kind]);
+  }, [field]);
   return (
-    <section className="field-search" aria-label="分野で検索">
+    <section className={`field-search${field ? " has-results" : ""}`} aria-label="分野で検索">
       <div className="card field-search-box">
+        <div className="feed-search-toolbar">
         <label className="field-search-label">
           <Search size={18} aria-hidden="true" />
-          <span>分野で検索</span>
+          <span className="visually-hidden">分野で検索</span>
           <input
             type="search"
             value={query}
@@ -74,6 +79,8 @@ export default function FieldSearch({
             onChange={(e) => setQuery(e.target.value)}
           />
         </label>
+        {showCompose && <button type="button" className="toolbar-compose" aria-label="つぶやきを投稿する" onClick={onCompose}><Plus size={22} aria-hidden="true" /></button>}
+        </div>
         {query.trim() && (
           <>
             <p className="form-note" aria-live="polite">
@@ -123,24 +130,8 @@ export default function FieldSearch({
       </div>
       {field && (
         <>
-          <div className="feed-tabs" aria-label="検索結果の種類">
-            <button
-              className={kind === "posts" ? "active" : ""}
-              onClick={() => setKind("posts")}
-            >
-              タイムライン
-            </button>
-            <button
-              className={kind === "studies" ? "active" : ""}
-              onClick={() => setKind("studies")}
-            >
-              学習時間
-            </button>
-          </div>
           <p className="form-note">
-            {kind === "posts"
-              ? "この分野を登録している人の投稿・学習記録を新着順で最大20件表示します。"
-              : "この分野を登録している人の学習記録を、直近31日間から最大50件表示します。"}
+            この分野を登録している人のタイムラインを、新着順で最大20件表示します。
           </p>
           {loading ? (
             <p role="status">検索中…</p>
@@ -154,14 +145,17 @@ export default function FieldSearch({
                 <div className="card empty">表示できる結果はありません。</div>
               )}
               {results.map((r) => (
-                <article className="post-card" key={r.id}>
+                <article className="post-card" key={`${r.kind}-${r.id}`}>
                   <button
-                    className="text-button"
+                    type="button"
+                    className="text-button search-post-author"
+                    aria-label={`${r.display_name}のプロフィール`}
                     onClick={() => onProfile(r.owner_id)}
                   >
-                    {r.display_name}
+                    <ProfileAvatar id={r.owner_id} name={r.display_name} />
+                    <strong>{r.display_name}</strong>
                   </button>
-                  {kind === "posts" && r.kind !== "study" ? (
+                  {r.kind !== "study" ? (
                     <>
                       <small>
                         {new Date(r.created_at!).toLocaleString("ja-JP")}
@@ -171,7 +165,7 @@ export default function FieldSearch({
                   ) : (
                     <>
                       <p>
-                        {learningFieldLabel(r.field || field)} · {r.study_date}
+                        {learningFieldLabel(r.field || field)}
                       </p>
                       <strong>{r.minutes}分</strong>
                       {r.memo && <p className="search-post-body">{r.memo}</p>}
@@ -179,7 +173,7 @@ export default function FieldSearch({
                         className="secondary"
                         onClick={() => onStudy(r.owner_id, r.study_date)}
                       >
-                        カレンダー・グラフを見る
+                        学習記録を見る
                       </button>
                     </>
                   )}

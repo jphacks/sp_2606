@@ -29,3 +29,8 @@ export function searchLearningFields(query: string, kind = "all") {
     return rank(b) - rank(a);
   });
 }
+
+const fieldKinds = new Map(goalCatalog.map((item) => [learningFieldKey(item), item.kind]));
+export function learningFieldKind(key: string) {
+  return fieldKinds.get(key) || "unknown";
+}

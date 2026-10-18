@@ -42,6 +42,7 @@ test("registration accepts credentials only; visibility is chosen during profile
 });
 test("profile cannot accept administrative or ownership fields", () => {
   const base = {
+    attributes: { background: "humanities", university: "", faculty: "", work: "", prefecture: "" },
     display_name: "A",
     learning_fields: [
       { field: "Python", mode: "level", level: 0, total_minutes: null },

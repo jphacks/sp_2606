@@ -75,7 +75,8 @@ export async function POST(
       });
     } else if (action === "profile") {
       const p = profileSchema.parse(body);
-      result = await s.db.rpc("save_profile_goals", {
+      result = await s.db.rpc("save_profile_complete", {
+        p_attributes: p.attributes,
         p_name: p.display_name,
         p_fields: p.learning_fields,
         p_goals: p.goals,

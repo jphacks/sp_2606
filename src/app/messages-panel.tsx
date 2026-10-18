@@ -1,15 +1,15 @@
 "use client";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import {
-  MessageCircle,
+  ChevronRight,
   Send,
   RefreshCw,
   Trash2,
   Check,
   X,
   ArrowLeft,
-  LockKeyhole,
 } from "lucide-react";
+import ProfileAvatar from "./profile-avatar";
 type Message = {
   id: string;
   sender: string;
@@ -38,7 +38,9 @@ export default function MessagesPanel({
   initialPeer,
   notify,
   openProfile,
+  initialPeerName = "",
 }: {
+  initialPeerName?: string;
   userId: string;
   csrf: string;
   initialPeer: string;
@@ -51,20 +53,37 @@ export default function MessagesPanel({
     [status, setStatus] = useState<Status | null>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
-    [key, setKey] = useState("");
-  const load = useCallback(async () => {
-    const r = await fetch(
-      "/api/messages" + (peer ? "?peer=" + encodeURIComponent(peer) : ""),
-      { cache: "no-store" },
-    );
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error);
-    setInbox(d.inbox);
-    setMessages(d.messages || []);
-    setStatus(d.status);
-  }, [peer]);
+    [key, setKey] = useState(""),
+    [loading, setLoading] = useState(true);
+  const load = useCallback(
+    async (signal?: AbortSignal) => {
+      const r = await fetch(
+        "/api/messages" + (peer ? "?peer=" + encodeURIComponent(peer) : ""),
+        { cache: "no-store", signal },
+      );
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error);
+      if (signal?.aborted) return;
+      setInbox(d.inbox);
+      setMessages(d.messages || []);
+      setStatus(d.status);
+    },
+    [peer],
+  );
   useEffect(() => {
-    load().catch((e) => setError(e.message));
+    const controller = new AbortController();
+    setMessages([]);
+    setStatus(null);
+    setError("");
+    setLoading(true);
+    void load(controller.signal)
+      .catch((e) => {
+        if (!controller.signal.aborted) setError(e.message);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
   }, [load]);
   useEffect(() => {
     setPeer(initialPeer);
@@ -108,176 +127,191 @@ export default function MessagesPanel({
   }
   return (
     <div className="messages-layout">
-      <div className="card inbox">
-        <div className="section-title">
-          <h2>会話</h2>
-          <button
-            className="icon-button"
-            aria-label="会話を更新"
-            onClick={() => load().catch((e) => setError(e.message))}
-          >
-            <RefreshCw size={16} />
-          </button>
-        </div>
-        {inbox.length === 0 && (
-          <p className="muted">
-            まだ会話がありません。ユーザーのプロフィールから送信できます。
-          </p>
-        )}
-        {inbox.map((c) => (
-          <div
-            key={c.peer}
-            className={"inbox-item " + (peer === c.peer ? "active" : "")}
-          >
+      {!peer && (
+        <div className="card inbox">
+          <div className="section-title">
+            <span className="visually-hidden">会話相手</span>
             <button
-              className="profile-link"
-              aria-label={c.display_name + "のプロフィール"}
-              onClick={() => openProfile(c.peer)}
+              className="icon-button"
+              aria-label="会話を更新"
+              onClick={() => load().catch((e) => setError(e.message))}
             >
-              <span className="avatar small">{c.display_name.slice(0, 1)}</span>
+              <RefreshCw size={16} />
             </button>
+          </div>
+          {error && (
+            <p role="alert" className="alert error">
+              {error}
+            </p>
+          )}
+          {loading && <p role="status">読み込み中…</p>}
+          {!loading && !error && inbox.length === 0 && (
+            <p className="muted">
+              まだ会話がありません。ユーザーのプロフィールから送信できます。
+            </p>
+          )}
+          {inbox.map((c) => (
             <button
-              className="text-button"
+              type="button"
+              key={c.peer}
+              className="inbox-item conversation-list-item"
               onClick={() => {
                 setPeer(c.peer);
                 setKey(crypto.randomUUID());
                 setError("");
               }}
             >
-              {c.display_name}
-              {c.incoming_status === "pending" && <small>リクエスト</small>}
+              <ProfileAvatar id={c.peer} name={c.display_name} />
+              <span className="conversation-list-name">
+                <strong>{c.display_name}</strong>
+                {c.incoming_status === "pending" && (
+                  <small>メッセージリクエスト</small>
+                )}
+              </span>
+              <ChevronRight size={18} aria-hidden="true" />
+            </button>
+          ))}
+        </div>
+      )}
+      {peer && (
+        <div className="card conversation" key={peer}>
+          <div className="section-title">
+            <button
+              className="text-button"
+              disabled={busy}
+              onClick={() => {
+                setPeer("");
+                setError("");
+              }}
+            >
+              <ArrowLeft size={14} />
+              一覧
+            </button>
+            <button
+              className="text-button"
+              onClick={() => openProfile(peer)}
+              aria-label="相手のプロフィールを開く"
+            >
+              <ProfileAvatar
+                id={peer}
+                name={
+                  inbox.find((c) => c.peer === peer)?.display_name ||
+                  initialPeerName ||
+                  "学習者"
+                }
+                small
+              />
+              <strong>
+                {inbox.find((c) => c.peer === peer)?.display_name ||
+                  initialPeerName ||
+                  "選択したユーザー"}
+              </strong>
+            </button>
+            <button
+              className="icon-button"
+              aria-label="メッセージを更新"
+              disabled={loading || busy}
+              onClick={() => load().catch((e) => setError(e.message))}
+            >
+              <RefreshCw size={16} />
             </button>
           </div>
-        ))}
-      </div>
-      <div className="card conversation">
-        {!peer ? (
-          <div className="empty">
-            <MessageCircle size={30} />
-            <h3>メッセージ一覧</h3>
-            <p>メッセージは当事者だけが閲覧できます。</p>
-          </div>
-        ) : (
-          <>
-            <div className="section-title">
-              <button className="text-button" onClick={() => setPeer("")}>
-                <ArrowLeft size={14} />
-                一覧
+          {error && (
+            <p className="alert error" role="alert">
+              {error}
+            </p>
+          )}
+          {status?.incoming_status === "pending" && (
+            <div className="request-box">
+              <p>メッセージリクエストが届いています。</p>
+              <button
+                className="secondary"
+                disabled={busy}
+                onClick={() =>
+                  operation("dm-respond", { target: peer, enabled: true })
+                }
+              >
+                <Check size={14} />
+                承認
               </button>
               <button
                 className="text-button"
-                onClick={() => openProfile(peer)}
-                aria-label="相手のプロフィールを開く"
+                disabled={busy}
+                onClick={() =>
+                  operation("dm-respond", { target: peer, enabled: false })
+                }
               >
-                <strong>
-                  {inbox.find((c) => c.peer === peer)?.display_name ||
-                    "選択したユーザー"}
-                </strong>
+                <X size={14} />
+                拒否
               </button>
-              <LockKeyhole size={14} />
             </div>
-            {error && (
-              <p className="alert error" role="alert">
-                {error}
-              </p>
+          )}
+          <div className="message-history">
+            {loading && <p role="status">読み込み中…</p>}
+            {!loading && messages.length === 0 && (
+              <p className="muted">メッセージはありません。</p>
             )}
-            {status?.incoming_status === "pending" && (
-              <div className="request-box">
-                <p>メッセージリクエストが届いています。</p>
-                <button
-                  className="secondary"
-                  disabled={busy}
-                  onClick={() =>
-                    operation("dm-respond", { target: peer, enabled: true })
-                  }
-                >
-                  <Check size={14} />
-                  承認
-                </button>
-                <button
-                  className="text-button"
-                  disabled={busy}
-                  onClick={() =>
-                    operation("dm-respond", { target: peer, enabled: false })
-                  }
-                >
-                  <X size={14} />
-                  拒否
-                </button>
-              </div>
-            )}
-            <div className="message-history">
-              {messages.length === 0 && (
-                <p className="muted">メッセージはありません。</p>
-              )}
-              {[...messages].reverse().map((m) => (
-                <div
-                  key={m.id}
-                  className={"message " + (m.sender === userId ? "mine" : "")}
-                >
-                  <p className={m.deleted ? "deleted" : ""}>
-                    {m.deleted ? "メッセージを削除しました" : m.body}
-                  </p>
-                  <small>
-                    {new Date(m.created_at).toLocaleString("ja-JP", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                    {m.sender === userId && !m.deleted && (
-                      <button
-                        className="icon-button"
-                        aria-label="このメッセージを削除"
-                        disabled={busy}
-                        onClick={() => {
-                          if (confirm("双方の画面から本文を削除しますか？"))
-                            void operation("dm-delete", { id: m.id });
-                        }}
-                      >
-                        <Trash2 size={12} />
-                      </button>
-                    )}
-                  </small>
-                </div>
-              ))}
-            </div>
-            {status && !status.can_send ? (
-              <p className="form-note">
-                {status.outgoing_status === "pending"
-                  ? "承認待ちです。承認前の追加送信はできません。"
-                  : status.attempts >= 2 && !status.mutual
-                    ? "申請は初回を含め2回までです。"
-                    : "受信設定・相互関係・ブロック等により、現在は送信できません。"}
-              </p>
-            ) : (
-              <form onSubmit={submit}>
-                <textarea
-                  name="body"
-                  rows={3}
-                  maxLength={2000}
-                  required
-                  placeholder="メッセージを入力"
-                  disabled={!status || busy}
-                />
-                <p className="form-note">
-                  相手の受信設定が適用されます。非相互の場合、承認前1件・申請は合計2回までです。
+            {[...messages].reverse().map((m) => (
+              <div
+                key={m.id}
+                className={"message " + (m.sender === userId ? "mine" : "")}
+              >
+                <p className={m.deleted ? "deleted" : ""}>
+                  {m.deleted ? "メッセージを削除しました" : m.body}
                 </p>
-                <button
-                  className="primary"
-                  disabled={!status?.can_send || busy}
-                >
-                  <Send size={15} />
-                  送信する
-                </button>
-              </form>
-            )}
+                <small>
+                  {new Date(m.created_at).toLocaleString("ja-JP", {
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                  {m.sender === userId && !m.deleted && (
+                    <button
+                      className="icon-button"
+                      aria-label="このメッセージを削除"
+                      disabled={busy}
+                      onClick={() => {
+                        if (confirm("双方の画面から本文を削除しますか？"))
+                          void operation("dm-delete", { id: m.id });
+                      }}
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  )}
+                </small>
+              </div>
+            ))}
+          </div>
+          {status && !status.can_send ? (
             <p className="form-note">
-              自動更新は未対応です。更新ボタンで新しいメッセージを取得します。
+              {status.outgoing_status === "pending"
+                ? "承認待ちです。承認前の追加送信はできません。"
+                : status.attempts >= 2 && !status.mutual
+                  ? "申請は初回を含め2回までです。"
+                  : "受信設定・相互関係・ブロック等により、現在は送信できません。"}
             </p>
-          </>
-        )}
-      </div>
+          ) : (
+            <form onSubmit={submit}>
+              <textarea
+                name="body"
+                rows={3}
+                maxLength={2000}
+                required
+                placeholder="メッセージを入力"
+                disabled={!status || busy}
+              />
+              <p className="form-note">
+                相手の受信設定が適用されます。非相互の場合、承認前1件・申請は合計2回までです。
+              </p>
+              <button className="primary" disabled={!status?.can_send || busy}>
+                <Send size={15} />
+                送信する
+              </button>
+            </form>
+          )}
+        </div>
+      )}
     </div>
   );
 }

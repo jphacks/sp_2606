@@ -193,9 +193,9 @@
     "fields": [
       {
         "field": "基本情報",
-        "mode": "level",
-        "level": 0,
-        "total_minutes": null
+        "mode": "time",
+        "level": null,
+        "total_minutes": 1200
       }
     ],
     "goals": [
@@ -243,9 +243,9 @@
     "fields": [
       {
         "field": "Python",
-        "mode": "time",
-        "level": null,
-        "total_minutes": 1800
+        "mode": "level",
+        "level": 1,
+        "total_minutes": null
       }
     ],
     "goals": [
@@ -1018,9 +1018,9 @@
     "fields": [
       {
         "field": "ITパスポート試験",
-        "mode": "level",
-        "level": 3,
-        "total_minutes": null
+        "mode": "time",
+        "level": null,
+        "total_minutes": 1200
       }
     ],
     "goals": [
@@ -1043,9 +1043,9 @@
     "fields": [
       {
         "field": "情報セキュリティマネジメント試験",
-        "mode": "level",
-        "level": 4,
-        "total_minutes": null
+        "mode": "time",
+        "level": null,
+        "total_minutes": 1200
       }
     ],
     "goals": [
@@ -1068,9 +1068,9 @@
     "fields": [
       {
         "field": "応用情報",
-        "mode": "level",
-        "level": 0,
-        "total_minutes": null
+        "mode": "time",
+        "level": null,
+        "total_minutes": 1200
       }
     ],
     "goals": [
@@ -1093,9 +1093,9 @@
     "fields": [
       {
         "field": "ネットワークスペシャリスト試験",
-        "mode": "level",
-        "level": 1,
-        "total_minutes": null
+        "mode": "time",
+        "level": null,
+        "total_minutes": 1200
       }
     ],
     "goals": [
@@ -1118,9 +1118,9 @@
     "fields": [
       {
         "field": "データベーススペシャリスト試験",
-        "mode": "level",
-        "level": 2,
-        "total_minutes": null
+        "mode": "time",
+        "level": null,
+        "total_minutes": 1200
       }
     ],
     "goals": [
@@ -1143,9 +1143,9 @@
     "fields": [
       {
         "field": "情報処理安全確保支援士試験",
-        "mode": "level",
-        "level": 3,
-        "total_minutes": null
+        "mode": "time",
+        "level": null,
+        "total_minutes": 1200
       }
     ],
     "goals": [
@@ -1168,9 +1168,9 @@
     "fields": [
       {
         "field": "cert-aws-saa",
-        "mode": "level",
-        "level": 4,
-        "total_minutes": null
+        "mode": "time",
+        "level": null,
+        "total_minutes": 1200
       }
     ],
     "goals": [
@@ -1193,9 +1193,9 @@
     "fields": [
       {
         "field": "Cisco CCNA",
-        "mode": "level",
-        "level": 0,
-        "total_minutes": null
+        "mode": "time",
+        "level": null,
+        "total_minutes": 1200
       }
     ],
     "goals": [

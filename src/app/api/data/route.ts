@@ -71,6 +71,16 @@ export async function GET(request: Request) {
         { error: "リアクションを取得できませんでした。" },
         { status: 400 },
       );
+    const commentCounts = await s.db.rpc("read_comment_counts", {
+      p_posts: (posts.data || [])
+        .filter((p: { kind: string }) => p.kind === "post")
+        .map((p: { id: string }) => p.id),
+    });
+    if (commentCounts.error)
+      return NextResponse.json(
+        { error: "返信数を取得できませんでした。" },
+        { status: 400 },
+      );
     const people = (profiles.data || []) as Profile[];
     const profile = selected.data?.[0] as Profile | undefined;
     if (profile && !people.some((p) => p.id === profile.id))
@@ -90,6 +100,7 @@ export async function GET(request: Request) {
         profiles: people,
         posts: posts.data,
         reactions: reactions.data,
+        commentCounts: commentCounts.data,
         studies: studies.data,
         connections: connections.data,
         counts: counts.data,
