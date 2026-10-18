@@ -2370,3 +2370,5 @@ html.pull-refresh-enabled { overscroll-behavior-y: contain; }
 .mfa-secret { display: block; overflow-wrap: anywhere; user-select: all; padding: 12px; background: #f4f6fa; }
 .mfa-enrollment img { max-width: 100%; height: auto; display: block; margin: 12px auto; }
 @media (max-width: 480px) { .mfa-challenge { margin: 24px 12px; } }
+
+.account-deletion-overlay { position: fixed; inset: 0; z-index: 10000; display: grid; place-content: center; padding: 24px; background: rgb(255 255 255 / 92%); color: #243248; text-align: center; }

@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import DeleteAccountPanel from "./delete-account-panel";
 import {
   useEffect,
   useState,
@@ -1417,6 +1418,7 @@ export default function StudyApp() {
                         </p>
                       )}
                     </form>
+                    <DeleteAccountPanel csrf={session?.csrf || ""} />
                   </>
                 )}
               </>

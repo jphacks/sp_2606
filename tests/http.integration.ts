@@ -16,6 +16,18 @@ test("HTTP: unauthenticated access and CSRF/Origin protections fail closed", asy
     "x-csrf-token": data.csrf,
     Origin: base,
   };
+  for (const extra of [
+    {},
+    { Origin: "https://attacker.invalid" },
+    { "x-csrf-token": "wrong" },
+  ]) {
+    const response = await fetch(base + "/api/account/delete", {
+      method: "POST",
+      headers: { ...headers, ...extra },
+      body: JSON.stringify({ password: "not-real", confirmation: "退会する" }),
+    });
+    assert.equal(response.status, Object.keys(extra).length ? 400 : 401);
+  }
   assert.equal((await fetch(base + "/api/data")).status, 401);
   assert.equal((await fetch(base + "/api/security-monitor")).status, 401);
   assert.equal((await fetch(base + "/api/mfa")).status, 401);
