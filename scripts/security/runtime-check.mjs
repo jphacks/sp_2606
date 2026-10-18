@@ -72,7 +72,33 @@ async function check() {
       headers: { Authorization: `Bearer ${token}` },
     },
   );
-  if (!res.ok) throw new Error("monitor_unavailable");
+  if (!res.ok) {
+    console.warn(
+      JSON.stringify({ diagnostic: "monitor_http", status: res.status }),
+    );
+    if (res.status === 401) {
+      const p = JSON.parse(
+        Buffer.from(token.split(".")[1], "base64url").toString("utf8"),
+      );
+      console.warn(
+        JSON.stringify({
+          diagnostic: "claim_comparison",
+          issuer: p.iss === "https://token.actions.githubusercontent.com",
+          audience: p.aud === "costep-security-monitor",
+          repository: p.repository === "jphacks/sp_2606",
+          repositoryId: p.repository_id === "1400418256",
+          ownerId: p.repository_owner_id === "10176253",
+          branch: p.ref === "refs/heads/main",
+          workflow:
+            p.workflow_ref ===
+            "jphacks/sp_2606/.github/workflows/runtime-monitor.yml@refs/heads/main",
+          subject: p.sub === "repo:jphacks/sp_2606:ref:refs/heads/main",
+          event: ["schedule", "workflow_dispatch"].includes(p.event_name),
+        }),
+      );
+    }
+    throw new Error("monitor_unavailable");
+  }
   const text = await res.text();
   if (text.length > 10000) throw new Error("invalid_metrics");
   return assessMetrics(JSON.parse(text));
@@ -84,7 +110,20 @@ if (
   let result;
   try {
     result = await check();
-  } catch {
+  } catch (error) {
+    const allowed = [
+      "invalid_oidc_provider",
+      "oidc_failed",
+      "monitor_unavailable",
+      "invalid_metrics",
+    ];
+    console.warn(
+      JSON.stringify({
+        diagnostic: allowed.includes(error?.message)
+          ? error.message
+          : "monitor_check_failed",
+      }),
+    );
     result = {
       version: 1,
       window_minutes: 30,
