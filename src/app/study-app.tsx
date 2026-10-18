@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import DeleteAccountPanel from "./delete-account-panel";
+import NotificationsPanel from "./notifications-panel";
 import {
   useEffect,
   useState,
@@ -664,9 +665,7 @@ export default function StudyApp() {
               <LockKeyhole size={14} />
               メールアドレスは他のユーザーに公開されません。
             </p>
-            <p className="dev-note">
-              開発中の初期版です。画像・通知は順次対応します。
-            </p>
+            <p className="dev-note">学習記録と仲間との交流に使えます。</p>
           </div>
         </section>
       </main>
@@ -745,13 +744,23 @@ export default function StudyApp() {
             </span>
           </a>
           <div className="topbar-actions">
-            <button
-              className="icon-button"
-              onClick={() => setNotice("通知機能は現在準備中です。")}
-              aria-label="通知の対応状況"
-            >
-              <Bell size={20} />
-            </button>
+            {data && session && (
+              <NotificationsPanel
+                key={data.me.id}
+                csrf={session.csrf}
+                userId={data.me.id}
+                people={data.profiles}
+                openProfile={openProfile}
+                onMessages={(id) => {
+                  setDmPeer(id);
+                  setView("messages");
+                }}
+                onConnections={() => {
+                  setOwner("");
+                  setView("people");
+                }}
+              />
+            )}
             <button className="topbar-logout" onClick={logout} disabled={busy}>
               <LogOut size={16} />
               ログアウト
@@ -1495,7 +1504,7 @@ export default function StudyApp() {
               <Blocks size={14} />
               開発中の初期版
               <br />
-              画像・通知・退会は未対応。実ユーザー公開前の安全確認は未完了です。
+              Webプッシュ通知は準備中です。
             </p>
             <p className="copyright">© 2026 CoStep</p>
           </aside>

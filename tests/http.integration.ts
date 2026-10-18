@@ -28,6 +28,27 @@ test("HTTP: unauthenticated access and CSRF/Origin protections fail closed", asy
     });
     assert.equal(response.status, Object.keys(extra).length ? 400 : 401);
   }
+  assert.equal((await fetch(base + "/api/notifications")).status, 401);
+  assert.equal(
+    (
+      await fetch(base + "/api/notifications", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ until: new Date().toISOString() }),
+      })
+    ).status,
+    401,
+  );
+  assert.equal(
+    (
+      await fetch(base + "/api/notifications", {
+        method: "POST",
+        headers: { ...headers, Origin: "https://attacker.invalid" },
+        body: "{}",
+      })
+    ).status,
+    400,
+  );
   assert.equal((await fetch(base + "/api/data")).status, 401);
   assert.equal((await fetch(base + "/api/security-monitor")).status, 401);
   assert.equal((await fetch(base + "/api/mfa")).status, 401);
