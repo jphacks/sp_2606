@@ -1,0 +1,32 @@
+name: Runtime security monitor
+on:
+  schedule:
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: runtime-security-monitor
+  cancel-in-progress: false
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      id-token: write
+      issues: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "24"
+      - name: Read protected aggregate counters and evaluate thresholds
+        run: node scripts/security/runtime-check.mjs "$RUNNER_TEMP/runtime-result.json"
+      - name: Notify operator of anomaly or unavailable monitor
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/security/notify-runtime.mjs "$RUNNER_TEMP/runtime-result.json"

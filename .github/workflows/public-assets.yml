@@ -1,0 +1,87 @@
+name: Public asset security
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "13,43 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gitleaks:
+    name: Public JavaScript secrets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      found: ${{ steps.report.outputs.found }}
+      report: ${{ steps.report.outputs.report }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "24"
+      - name: Install checksum-pinned Gitleaks
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/gitleaks.tar.gz"
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+            --output "$archive"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $archive" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/gitleaks-bin"
+          tar -xzf "$archive" -C "$RUNNER_TEMP/gitleaks-bin" gitleaks
+      - name: Scan and classify without exposing findings
+        id: report
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          report="$RUNNER_TEMP/secret-findings.json"
+          trap 'rm -rf "$RUNNER_TEMP/public-assets"; rm -f "$report" "$RUNNER_TEMP/secret-scan.log"' EXIT
+          node scripts/security/public-assets.mjs "$RUNNER_TEMP/public-assets"
+          set +e
+          "$RUNNER_TEMP/gitleaks-bin/gitleaks" dir "$RUNNER_TEMP/public-assets" --config .gitleaks.toml --redact --no-banner --exit-code 1 --report-format json --report-path "$report" > "$RUNNER_TEMP/secret-scan.log" 2>&1
+          status=$?
+          set -e
+          if [ "$status" -gt 1 ] || [ ! -f "$report" ]; then
+            echo "Secret scanner failed; do not treat this as a clean scan."
+            exit 2
+          fi
+          node scripts/security/incident-report.mjs "$report"
+          if [ "$status" -ne 0 ]; then
+            echo "Secret candidates detected. See the sanitized summary and incident response guide."
+            exit 1
+          fi
+  notify:
+    name: Notify operator
+    needs: gitleaks
+    # Untrusted PR code never receives an issue-writing token.
+    if: >-
+      always() && github.event_name != 'pull_request' &&
+      (needs.gitleaks.result == 'failure' || needs.gitleaks.outputs.found == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: public-asset-notification
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "24"
+      - name: Create or update incident issue (no secret values)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SECURITY_CONTACT: ryo7-7
+          SCAN_SOURCE: public_assets
+          SCAN_REPORT: ${{ needs.gitleaks.outputs.report }}
+          SCAN_RESULT: ${{ needs.gitleaks.result }}
+        run: node scripts/security/notify-incident.mjs

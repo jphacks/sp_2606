@@ -43,3 +43,7 @@ GitleaksのActionsは標準Secret Scanningの代替検査であり、標準機�
 Secret scanはCoStep用の3検出ルールを追加し、分類済み件数だけをジョブの概要に表示する。main・定期・手動実行で検出または検査失敗があれば、運営担当へのIssue通知を行う。PRにはIssue書き込み権限を渡さない。実行用権限が組織設定で拒否されたら通知ジョブも失敗するため、Actions結果を確認する。
 
 対応手順・停止フラグ・セッション無効化は [INCIDENT_RESPONSE.md](INCIDENT_RESPONSE.md) に記載。自動の鍵失効・交換は行わず、Vercelへの反映とサービス側での失効・交換は運営操作が必要。
+
+## 公開サイト側の追加監視
+
+Public asset securityとRuntime security monitorを追加。Git履歴検査とは別に公開JavaScriptと認証結果の集計を確認する。設計、しきい値、限界は [RUNTIME_SECURITY_MONITOR.md](RUNTIME_SECURITY_MONITOR.md) を参照。

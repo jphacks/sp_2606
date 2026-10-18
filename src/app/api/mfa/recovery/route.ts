@@ -1,3 +1,4 @@
+import { recordSecurityResult } from "@/lib/security-monitor";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import {
@@ -32,7 +33,7 @@ const input = z.discriminatedUnion("action", [
     })
     .strict(),
 ]);
-export async function POST(request: Request) {
+async function handlePOST(request: Request) {
   try {
     await validateMutation(request, 4096);
     const s = await currentSession(true);
@@ -186,4 +187,10 @@ export async function POST(request: Request) {
       { status: 400, headers },
     );
   }
+}
+
+export async function POST(request: Request) {
+  const response = await handlePOST(request);
+  await recordSecurityResult("mfa_recovery", response.status);
+  return response;
 }

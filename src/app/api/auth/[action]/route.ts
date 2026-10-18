@@ -1,3 +1,7 @@
+import {
+  recordSecurityResult,
+  type MonitorScope,
+} from "@/lib/security-monitor";
 import { NextResponse } from "next/server";
 import {
   config,
@@ -14,7 +18,7 @@ import {
 import { loginSchema, signupSchema } from "@/lib/validation";
 import { z } from "zod";
 export const dynamic = "force-dynamic";
-export async function POST(
+async function handlePOST(
   request: Request,
   { params }: { params: Promise<{ action: string }> },
 ) {
@@ -235,4 +239,20 @@ export async function POST(
       { status: 400 },
     );
   }
+}
+
+export async function POST(
+  request: Request,
+  context: { params: Promise<{ action: string }> },
+) {
+  const { action } = await context.params;
+  const scope: MonitorScope | undefined =
+    action === "login"
+      ? "login"
+      : action === "recover"
+        ? "password_email"
+        : undefined;
+  const response = await handlePOST(request, context);
+  if (scope) await recordSecurityResult(scope, response.status);
+  return response;
 }

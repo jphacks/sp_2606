@@ -17,7 +17,10 @@ const report = process.env.SCAN_REPORT
   : null;
 if (!failed && (!report || !Object.values(report.counts).some((n) => n > 0)))
   process.exit(0);
-const title = "[Security] 秘密情報検査：運営の対応が必要です";
+const title =
+  process.env.SCAN_SOURCE === "public_assets"
+    ? "[Security] 公開ファイル検査：運営の対応が必要です"
+    : "[Security] 秘密情報検査：運営の対応が必要です";
 const url = `https://github.com/${repo}/actions/runs/${run}`;
 const body = [
   "秘密情報の候補、または検査処理の失敗を検知しました。自動停止・自動鍵交換はしていません。",
