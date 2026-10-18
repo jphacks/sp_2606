@@ -64,6 +64,16 @@ async function check() {
   const { value: token } = await auth.json();
   if (typeof token !== "string" || token.length > 16000)
     throw new Error("oidc_failed");
+  const cleanup = await fetch(
+    "https://study-circle-pi.vercel.app/api/security-monitor/retention",
+    {
+      method: "POST",
+      redirect: "error",
+      signal: AbortSignal.timeout(10000),
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+  if (!cleanup.ok) throw new Error("monitor_unavailable");
   const res = await fetch(
     "https://study-circle-pi.vercel.app/api/security-monitor",
     {

@@ -12,7 +12,14 @@
     "test:http": "node --import tsx --test tests/http.integration.ts",
     "security:gate": "node scripts/security-gate.mjs",
     "test:ci": "node scripts/run-tests.mjs",
-    "incident:status": "node scripts/security/incident-status.mjs"
+    "incident:status": "node scripts/security/incident-status.mjs",
+    "backup:init": "node scripts/backup/cli.mjs init",
+    "backup:status": "node scripts/backup/cli.mjs status",
+    "backup:create": "node scripts/backup/cli.mjs create",
+    "backup:prune": "node scripts/backup/cli.mjs prune",
+    "backup:restore-test": "node scripts/backup/cli.mjs restore-test",
+    "backup:maintain": "node scripts/backup/cli.mjs maintain",
+    "backup:schedule": "node scripts/backup/schedule.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",

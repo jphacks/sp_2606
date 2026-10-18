@@ -28,6 +28,11 @@ test("HTTP: unauthenticated access and CSRF/Origin protections fail closed", asy
     });
     assert.equal(response.status, Object.keys(extra).length ? 400 : 401);
   }
+  assert.equal(
+    (await fetch(base + "/api/security-monitor/retention", { method: "POST" }))
+      .status,
+    401,
+  );
   assert.equal((await fetch(base + "/api/notifications")).status, 401);
   assert.equal(
     (

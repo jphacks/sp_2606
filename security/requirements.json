@@ -1227,19 +1227,28 @@
       "id": "DEL-04",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
+      "status": "implemented",
       "implementation": [
-        "docs/ACCOUNT_DELETION.md"
+        "scripts/backup/cli.mjs",
+        "supabase/migrations/202610190027_retention.sql",
+        "src/app/api/security-monitor/retention/route.ts"
       ],
-      "tests": [],
+      "tests": [
+        "tests/backup.test.ts",
+        "tests/retention.integration.ts"
+      ],
       "evidence": [
-        "docs/SECURITY_RECONCILIATION_20261019.md",
-        "docs/ACCOUNT_DELETION.md"
+        "scripts/backup/cli.mjs",
+        "supabase/migrations/202610190027_retention.sql",
+        "src/app/api/security-monitor/retention/route.ts",
+        "tests/backup.test.ts",
+        "tests/retention.integration.ts",
+        "docs/BACKUP_AND_RETENTION.md"
       ],
-      "reason": "バックアップ・運用ログ等の保持期限、削除再適用・例外説明は未整備。",
+      "reason": "通常DB即時削除、暗号化バックアップ7日、ID/退会日時8日に合意・実装。サービス側ログ等の全棚卸しは未完了。",
       "source_requirement": "バックアップ・監査/通報証拠・再申請制限記録の削除期限を決める。全削除方針と保持要件を勝手に両立済みとせず、必要例外は説明・合意",
       "reviewed_at": "2026-10-19",
-      "verification_scope": "未実施・未整備・証拠不足を含む。"
+      "verification_scope": "実装・隔離試験の範囲のみ。詳細と未確認部分はdocs/BACKUP_AND_RETENTION.md参照。"
     },
     {
       "id": "SYS-01",
@@ -1632,21 +1641,28 @@
       "id": "SYS-13",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
+      "status": "implemented",
       "implementation": [
-        "docs/SECURITY_IMPLEMENTATION_20261018.md",
-        "docs/RUNTIME_SECURITY_MONITOR.md"
+        "scripts/backup/cli.mjs",
+        "supabase/migrations/202610190027_retention.sql",
+        "src/app/api/security-monitor/retention/route.ts"
       ],
-      "tests": [],
+      "tests": [
+        "tests/backup.test.ts",
+        "tests/retention.integration.ts"
+      ],
       "evidence": [
-        "docs/SECURITY_RECONCILIATION_20261019.md",
-        "docs/SECURITY_IMPLEMENTATION_20261018.md",
-        "docs/RUNTIME_SECURITY_MONITOR.md"
+        "scripts/backup/cli.mjs",
+        "supabase/migrations/202610190027_retention.sql",
+        "src/app/api/security-monitor/retention/route.ts",
+        "tests/backup.test.ts",
+        "tests/retention.integration.ts",
+        "docs/BACKUP_AND_RETENTION.md"
       ],
-      "reason": "通報/運営管理、全費用上限・縮退、バックアップ取得と復元訓練は未整備/未確認。件数監視や緊急停止だけで達成にしない。",
+      "reason": "本番ダンプ暗号化取得・ローカルPostgreSQL復元、合成データの退会再適用を確認。Mac依存、Storage実体・独立退会記録・本番切替訓練は未整備。",
       "source_requirement": "DBとStorage実体を別にバックアップ、暗号化・権限制限・復元試験・削除再適用・保持期限を管理",
       "reviewed_at": "2026-10-19",
-      "verification_scope": "未実施・未整備・証拠不足を含む。"
+      "verification_scope": "実装・隔離試験の範囲のみ。詳細と未確認部分はdocs/BACKUP_AND_RETENTION.md参照。"
     },
     {
       "id": "SYS-14",

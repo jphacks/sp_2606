@@ -8,3 +8,11 @@ node_modules/
 
 # Generated local-only synthetic recommendation demo
 public/recommendation-demo.html
+
+# Encrypted backups and local-only encryption key
+.private-backups/
+.backup-key.local
+*.csbk
+
+.restore-test-state.local
+.backup-maintenance.plist
