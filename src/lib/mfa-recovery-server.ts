@@ -1,21 +1,26 @@
 import "server-only";
+import { incidentMode } from "./incident-policy";
 import nodemailer from "nodemailer";
 import { createClient } from "@supabase/supabase-js";
 import { config } from "./server";
 export function recoveryConfigured() {
-  return !!(
-    process.env.SUPABASE_RECOVERY_SECRET_KEY &&
-    process.env.RECOVERY_SMTP_HOST &&
-    process.env.RECOVERY_SMTP_USER &&
-    process.env.RECOVERY_SMTP_PASSWORD &&
-    process.env.RECOVERY_MAIL_FROM &&
-    ["465", "587"].includes(process.env.RECOVERY_SMTP_PORT || "465")
+  return (
+    incidentMode(process.env) === "none" &&
+    !!(
+      process.env.SUPABASE_RECOVERY_SECRET_KEY &&
+      process.env.RECOVERY_SMTP_HOST &&
+      process.env.RECOVERY_SMTP_USER &&
+      process.env.RECOVERY_SMTP_PASSWORD &&
+      process.env.RECOVERY_MAIL_FROM &&
+      ["465", "587"].includes(process.env.RECOVERY_SMTP_PORT || "465")
+    )
   );
 }
 export function recoveryAdmin() {
   const c = config(),
     key = process.env.SUPABASE_RECOVERY_SECRET_KEY;
-  if (!c || !key) throw new Error("recovery_not_configured");
+  if (!recoveryConfigured() || !c || !key)
+    throw new Error("recovery_not_configured");
   // Elevated client is restricted to this recovery module and its route.
   return createClient(c.url, key, {
     auth: {

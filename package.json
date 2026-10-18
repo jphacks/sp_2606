@@ -11,7 +11,8 @@
     "test:db": "node scripts/run-tests.mjs db",
     "test:http": "node --import tsx --test tests/http.integration.ts",
     "security:gate": "node scripts/security-gate.mjs",
-    "test:ci": "node scripts/run-tests.mjs"
+    "test:ci": "node scripts/run-tests.mjs",
+    "incident:status": "node scripts/security/incident-status.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",

@@ -1,4 +1,5 @@
 import "server-only";
+import { incidentMode, sessionAllowedSince } from "./incident-policy";
 import { cookies } from "next/headers";
 import { createClient, type Session } from "@supabase/supabase-js";
 import { randomBytes } from "node:crypto";
@@ -36,6 +37,7 @@ type Envelope = {
   user_id: string;
 };
 export function authClient() {
+  if (incidentMode(process.env) === "all") throw new Error("maintenance");
   const c = config();
   if (!c) throw new Error("not_configured");
   return createClient(c.url, c.key, {
@@ -47,6 +49,7 @@ export function authClient() {
   });
 }
 export async function saveSession(session: Session, created = Date.now()) {
+  if (incidentMode(process.env) === "all") throw new Error("maintenance");
   const c = config();
   if (!c) throw new Error("not_configured");
   await clearRecoveryProof();
@@ -122,6 +125,10 @@ export async function jsonBody(request: Request, maxBytes = 16384) {
   return JSON.parse(raw);
 }
 export async function currentSession(allowMfaPending = false) {
+  if (incidentMode(process.env) === "all") {
+    await clearSession();
+    return null;
+  }
   const c = config();
   if (!c) return null;
   const raw = (await cookies()).get(cookieName)?.value;
@@ -133,6 +140,7 @@ export async function currentSession(allowMfaPending = false) {
     !e.refresh_token ||
     !Number.isFinite(e.created) ||
     !Number.isFinite(e.seen) ||
+    !sessionAllowedSince(e.created, process.env) ||
     Date.now() - e.created > 7 * 86400000 ||
     Date.now() - e.seen > 86400000
   ) {
