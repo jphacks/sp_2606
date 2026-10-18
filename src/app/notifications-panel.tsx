@@ -198,15 +198,21 @@ export default function NotificationsPanel({
             {error && <p role="alert">{error}</p>}
             {post ? (
               <>
-                <button
-                  type="button"
-                  className="text-button"
-                  onClick={() => setPost(null)}
-                >
-                  通知へ戻る
-                </button>
-                <strong>{post.name}</strong>
-                <p className="post-body">{post.body}</p>
+                <div className="notification-post-navigation">
+                  <button
+                    type="button"
+                    className="text-button"
+                    onClick={() => setPost(null)}
+                  >
+                    通知へ戻る
+                  </button>
+                </div>
+                <div className="notification-post-content">
+                  <p className="notification-post-author">
+                    <strong>{post.name}</strong>
+                  </p>
+                  <p className="post-body">{post.body}</p>
+                </div>
                 <CommentsPanel
                   key={post.id}
                   postId={post.id}

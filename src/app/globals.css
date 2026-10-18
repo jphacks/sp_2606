@@ -2385,3 +2385,6 @@ html.pull-refresh-enabled { overscroll-behavior-y: contain; }
 .app-shell .notification-dialog .section-title h2 { flex:1; margin:0; font-size:20px; }
 .app-shell .notification-dialog .notification-item { font-size:14px; color:#263248; line-height:1.6; }
 .app-shell .notification-dialog .notification-item span, .app-shell .notification-dialog .notification-item strong { font-size:14px; }
+
+.notification-post-navigation { display:block; margin:12px 0; padding-bottom:10px; border-bottom:1px solid #e6e9f0; }
+.notification-post-author { display:block; margin:0 0 8px; font-size:14px; }
