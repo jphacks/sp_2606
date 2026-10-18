@@ -43,6 +43,8 @@ import CommentsPanel from "./comments-panel";
 import LearningFieldsEditor from "./learning-fields-editor";
 import GoalsEditor from "./goals-editor";
 import FieldSearch from "./field-search";
+import BackgroundBadge from "./background-badge";
+import ActivityFields from "./activity-fields";
 import { usePullRefresh } from "./use-pull-refresh";
 import StudyDashboard from "./study-dashboard";
 import { learningFieldLabel, learningFieldKind } from "@/lib/learning-catalog";
@@ -132,6 +134,24 @@ export default function StudyApp() {
     observer.observe(card);
     return () => observer.disconnect();
   }, [view, searchField, !!data]);
+  const [saveState, setSaveState] = useState<"saving" | "saved" | null>(null);
+  const saveDialog = useRef<HTMLDivElement>(null);
+  const saveFocus = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!saveState) return;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    saveDialog.current?.focus();
+    return () => {
+      document.body.style.overflow = overflow;
+      if (saveFocus.current?.isConnected) saveFocus.current.focus();
+    };
+  }, [saveState !== null]);
+  useEffect(() => {
+    if (saveState !== "saved") return;
+    const timer = window.setTimeout(() => setSaveState(null), 1600);
+    return () => window.clearTimeout(timer);
+  }, [saveState]);
   const loadVersion = useRef(0);
   useEffect(() => {
     if (!notice) return;
@@ -287,45 +307,39 @@ export default function StudyApp() {
               className="text-button"
               onClick={() => openProfile(p.owner_id)}
             >
-              <strong>{a?.display_name || "学習者"}</strong>
+              <strong>
+                {a?.display_name || "学習者"}
+                <BackgroundBadge attributes={a?.attributes} />
+              </strong>
             </button>
             <div className="post-field-meta">
-              {a &&
-                profileFields(a).map((item) => (
-                  <span
-                    className={`post-field-badge field-kind-${learningFieldKind(item.field)}`}
-                    key={item.field}
-                  >
-                    <span>{learningFieldLabel(item.field)}</span>
-                    <span className="post-field-level">
-                      {fieldExperience(item)}
-                    </span>
-                  </span>
-                ))}
-              <time className="time" dateTime={p.created_at}>
-                {new Date(p.created_at).toLocaleString("ja-JP", {
-                  month: "short",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </time>
+              {a && <ActivityFields key={a.id} fields={profileFields(a)} />}
             </div>
           </div>
-          {p.kind !== "study" && p.owner_id === data.me.id && (
-            <button
-              className="icon-button"
-              aria-label="つぶやきを削除"
-              onClick={() => {
-                if (confirm("このつぶやきを削除しますか？"))
-                  void mutate("delete-post", { id: p.id }).then((ok) => {
-                    if (ok) refresh?.();
-                  });
-              }}
-            >
-              <Trash2 size={15} />
-            </button>
-          )}
+          <div className="post-head-actions">
+            <time className="time post-created-at" dateTime={p.created_at}>
+              {new Date(p.created_at).toLocaleString("ja-JP", {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </time>
+            {p.kind !== "study" && p.owner_id === data.me.id && (
+              <button
+                className="icon-button"
+                aria-label="つぶやきを削除"
+                onClick={() => {
+                  if (confirm("このつぶやきを削除しますか？"))
+                    void mutate("delete-post", { id: p.id }).then((ok) => {
+                      if (ok) refresh?.();
+                    });
+                }}
+              >
+                <Trash2 size={15} />
+              </button>
+            )}
+          </div>
         </div>
         {p.kind === "study" ? (
           <div className="study-feed-card">
@@ -630,7 +644,7 @@ export default function StudyApp() {
     );
   return (
     <div className="app-shell">
-      <aside className="sidebar">
+      <aside className="sidebar" inert={saveState !== null}>
         <p className="nav-caption">メニュー</p>
         <nav>
           {nav.map((n) => (
@@ -688,7 +702,7 @@ export default function StudyApp() {
           </button>
         </div>
       </aside>
-      <div className="workspace">
+      <div className="workspace" inert={saveState !== null}>
         <header className="topbar">
           <a href="/" className="topbar-brand" aria-label="CoStep ホーム">
             <span className="costep-logo">
@@ -821,7 +835,12 @@ export default function StudyApp() {
                           id={data.profile.id}
                           name={data.profile.display_name}
                         />
-                        <h2>{data.profile.display_name}</h2>
+                        <h2>
+                          {data.profile.display_name}
+                          <BackgroundBadge
+                            attributes={data.profile.attributes}
+                          />
+                        </h2>
                         <p>{profileSummary(data.profile)}</p>
                         {profileGoalSummary(data.profile) && (
                           <p>目標：{profileGoalSummary(data.profile)}</p>
@@ -1089,6 +1108,7 @@ export default function StudyApp() {
                                 onClick={() => openProfile(p.id)}
                               >
                                 {p.display_name}
+                                <BackgroundBadge attributes={p.attributes} />
                               </button>
                             </h3>
                             <div className="tag-list">
@@ -1183,6 +1203,7 @@ export default function StudyApp() {
                     className="card settings-form"
                     onSubmit={async (e) => {
                       e.preventDefault();
+                      if (busy || saveState) return;
                       const f = new FormData(e.currentTarget);
                       if (
                         f.get("visibility") !== data.settings.visibility &&
@@ -1209,6 +1230,11 @@ export default function StudyApp() {
                         );
                         return;
                       }
+                      saveFocus.current =
+                        document.activeElement instanceof HTMLElement
+                          ? document.activeElement
+                          : null;
+                      setSaveState("saving");
                       const ok = await mutate("profile", {
                         attributes: {
                           background: f.get("background"),
@@ -1225,8 +1251,8 @@ export default function StudyApp() {
                         dm_policy: f.get("dm_policy"),
                         recommend: f.get("recommend") === "on",
                       });
+                      setSaveState(ok ? "saved" : null);
                       if (ok) {
-                        setNotice("プロフィールと公開設定を保存しました。");
                         if (!data.settings.profile_completed) {
                           setOwner("");
                           setView("feed");
@@ -1407,7 +1433,10 @@ export default function StudyApp() {
                 >
                   <Avatar id={p.id} name={p.display_name} small />
                   <span>
-                    <strong>{p.display_name}</strong>
+                    <strong>
+                      {p.display_name}
+                      <BackgroundBadge attributes={p.attributes} />
+                    </strong>
                     <small>{profileSummary(p)}</small>
                   </span>
                   <Plus size={15} />
@@ -1431,6 +1460,35 @@ export default function StudyApp() {
           </aside>
         </div>
       </div>
+      {saveState && (
+        <div className="settings-save-backdrop">
+          <div
+            className="settings-save-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-label={
+              saveState === "saving" ? "設定を保存中" : "設定を保存しました"
+            }
+            tabIndex={-1}
+            ref={saveDialog}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" && saveState === "saved")
+                setSaveState(null);
+            }}
+          >
+            <div role="status" aria-live="polite" aria-atomic="true">
+              {saveState === "saving" ? (
+                <LoaderCircle size={32} className="spin" aria-hidden="true" />
+              ) : (
+                <Check size={32} aria-hidden="true" />
+              )}
+              <strong>
+                {saveState === "saving" ? "保存中…" : "保存しました"}
+              </strong>
+            </div>
+          </div>
+        </div>
+      )}
       {(composer || record) && (
         <div
           className="modal-backdrop"

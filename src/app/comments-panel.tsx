@@ -2,8 +2,9 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { MessageCircle, Send, Trash2, RefreshCw } from "lucide-react";
 import ProfileAvatar from "./profile-avatar";
-import { fieldExperience, type Profile } from "@/lib/validation";
-import { learningFieldLabel, learningFieldKind } from "@/lib/learning-catalog";
+import BackgroundBadge from "./background-badge";
+import { type Profile } from "@/lib/validation";
+import ActivityFields from "./activity-fields";
 type Comment = {
   id: string;
   owner_id: string;
@@ -131,24 +132,23 @@ export default function CommentsPanel({
                   <strong>
                     {(c.author || people.find((p) => p.id === c.owner_id))
                       ?.display_name || "学習者"}
+                    <BackgroundBadge
+                      attributes={
+                        (c.author || people.find((p) => p.id === c.owner_id))
+                          ?.attributes
+                      }
+                    />
                   </strong>
                 </button>
                 <div className="post-field-meta">
-                  {(
-                    c.author?.learning_fields ||
-                    people.find((p) => p.id === c.owner_id)?.learning_fields ||
-                    []
-                  ).map((item) => (
-                    <span
-                      className={`post-field-badge field-kind-${learningFieldKind(item.field)}`}
-                      key={item.field}
-                    >
-                      <span>{learningFieldLabel(item.field)}</span>
-                      <span className="post-field-level">
-                        {fieldExperience(item)}
-                      </span>
-                    </span>
-                  ))}
+                  <ActivityFields
+                    fields={
+                      c.author?.learning_fields ||
+                      people.find((p) => p.id === c.owner_id)
+                        ?.learning_fields ||
+                      []
+                    }
+                  />
                 </div>
                 <small>
                   {new Date(c.created_at).toLocaleDateString("ja-JP")}
