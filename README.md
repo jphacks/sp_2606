@@ -8,7 +8,9 @@
 
 ### 新規登録画面
 
-[![CoStepの新規登録画面](docs/images/costep-signup.png)](https://study-circle-pi.vercel.app/)
+<a href="https://study-circle-pi.vercel.app/">
+  <img src="docs/images/costep-signup-mobile.png" alt="CoStepの新規登録画面（スマートフォン版）" width="390">
+</a>
 
 ## 製品概要
 
