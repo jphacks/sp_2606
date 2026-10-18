@@ -1,6 +1,14 @@
 # CoStep
 
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2026/07/IMG_5316.png)](https://www.youtube.com/watch?v=piaNsc6ilBI)
+<p align="center">
+  <img src="public/costep-logo.png" alt="CoStep ロゴ" width="360">
+</p>
+
+[CoStepを開く](https://study-circle-pi.vercel.app/)
+
+### 新規登録画面
+
+[![CoStepの新規登録画面](docs/images/costep-signup.png)](https://study-circle-pi.vercel.app/)
 
 ## 製品概要
 
