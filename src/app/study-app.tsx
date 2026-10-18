@@ -43,6 +43,7 @@ import CommentsPanel from "./comments-panel";
 import LearningFieldsEditor from "./learning-fields-editor";
 import GoalsEditor from "./goals-editor";
 import FieldSearch from "./field-search";
+import { usePullRefresh } from "./use-pull-refresh";
 import StudyDashboard from "./study-dashboard";
 import { learningFieldLabel, learningFieldKind } from "@/lib/learning-catalog";
 import { goalsSchema, profileGoalSummary } from "@/lib/goals";
@@ -191,6 +192,19 @@ export default function StudyApp() {
   useEffect(() => {
     load().catch((e) => setError(e.message));
   }, [load]);
+  const [searchRefresh, setSearchRefresh] = useState(0);
+  const refreshFeed = async () => {
+    try {
+      await load();
+      setSearchRefresh((v) => v + 1);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "更新できませんでした。");
+    }
+  };
+  const pullRefresh = usePullRefresh(
+    view === "feed" && !!data && !composer && !record,
+    refreshFeed,
+  );
   async function mutate(action: string, body: unknown) {
     if (busy) return false;
     if (action === "post" && !data?.settings.profile_completed) {
@@ -720,6 +734,26 @@ export default function StudyApp() {
         </div>
         <div className="content-wrap">
           <section className="main-content">
+            {view === "feed" &&
+              (pullRefresh.distance > 0 || pullRefresh.refreshing) && (
+                <div
+                  className="pull-refresh-status"
+                  role="status"
+                  style={{
+                    height: pullRefresh.refreshing ? 44 : pullRefresh.distance,
+                  }}
+                >
+                  <RefreshCw
+                    size={17}
+                    className={pullRefresh.refreshing ? "spin" : ""}
+                  />
+                  {pullRefresh.refreshing
+                    ? "更新中…"
+                    : pullRefresh.distance >= 50.4
+                      ? "離して更新"
+                      : "下に引っ張って更新"}
+                </div>
+              )}
             <div className="page-heading">
               <div>
                 <h1>
@@ -737,9 +771,13 @@ export default function StudyApp() {
                 </h1>
               </div>
               <button
-                className="icon-button"
+                className={
+                  view === "feed"
+                    ? "icon-button desktop-feed-refresh"
+                    : "icon-button"
+                }
                 aria-label="データを再取得"
-                onClick={() => load().catch((e) => setError(e.message))}
+                onClick={() => void refreshFeed()}
               >
                 <RefreshCw size={18} />
               </button>
@@ -767,6 +805,7 @@ export default function StudyApp() {
               <>
                 {view === "feed" && (
                   <FieldSearch
+                    refreshKey={searchRefresh}
                     field={searchField}
                     onField={setSearchField}
                     renderActivity={renderActivity}

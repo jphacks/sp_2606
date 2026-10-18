@@ -21,11 +21,13 @@ type Counts = { post_id: string; total: number }[];
 type Reactions = { post_id: string; total: number; liked: boolean }[];
 export default function FieldSearch({
   field,
+  refreshKey,
   onField,
   renderActivity,
   onCompose,
   showCompose,
 }: {
+  refreshKey: number;
   showCompose: boolean;
   onCompose: () => void;
   field: string;
@@ -72,7 +74,7 @@ export default function FieldSearch({
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, [field, version]);
+  }, [field, version, refreshKey]);
   return (
     <section
       className={`field-search${field ? " has-results" : ""}`}

@@ -2309,3 +2309,24 @@ h1, h2, h3, h4, .section-title, .study-section-title {
   .app-shell .field-search:not(.has-results),
   .app-shell .field-search.has-results .field-search-box { top: calc(56px + env(safe-area-inset-top)); }
 }
+
+html.pull-refresh-enabled { overscroll-behavior-y: contain; }
+.pull-refresh-status { display: flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; color: #65738a; font-size: 12px; }
+@media (pointer: coarse) { .app-shell .desktop-feed-refresh { display: none; } }
+/* The refresh hint must not push content down and change the scroll position. */
+.app-shell .pull-refresh-status {
+  position: fixed;
+  top: 60px;
+  left: calc(50% + 124px);
+  transform: translateX(-50%);
+  z-index: 12;
+  padding: 0 14px;
+  border-radius: 0 0 16px 16px;
+  background: #fff;
+  box-shadow: 0 3px 12px #243c6318;
+  pointer-events: none;
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .app-shell .pull-refresh-status { top: calc(56px + env(safe-area-inset-top)); left: 50%; }
+}
