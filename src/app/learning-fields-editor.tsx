@@ -190,7 +190,7 @@ export default function LearningFieldsEditor({
             </div>
             {learningFieldKind(item.field) === "certification" && (
               <p className="form-note">
-                資格・認定は累計学習時間で登録します。
+                資格・認定は累計学習時間で登録します。学習記録の追加・削除に応じて、累計学習時間は自動更新されます。
               </p>
             )}
             {item.mode === "level" ? (

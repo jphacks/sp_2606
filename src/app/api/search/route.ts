@@ -35,8 +35,22 @@ export async function GET(request: Request) {
         { error: "検索できませんでした。少し待ってから再度お試しください。" },
         { status: 400, headers },
       );
+    const ids =
+      kind === "posts"
+        ? (result.data || [])
+            .filter((p: { kind: string }) => p.kind === "post")
+            .map((p: { id: string }) => p.id)
+        : [];
+    const [reactions, commentCounts] = await Promise.all([
+      s.db.rpc("read_post_reactions", { p_posts: ids }),
+      s.db.rpc("read_comment_counts", { p_posts: ids }),
+    ]);
+    if (reactions.error || commentCounts.error)
+      throw new Error("Search metadata unavailable");
     return NextResponse.json(
       {
+        reactions: reactions.data || [],
+        commentCounts: commentCounts.data || [],
         results:
           kind === "posts"
             ? (result.data || []).map(

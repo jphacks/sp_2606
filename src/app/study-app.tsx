@@ -222,8 +222,12 @@ export default function StudyApp() {
       setBusy(false);
     }
   }
-  function reactionButton(post: Post) {
-    const reaction = data?.reactions?.find((item) => item.post_id === post.id);
+  function reactionButton(
+    post: Post,
+    reactions = data?.reactions,
+    refresh?: () => void,
+  ) {
+    const reaction = reactions?.find((item) => item.post_id === post.id);
     const liked = reaction?.liked ?? false;
     return (
       <button
@@ -233,13 +237,126 @@ export default function StudyApp() {
         aria-pressed={liked}
         disabled={busy}
         onClick={() =>
-          void mutate("reaction", { post: post.id, enabled: !liked })
+          void mutate("reaction", { post: post.id, enabled: !liked }).then(
+            (ok) => {
+              if (ok) refresh?.();
+            },
+          )
         }
       >
         <Heart size={17} fill={liked ? "currentColor" : "none"} />
         <span>いいね</span>
         <span>{reaction?.total ?? 0}</span>
       </button>
+    );
+  }
+  function renderActivity(
+    p: Data["posts"][number],
+    a: Profile | undefined,
+    counts = data?.commentCounts,
+    reactions = data?.reactions,
+    refresh?: () => void,
+  ) {
+    if (!data || !session) return null;
+    return (
+      <article className="post-card" key={`${p.kind}-${p.id}`}>
+        <div className="post-head">
+          <button
+            className="profile-link"
+            aria-label={(a?.display_name || "学習者") + "のプロフィール"}
+            onClick={() => openProfile(p.owner_id)}
+          >
+            <Avatar id={a?.id} name={a?.display_name || "学習者"} />
+          </button>
+          <div>
+            <button
+              className="text-button"
+              onClick={() => openProfile(p.owner_id)}
+            >
+              <strong>{a?.display_name || "学習者"}</strong>
+            </button>
+            <div className="post-field-meta">
+              {a &&
+                profileFields(a).map((item) => (
+                  <span
+                    className={`post-field-badge field-kind-${learningFieldKind(item.field)}`}
+                    key={item.field}
+                  >
+                    <span>{learningFieldLabel(item.field)}</span>
+                    <span className="post-field-level">
+                      {fieldExperience(item)}
+                    </span>
+                  </span>
+                ))}
+              <time className="time" dateTime={p.created_at}>
+                {new Date(p.created_at).toLocaleString("ja-JP", {
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </time>
+            </div>
+          </div>
+          {p.kind !== "study" && p.owner_id === data.me.id && (
+            <button
+              className="icon-button"
+              aria-label="つぶやきを削除"
+              onClick={() => {
+                if (confirm("このつぶやきを削除しますか？"))
+                  void mutate("delete-post", { id: p.id }).then((ok) => {
+                    if (ok) refresh?.();
+                  });
+              }}
+            >
+              <Trash2 size={15} />
+            </button>
+          )}
+        </div>
+        {p.kind === "study" ? (
+          <div className="study-feed-card">
+            <div className="study-feed-heading">
+              <span className="study-feed-label">
+                <ChartNoAxesColumn size={16} />
+                学習記録
+              </span>
+              <button
+                className="text-button"
+                onClick={() => openStudy(p.owner_id, p.study_date || "")}
+              >
+                学習記録を見る <ArrowUpRight size={14} />
+              </button>
+            </div>
+            <div className="study-feed-summary">
+              <strong>{learningFieldLabel(p.field || "")}</strong>
+              <span>{p.minutes}分</span>
+            </div>
+            {p.memo && <p className="study-feed-memo">{p.memo}</p>}
+          </div>
+        ) : (
+          <>
+            <p className="post-body">{p.body}</p>
+            <CommentsPanel
+              key={p.id + data.connections.blocked.join()}
+              postId={p.id}
+              initialTotal={counts?.find((c) => c.post_id === p.id)?.total ?? 0}
+              actionsBefore={reactionButton(p, reactions, refresh)}
+              actionsAfter={
+                <button
+                  className="text-button"
+                  onClick={() => openStudy(p.owner_id)}
+                >
+                  学習記録を見る <ArrowUpRight size={14} />
+                </button>
+              }
+              userId={data.me.id}
+              csrf={session.csrf}
+              people={data.profiles}
+              openProfile={openProfile}
+            />
+          </>
+        )}
+      </article>
     );
   }
   async function authSubmit(event: FormEvent<HTMLFormElement>) {
@@ -652,8 +769,7 @@ export default function StudyApp() {
                   <FieldSearch
                     field={searchField}
                     onField={setSearchField}
-                    onProfile={openProfile}
-                    onStudy={openStudy}
+                    renderActivity={renderActivity}
                     onCompose={() => setComposer(true)}
                     showCompose={!composerVisible}
                   />
@@ -794,6 +910,7 @@ export default function StudyApp() {
                             ["similar", "おすすめ"],
                             ["following", "フォロー中"],
                             ["recommended", "最新投稿"],
+                            ["mine", "自分の投稿"],
                           ].map(([k, v]) => (
                             <button
                               key={k}
@@ -825,149 +942,12 @@ export default function StudyApp() {
                           </button>
                         </div>
                       ) : (
-                        data.posts.map((p) => {
-                          const a = data.profiles.find(
-                            (x) => x.id === p.owner_id,
-                          );
-                          return (
-                            <article
-                              className="post-card"
-                              key={`${p.kind}-${p.id}`}
-                            >
-                              <div className="post-head">
-                                <button
-                                  className="profile-link"
-                                  aria-label={
-                                    (a?.display_name || "学習者") +
-                                    "のプロフィール"
-                                  }
-                                  onClick={() => openProfile(p.owner_id)}
-                                >
-                                  <Avatar
-                                    id={a?.id}
-                                    name={a?.display_name || "学習者"}
-                                  />
-                                </button>
-                                <div>
-                                  <button
-                                    className="text-button"
-                                    onClick={() => openProfile(p.owner_id)}
-                                  >
-                                    <strong>
-                                      {a?.display_name || "学習者"}
-                                    </strong>
-                                  </button>
-                                  <div className="post-field-meta">
-                                    {a &&
-                                      profileFields(a).map((item) => (
-                                        <span
-                                          className={`post-field-badge field-kind-${learningFieldKind(item.field)}`}
-                                          key={item.field}
-                                        >
-                                          <span>
-                                            {learningFieldLabel(item.field)}
-                                          </span>
-                                          <span className="post-field-level">
-                                            {fieldExperience(item)}
-                                          </span>
-                                        </span>
-                                      ))}
-                                    <time
-                                      className="time"
-                                      dateTime={p.created_at}
-                                    >
-                                      {new Date(p.created_at).toLocaleString(
-                                        "ja-JP",
-                                        {
-                                          month: "short",
-                                          day: "numeric",
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                        },
-                                      )}
-                                    </time>
-                                  </div>
-                                </div>
-                                {p.kind !== "study" &&
-                                  p.owner_id === me?.id && (
-                                    <button
-                                      className="icon-button"
-                                      aria-label="つぶやきを削除"
-                                      onClick={() => {
-                                        if (
-                                          confirm(
-                                            "このつぶやきを削除しますか？",
-                                          )
-                                        )
-                                          void mutate("delete-post", {
-                                            id: p.id,
-                                          });
-                                      }}
-                                    >
-                                      <Trash2 size={15} />
-                                    </button>
-                                  )}
-                              </div>
-                              {p.kind === "study" ? (
-                                <div className="study-feed-card">
-                                  <div className="study-feed-heading">
-                                    <span className="study-feed-label">
-                                      <ChartNoAxesColumn size={16} />
-                                      学習記録
-                                    </span>
-                                    <button
-                                      className="text-button"
-                                      onClick={() =>
-                                        openStudy(
-                                          p.owner_id,
-                                          p.study_date || "",
-                                        )
-                                      }
-                                    >
-                                      学習記録を見る <ArrowUpRight size={14} />
-                                    </button>
-                                  </div>
-                                  <div className="study-feed-summary">
-                                    <strong>
-                                      {learningFieldLabel(p.field || "")}
-                                    </strong>
-                                    <span>{p.minutes}分</span>
-                                  </div>
-                                  {p.memo && (
-                                    <p className="study-feed-memo">{p.memo}</p>
-                                  )}
-                                </div>
-                              ) : (
-                                <>
-                                  <p className="post-body">{p.body}</p>
-                                  <CommentsPanel
-                                    key={p.id + data.connections.blocked.join()}
-                                    postId={p.id}
-                                    initialTotal={
-                                      data.commentCounts?.find(
-                                        (c) => c.post_id === p.id,
-                                      )?.total ?? 0
-                                    }
-                                    actionsBefore={reactionButton(p)}
-                                    actionsAfter={
-                                      <button
-                                        className="text-button"
-                                        onClick={() => openStudy(p.owner_id)}
-                                      >
-                                        学習記録を見る{" "}
-                                        <ArrowUpRight size={14} />
-                                      </button>
-                                    }
-                                    userId={me.id}
-                                    csrf={session.csrf}
-                                    people={data.profiles}
-                                    openProfile={openProfile}
-                                  />
-                                </>
-                              )}
-                            </article>
-                          );
-                        })
+                        data.posts.map((p) =>
+                          renderActivity(
+                            p,
+                            data.profiles.find((a) => a.id === p.owner_id),
+                          ),
+                        )
                       )}
                     </div>
                   </>
@@ -1214,7 +1194,11 @@ export default function StudyApp() {
                         }
                       }
                     }}
-                    key={me.id + data.settings.visibility + JSON.stringify(me.learning_fields)}
+                    key={
+                      me.id +
+                      data.settings.visibility +
+                      JSON.stringify(me.learning_fields)
+                    }
                   >
                     {!data.settings.profile_completed && (
                       <p className="form-note">

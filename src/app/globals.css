@@ -2277,3 +2277,35 @@ h1, h2, h3, h4, .section-title, .study-section-title {
 .profile-attributes-summary dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .comment > div { flex-wrap: wrap; }
 .comment > div > .post-field-meta { flex-basis: 100%; order: 2; margin: 0; }
+
+.app-shell .feed-tabs { flex-wrap: nowrap; gap: 8px; }
+.app-shell .feed-tabs button { flex: 1; justify-content: center; white-space: nowrap; }
+@media (max-width: 480px) {
+  .app-shell .feed-tabs { gap: 4px; }
+  .app-shell .feed-tabs button { font-size: 10px; padding-left: 0; padding-right: 0; }
+}
+
+/* Compact brand header, with search following directly below it. */
+.app-shell .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 60px;
+  background: #fff;
+  border-bottom: 1px solid #e8edf4;
+}
+.app-shell .topbar-brand .costep-logo { width: 116px; }
+.app-shell .topbar-actions { gap: 8px; }
+.app-shell .topbar-actions button { color: #65738a; }
+.app-shell .field-search:not(.has-results),
+.app-shell .field-search.has-results .field-search-box { top: 60px; }
+@media (max-width: 720px) {
+  .app-shell .topbar {
+    height: calc(56px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 12px 0;
+  }
+  .app-shell .topbar-brand .costep-logo { width: 112px; }
+  .app-shell .topbar-logout { font-size: 11px; padding: 8px 0 8px 4px; min-height: 44px; }
+  .app-shell .field-search:not(.has-results),
+  .app-shell .field-search.has-results .field-search-box { top: calc(56px + env(safe-area-inset-top)); }
+}

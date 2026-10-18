@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     const q = new URL(request.url).searchParams;
     // RPC mode names are retained: similar = おすすめ, recommended = 最新投稿.
     const mode = q.get("mode") || "similar";
-    if (!["recommended", "similar", "following"].includes(mode))
+    if (!["recommended", "similar", "following", "mine"].includes(mode))
       return NextResponse.json(
         { error: "表示条件が不正です。" },
         { status: 400 },
@@ -34,8 +34,13 @@ export async function GET(request: Request) {
     ] = await Promise.all([
       s.db.rpc("read_profiles"),
       s.db.rpc("read_activity_feed", {
-        p_mode: mode,
-        p_owner: q.get("scope") === "profile" ? owner : null,
+        p_mode: mode === "mine" ? "recommended" : mode,
+        p_owner:
+          mode === "mine" && q.get("scope") !== "profile"
+            ? s.user.id
+            : q.get("scope") === "profile"
+              ? owner
+              : null,
       }),
       s.db.rpc("read_study", { p_owner: owner, p_from: from, p_to: to }),
       s.db.rpc("get_connections"),
