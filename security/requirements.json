@@ -5,741 +5,1847 @@
       "id": "PRIV-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/app/api/data/route.ts",
+        "src/lib/validation.ts"
+      ],
+      "tests": [
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/app/api/data/route.ts",
+        "src/lib/validation.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "公開APIのDTOは分離。全APIのメール/内部識別情報の応答棚卸しは継続確認。",
+      "source_requirement": "認証用メール・内部IDと、公開表示名を分離する。公開APIへメール・認証情報・端末識別情報を返さない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "PRIV-02",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/profile-attributes.ts",
+        "src/app/profile-attributes-editor.tsx"
+      ],
+      "tests": [
+        "tests/learning-fields.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/profile-attributes.ts",
+        "src/app/profile-attributes-editor.tsx",
+        "tests/learning-fields.integration.ts"
+      ],
+      "reason": "ニックネーム利用。所属・業務・都道府県は任意。文系/理系は必須。UI入力条件はコード確認。",
+      "source_requirement": "本名・正確な住所・学校/勤務先を登録必須にしない案を採用判断する。居住地は機能未確定であり自動追加しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。",
+      "effective_requirement": "本名・所属・業務を必須にしない。文系/理系は必須。居住地は任意の都道府県選択。入力属性はログイン済み全員に公開。"
     },
     {
       "id": "PRIV-03",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/profile-attributes.ts",
+        "src/app/profile-attributes-editor.tsx"
+      ],
+      "tests": [
+        "tests/learning-fields.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/profile-attributes.ts",
+        "src/app/profile-attributes-editor.tsx",
+        "tests/learning-fields.integration.ts"
+      ],
+      "reason": "都道府県の任意選択を実装。公開項目説明の十分性は利用者評価が必要。",
+      "source_requirement": "居住地採用時は任意・粗い地域を基本とし、正確な住所/現在地を公開しない。公開項目を説明する",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "PRIV-04",
       "priority": "P1",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "未成年向けの注意喚起・通報・運営体制・個人情報説明は未整備を含む。",
+      "source_requirement": "未成年利用を前提に個人情報・外部連絡先・画像の注意喚起、ブロック、通報、勧誘・嫌がらせへの対応を用意する",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "PRIV-05",
       "priority": "P0",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "未成年向けの注意喚起・通報・運営体制・個人情報説明は未整備を含む。",
+      "source_requirement": "匿名表示を完全匿名・追跡不能と説明しない。運営や認証基盤が情報を扱う範囲を明示する",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "AUTH-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/lib/session-crypto.ts",
+        "src/app/api/auth/[action]/route.ts"
+      ],
+      "tests": [
+        "tests/security.test.ts",
+        "tests/mfa.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/lib/session-crypto.ts",
+        "src/app/api/auth/[action]/route.ts",
+        "tests/security.test.ts",
+        "tests/mfa.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "有効セッション・操作権限の検証あり。本番全経路の実アカウント横断試験は未完了。",
+      "source_requirement": "各API/Server Actionで有効なセッションと対象操作の権限を確認。未認証・偽造・期限切れを拒否",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "AUTH-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/app/api/auth/[action]/route.ts"
+      ],
+      "tests": [
+        "tests/recovery-proof.test.ts",
+        "tests/mfa-policy.test.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/app/api/auth/[action]/route.ts",
+        "tests/recovery-proof.test.ts",
+        "tests/mfa-policy.test.ts"
+      ],
+      "reason": "Cookie/短期許可・再認証を実装。全端末失効、メール配送、Auth直接経路の本番制限等の網羅確認は未完了。",
+      "source_requirement": "ログアウト時のセッション・更新資格情報・Cookie・機密キャッシュを処理し、端末の利用者切替で混線させない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "AUTH-03",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/app/api/auth/[action]/route.ts"
+      ],
+      "tests": [
+        "tests/recovery-proof.test.ts",
+        "tests/mfa-policy.test.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/app/api/auth/[action]/route.ts",
+        "tests/recovery-proof.test.ts",
+        "tests/mfa-policy.test.ts"
+      ],
+      "reason": "Cookie/短期許可・再認証を実装。全端末失効、メール配送、Auth直接経路の本番制限等の網羅確認は未完了。",
+      "source_requirement": "メール確認・単回/期限付き再設定・列挙抑制・認証/メール送信制限・重要操作再認証",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "PROF-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/validation.ts",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170003_follow_approval.sql"
+      ],
+      "tests": [
+        "tests/database.integration.ts",
+        "tests/learning-fields.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/validation.ts",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170003_follow_approval.sql",
+        "tests/database.integration.ts",
+        "tests/learning-fields.integration.ts"
+      ],
+      "reason": "本人の許可列のみ更新する実装と隔離試験あり。全公開応答の項目棚卸しは継続確認。",
+      "source_requirement": "本人のみ許可列/公開設定/DM受信設定を変更可能。role/is_admin/停止状態の変更は禁止",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "PROF-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/validation.ts",
+        "src/app/learning-fields-editor.tsx"
+      ],
+      "tests": [
+        "tests/learning-fields.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/validation.ts",
+        "src/app/learning-fields-editor.tsx",
+        "tests/learning-fields.integration.ts"
+      ],
+      "reason": "入力値検証を実装。自己申告で能力保証ではない旨の表示・説明の充足は追加確認。",
+      "source_requirement": "分野・習熟度の許可値と長さを検証。習熟度は自己申告と表示し能力保証と混同しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "PROF-03",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/validation.ts",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170003_follow_approval.sql"
+      ],
+      "tests": [
+        "tests/database.integration.ts",
+        "tests/learning-fields.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/validation.ts",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170003_follow_approval.sql",
+        "tests/database.integration.ts",
+        "tests/learning-fields.integration.ts"
+      ],
+      "reason": "本人の許可列のみ更新する実装と隔離試験あり。全公開応答の項目棚卸しは継続確認。",
+      "source_requirement": "公開プロフィールからメール・トークン・Push購読・管理属性・他人のフォロー一覧を除外",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "STUDY-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "verified",
+      "implementation": [
+        "supabase/migrations/202610170020_cumulative_study_time.sql"
+      ],
+      "tests": [
+        "tests/cumulative-time.integration.ts",
+        "tests/database.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170020_cumulative_study_time.sql",
+        "tests/cumulative-time.integration.ts",
+        "tests/database.integration.ts"
+      ],
+      "reason": "隔離DBで所有者固定・他人削除拒否を検証。本番実利用者試験の完了を意味しない。",
+      "source_requirement": "作成者を認証済み本人に固定。他人の更新/削除/所有者差替えを拒否",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "隔離DB・コード照合・HTTP（個別根拠参照）。本番の全条件を保証しない。"
     },
     {
       "id": "STUDY-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "verified",
+      "implementation": [
+        "src/lib/validation.ts",
+        "supabase/migrations/202610170001_foundation.sql"
+      ],
+      "tests": [
+        "tests/database.integration.ts",
+        "tests/cumulative-time.integration.ts",
+        "tests/study-dashboard.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/validation.ts",
+        "supabase/migrations/202610170001_foundation.sql",
+        "tests/database.integration.ts",
+        "tests/cumulative-time.integration.ts",
+        "tests/study-dashboard.integration.ts"
+      ],
+      "reason": "分単位の整数1〜1440、日付・日上限とrequest ID重複を隔離DBで確認。",
+      "source_requirement": "時間は有限の非負整数とし、単位・上限・日付・再送の重複処理を定義",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "隔離DB・コード照合・HTTP（個別根拠参照）。本番の全条件を保証しない。"
     },
     {
       "id": "STUDY-03",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170013_study_memo_visibility.sql",
+        "supabase/migrations/202610170014_follower_visibility.sql",
+        "src/app/study-app.tsx"
+      ],
+      "tests": [
+        "tests/study-dashboard.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170013_study_memo_visibility.sql",
+        "supabase/migrations/202610170014_follower_visibility.sql",
+        "src/app/study-app.tsx",
+        "tests/study-dashboard.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "reason": "原要件からの合意変更をeffective_requirementに記載。表示済み情報の遠隔消去や本番全経路の検証は保証しない。",
+      "source_requirement": "グラフは許可された時間/分野/日付だけ集計。文章・画像を同梱せず、学習時間タブの画像添付APIを設けない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。",
+      "effective_requirement": "学習分野・日付・時間は原則ログイン済み利用者に公開。任意の学習メモは文章の共通公開設定で別に認可し、許可された場合だけ返す。学習時間タブへの画像添付は不可。"
     },
     {
       "id": "VIS-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170013_study_memo_visibility.sql",
+        "supabase/migrations/202610170014_follower_visibility.sql",
+        "src/app/study-app.tsx"
+      ],
+      "tests": [
+        "tests/study-dashboard.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170013_study_memo_visibility.sql",
+        "supabase/migrations/202610170014_follower_visibility.sql",
+        "src/app/study-app.tsx",
+        "tests/study-dashboard.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "reason": "原要件からの合意変更をeffective_requirementに記載。表示済み情報の遠隔消去や本番全経路の検証は保証しない。",
+      "source_requirement": "登録時に文章公開範囲を選択。不正値拒否、未指定で全公開にしない。自己紹介は公開プロフィールとして区別",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。",
+      "effective_requirement": "登録のメール確認後、プロフィール/設定で文章の共通公開範囲を設定。初期値は承認済みフォロワーのみ。不正値を拒否。"
     },
     {
       "id": "VIS-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170013_study_memo_visibility.sql",
+        "supabase/migrations/202610170014_follower_visibility.sql",
+        "src/app/study-app.tsx"
+      ],
+      "tests": [
+        "tests/study-dashboard.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170013_study_memo_visibility.sql",
+        "supabase/migrations/202610170014_follower_visibility.sql",
+        "src/app/study-app.tsx",
+        "tests/study-dashboard.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "reason": "原要件からの合意変更をeffective_requirementに記載。表示済み情報の遠隔消去や本番全経路の検証は保証しない。",
+      "source_requirement": "現在の全体設定と双方向の相互関係で文章・画像を毎回認可。関係解除/範囲変更/ブロックは過去分にも適用",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。",
+      "effective_requirement": "現在の共通公開設定と承認済みフォロワーの関係で認可する。相互フォロー不要。取消・範囲変更・ブロックを過去分にも適用する。"
     },
     {
       "id": "VIS-03",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170013_study_memo_visibility.sql",
+        "supabase/migrations/202610170014_follower_visibility.sql",
+        "src/app/study-app.tsx"
+      ],
+      "tests": [
+        "tests/study-dashboard.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170013_study_memo_visibility.sql",
+        "supabase/migrations/202610170014_follower_visibility.sql",
+        "src/app/study-app.tsx",
+        "tests/study-dashboard.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "reason": "原要件からの合意変更をeffective_requirementに記載。表示済み情報の遠隔消去や本番全経路の検証は保証しない。",
+      "source_requirement": "投稿・画像の検索/推薦/通知/集計/キャッシュにも同じ公開範囲を適用。画面上で隠すだけは禁止",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "IMG-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/avatar-image.ts",
+        "src/app/api/avatar/[id]/route.ts"
+      ],
+      "tests": [
+        "tests/avatar.test.ts",
+        "tests/avatar.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/avatar-image.ts",
+        "src/app/api/avatar/[id]/route.ts",
+        "tests/avatar.test.ts",
+        "tests/avatar.integration.ts"
+      ],
+      "reason": "現在はプロフィール画像のみ。再変換・画素/容量制限・都度認可あり。HEIC実機、時間/メモリ上限の実環境試験は未完了。",
+      "source_requirement": "JPEG/PNG/WebPに加えHEIF/HEIC静止画の取り込みを要件化。内容を検査しJPEG/WebPへ変換。拡張子変更だけは禁止",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "IMG-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/avatar-image.ts",
+        "src/app/api/avatar/[id]/route.ts"
+      ],
+      "tests": [
+        "tests/avatar.test.ts",
+        "tests/avatar.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/avatar-image.ts",
+        "src/app/api/avatar/[id]/route.ts",
+        "tests/avatar.test.ts",
+        "tests/avatar.integration.ts"
+      ],
+      "reason": "現在はプロフィール画像のみ。再変換・画素/容量制限・都度認可あり。HEIC実機、時間/メモリ上限の実環境試験は未完了。",
+      "source_requirement": "容量/画素/処理時間/メモリ上限、安全なデコード・再エンコード、EXIF/GPS削除、ランダム保存名、未検証画像の隔離",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "IMG-03",
       "priority": "P0",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "src/lib/avatar-image.ts",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/avatar-image.ts",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "投稿画像・Private Storageは未実装。現在のプロフィール画像経路と原要件を混同せず、画像内個人情報の注意表示も追加確認。",
+      "source_requirement": "Private Storageを基本とし本文と同じ認可。原本/サムネイル/変換後の全版を管理。他人の削除/上書きを拒否",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "IMG-04",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/avatar-image.ts",
+        "src/app/api/avatar/[id]/route.ts"
+      ],
+      "tests": [
+        "tests/avatar.test.ts",
+        "tests/avatar.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/avatar-image.ts",
+        "src/app/api/avatar/[id]/route.ts",
+        "tests/avatar.test.ts",
+        "tests/avatar.integration.ts"
+      ],
+      "reason": "現在はプロフィール画像のみ。再変換・画素/容量制限・都度認可あり。HEIC実機、時間/メモリ上限の実環境試験は未完了。",
+      "source_requirement": "取得済署名URLは期限まで使える可能性があるため、即時遮断対象は都度認可する配信経路を用いる",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "IMG-05",
       "priority": "P1",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "src/lib/avatar-image.ts",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/avatar-image.ts",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "投稿画像・Private Storageは未実装。現在のプロフィール画像経路と原要件を混同せず、画像内個人情報の注意表示も追加確認。",
+      "source_requirement": "氏名・顔・学校/勤務先・連絡先が写っていないか投稿前に注意を表示。EXIF削除が画像内情報を消さないと説明",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "POST-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/validation.ts",
+        "src/app/comments-panel.tsx",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170017_comment_counts.sql"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts",
+        "tests/comment-counts.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/validation.ts",
+        "src/app/comments-panel.tsx",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170017_comment_counts.sql",
+        "tests/conversations.integration.ts",
+        "tests/comment-counts.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "本人性・親可視性・長さ・安全表示・件数の隔離試験あり。URL/Unicode等全攻撃面の侵入試験は未完了。",
+      "source_requirement": "投稿/返信の名義偽装・他人の編集/削除を拒否。本文/タグの型・長さ・個数・URLをサーバー検証",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "POST-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/validation.ts",
+        "src/app/comments-panel.tsx",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170017_comment_counts.sql"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts",
+        "tests/comment-counts.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/validation.ts",
+        "src/app/comments-panel.tsx",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170017_comment_counts.sql",
+        "tests/conversations.integration.ts",
+        "tests/comment-counts.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "本人性・親可視性・長さ・安全表示・件数の隔離試験あり。URL/Unicode等全攻撃面の侵入試験は未完了。",
+      "source_requirement": "HTMLを実行せず安全に表示。悪意あるタグ・Unicode・外部URLを考慮",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "COM-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/validation.ts",
+        "src/app/comments-panel.tsx",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170017_comment_counts.sql"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts",
+        "tests/comment-counts.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/validation.ts",
+        "src/app/comments-panel.tsx",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170017_comment_counts.sql",
+        "tests/conversations.integration.ts",
+        "tests/comment-counts.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "本人性・親可視性・長さ・安全表示・件数の隔離試験あり。URL/Unicode等全攻撃面の侵入試験は未完了。",
+      "source_requirement": "親投稿の閲覧権限・ブロック・停止を確認。非相互でも閲覧可能なら返信可",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "COM-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/validation.ts",
+        "src/app/comments-panel.tsx",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170017_comment_counts.sql"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts",
+        "tests/comment-counts.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/validation.ts",
+        "src/app/comments-panel.tsx",
+        "src/app/api/mutate/[action]/route.ts",
+        "supabase/migrations/202610170017_comment_counts.sql",
+        "tests/conversations.integration.ts",
+        "tests/comment-counts.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "本人性・親可視性・長さ・安全表示・件数の隔離試験あり。URL/Unicode等全攻撃面の侵入試験は未完了。",
+      "source_requirement": "返信と件数/検索は親の可視性を超えない。親の削除/公開変更に追従し、連投を制限",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "FOLLOW-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170003_follow_approval.sql"
+      ],
+      "tests": [
+        "tests/follow-approval.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170003_follow_approval.sql",
+        "tests/follow-approval.integration.ts"
+      ],
+      "reason": "方向別承認・自己/偽装・一覧保護を実装。並行実行の本番負荷条件は追加検証。",
+      "source_requirement": "フォロー元偽装・重複・自己フォローを防止し作成/解除を制限。人数のみ公開し他人の一覧を取得させない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "REC-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "verified",
+      "implementation": [
+        "supabase/migrations/202610170018_experience_and_feed.sql",
+        "src/lib/validation.ts"
+      ],
+      "tests": [
+        "tests/experience-feed.integration.ts",
+        "tests/recommendations.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170018_experience_and_feed.sql",
+        "src/lib/validation.ts",
+        "tests/experience-feed.integration.ts",
+        "tests/recommendations.integration.ts"
+      ],
+      "reason": "推薦処理の入力を分野・経験・目標に限定するコードを確認。DM/限定本文を推薦計算に渡さない。検証環境は隔離DB。",
+      "source_requirement": "推薦は公開を許可した分野・習熟度・目標を基本に使用。DM・限定文章・秘密を使用しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "隔離DB・コード照合・HTTP（個別根拠参照）。本番の全条件を保証しない。"
     },
     {
       "id": "REC-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170018_experience_and_feed.sql",
+        "supabase/migrations/202610170020_cumulative_study_time.sql"
+      ],
+      "tests": [
+        "tests/experience-feed.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/field-search.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170018_experience_and_feed.sql",
+        "supabase/migrations/202610170020_cumulative_study_time.sql",
+        "tests/experience-feed.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/field-search.integration.ts"
+      ],
+      "reason": "非表示条件、件数制限、資格の累計時間利用を実装。実運用での計算負荷と全経路の迂回確認は追加検証。",
+      "source_requirement": "掲載拒否・停止・ブロックを推薦候補とキャッシュに反映。学習時間の推薦利用は採用前に説明と判断を記録",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "FEED-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170018_experience_and_feed.sql",
+        "supabase/migrations/202610170020_cumulative_study_time.sql"
+      ],
+      "tests": [
+        "tests/experience-feed.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/field-search.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170018_experience_and_feed.sql",
+        "supabase/migrations/202610170020_cumulative_study_time.sql",
+        "tests/experience-feed.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/field-search.integration.ts"
+      ],
+      "reason": "非表示条件、件数制限、資格の累計時間利用を実装。実運用での計算負荷と全経路の迂回確認は追加検証。",
+      "source_requirement": "近いレベル/おすすめ/フォロー中すべてで閲覧可能な投稿のみ抽出。本文・抜粋・タグ・件数・理由から漏らさない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "FEED-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170018_experience_and_feed.sql",
+        "supabase/migrations/202610170020_cumulative_study_time.sql"
+      ],
+      "tests": [
+        "tests/experience-feed.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/field-search.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170018_experience_and_feed.sql",
+        "supabase/migrations/202610170020_cumulative_study_time.sql",
+        "tests/experience-feed.integration.ts",
+        "tests/activity-feed.integration.ts",
+        "tests/field-search.integration.ts"
+      ],
+      "reason": "非表示条件、件数制限、資格の累計時間利用を実装。実運用での計算負荷と全経路の迂回確認は追加検証。",
+      "source_requirement": "他人のIDで非公開フィードを取得させず、ページ件数・検索・計算量・再計算頻度を制限",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "REC-03",
       "priority": "P2",
       "level": "SHOULD",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "docs/GOALS.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/GOALS.md"
+      ],
+      "reason": "推薦占有の悪用評価・対策効果検証は未実施。",
+      "source_requirement": "時間の水増し・タグ連投等で推薦を占有する悪用を評価し改善",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "DM-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170002_conversations.sql",
+        "src/app/api/messages/route.ts"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170002_conversations.sql",
+        "src/app/api/messages/route.ts",
+        "tests/conversations.integration.ts"
+      ],
+      "reason": "当事者・最新設定・申請枠の隔離試験あり。並列操作や本番の全タイミング競合を網羅したとは扱わない。",
+      "source_requirement": "本文・会話・検索・件数・Realtimeは参加者限定。送信者偽装・参加者の勝手な変更を拒否",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "DM-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170002_conversations.sql",
+        "src/app/api/messages/route.ts"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170002_conversations.sql",
+        "src/app/api/messages/route.ts",
+        "tests/conversations.integration.ts"
+      ],
+      "reason": "当事者・最新設定・申請枠の隔離試験あり。並列操作や本番の全タイミング競合を網羅したとは扱わない。",
+      "source_requirement": "毎送信時に受信者の最新設定、相互関係、ブロック、停止、承認状態を検証。既存会話も例外にしない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "DM-03",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170002_conversations.sql",
+        "src/app/api/messages/route.ts"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170002_conversations.sql",
+        "src/app/api/messages/route.ts",
+        "tests/conversations.integration.ts"
+      ],
+      "reason": "当事者・最新設定・申請枠の隔離試験あり。並列操作や本番の全タイミング競合を網羅したとは扱わない。",
+      "source_requirement": "承認は受信者のみ。承認前1件、初回込み2申請を永続・原子的に強制。同時申請/削除/フォロー変更でリセット不可",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "DM-04",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170002_conversations.sql",
+        "src/app/api/messages/route.ts"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170002_conversations.sql",
+        "src/app/api/messages/route.ts",
+        "tests/conversations.integration.ts"
+      ],
+      "reason": "当事者・最新設定・申請枠の隔離試験あり。並列操作や本番の全タイミング競合を網羅したとは扱わない。",
+      "source_requirement": "2回目は最初が解決してから申請できる案とし、未承認中の重複を拒否。待機時間/拒否の扱いはQ03で確定",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "DM-05",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "verified",
+      "implementation": [
+        "supabase/migrations/202610170002_conversations.sql"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170002_conversations.sql",
+        "tests/conversations.integration.ts"
+      ],
+      "reason": "自分の送信分削除、body=nullと削除表示を隔離DBで確認。検索/引用/送信キューの別機能は現行非採用。",
+      "source_requirement": "自分の送信DMのみ削除可。双方へ削除表示を返し、本文・引用・検索・未送信キューから元本文を除去",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "隔離DB・コード照合・HTTP（個別根拠参照）。本番の全条件を保証しない。"
     },
     {
       "id": "DM-06",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170002_conversations.sql",
+        "supabase/migrations/202610190025_notifications.sql"
+      ],
+      "tests": [
+        "tests/conversations.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170002_conversations.sql",
+        "supabase/migrations/202610190025_notifications.sql",
+        "tests/conversations.integration.ts",
+        "tests/notifications.integration.ts"
+      ],
+      "reason": "削除本文の取得拒否・通知へ本文を返さない実装あり。バックアップ保持/削除期限は未決定。",
+      "source_requirement": "削除済本文をログ・通知・推薦へ出さず、バックアップ残存/削除期限を設計。スクリーンショット回収を保証しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "BLOCK-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170003_follow_approval.sql",
+        "supabase/migrations/202610170002_conversations.sql"
+      ],
+      "tests": [
+        "tests/database.integration.ts",
+        "tests/conversations.integration.ts",
+        "tests/study-dashboard.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170003_follow_approval.sql",
+        "supabase/migrations/202610170002_conversations.sql",
+        "tests/database.integration.ts",
+        "tests/conversations.integration.ts",
+        "tests/study-dashboard.integration.ts"
+      ],
+      "reason": "双方向制限・過去DM閲覧例外を検証。解除時の全関係/申請状態は追加確認。",
+      "source_requirement": "ブロック後の双方向接触・投稿/学習実績閲覧を拒否し、過去DMは閲覧のみ。解除で旧関係や申請枠を自動復元しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "STOP-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610180021_optional_mfa.sql",
+        "src/lib/validation.ts"
+      ],
+      "tests": [
+        "tests/database.integration.ts",
+        "tests/conversations.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610180021_optional_mfa.sql",
+        "src/lib/validation.ts",
+        "tests/database.integration.ts",
+        "tests/conversations.integration.ts"
+      ],
+      "reason": "停止・権限の本人更新拒否と操作拒否あり。本番の停止運用UI・管理権限管理は未整備。",
+      "source_requirement": "停止前JWTでもコメント/DM不可。停止・権限は本人変更不可。他操作の停止範囲は別途確定",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "NOTIF-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "verified",
+      "implementation": [
+        "supabase/migrations/202610190025_notifications.sql",
+        "src/app/api/notifications/route.ts"
+      ],
+      "tests": [
+        "tests/notifications.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610190025_notifications.sql",
+        "src/app/api/notifications/route.ts",
+        "tests/notifications.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "Auth IDを受信者/既読更新先に固定。他人用ID引数・任意通知生成APIなし。匿名/第三者・直接テーブル拒否を隔離DB/HTTPで確認。",
+      "source_requirement": "受信者のみ取得・既読更新。一般利用者の偽通知生成・宛先差替えを拒否",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "隔離DB・コード照合・HTTP（個別根拠参照）。本番の全条件を保証しない。"
     },
     {
       "id": "NOTIF-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610190025_notifications.sql",
+        "src/app/notifications-panel.tsx"
+      ],
+      "tests": [
+        "tests/notifications.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610190025_notifications.sql",
+        "src/app/notifications-panel.tsx",
+        "tests/notifications.integration.ts"
+      ],
+      "reason": "正規データから最新100件を構成し、ブロック・削除・公開範囲を再確認。30秒更新の実画面確認あり。全競合/負荷条件は未完了。",
+      "source_requirement": "コメント/フォロー/DMの正規イベントから生成。重複・増幅制限、配信時/遷移時の最新認可",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "PUSH-01",
       "priority": "P0",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "public/sw.js",
+        "docs/NOTIFICATIONS.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "public/sw.js",
+        "docs/NOTIFICATIONS.md"
+      ],
+      "reason": "Webプッシュは未実装・延期。原要件の必須機能なので、未採用を理由に達成や適用除外にしない。",
+      "source_requirement": "利用者の操作に基づき許可を求め、購読の登録/変更/解除を本人に紐付けて認可",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "PUSH-02",
       "priority": "P0",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "public/sw.js",
+        "docs/NOTIFICATIONS.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "public/sw.js",
+        "docs/NOTIFICATIONS.md"
+      ],
+      "reason": "Webプッシュは未実装・延期。原要件の必須機能なので、未採用を理由に達成や適用除外にしない。",
+      "source_requirement": "購読URL/鍵・VAPID秘密鍵を保護。endpointは信頼先に限定しSSRFを防ぐ",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "PUSH-03",
       "priority": "P0",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "public/sw.js",
+        "docs/NOTIFICATIONS.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "public/sw.js",
+        "docs/NOTIFICATIONS.md"
+      ],
+      "reason": "Webプッシュは未実装・延期。原要件の必須機能なので、未採用を理由に達成や適用除外にしない。",
+      "source_requirement": "通知は汎用文を基本とし限定文章・DM本文なし。ログアウト/切替/停止/退会で配信停止・誤配送防止",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "PUSH-04",
       "priority": "P1",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "public/sw.js",
+        "docs/NOTIFICATIONS.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "public/sw.js",
+        "docs/NOTIFICATIONS.md"
+      ],
+      "reason": "Webプッシュは未実装・延期。原要件の必須機能なので、未採用を理由に達成や適用除外にしない。",
+      "source_requirement": "拒否/未対応/失効でも基本機能継続、失効清掃・再送上限・kill switch",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "DEL-01",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/app/api/account/delete/route.ts",
+        "src/lib/delete-account.ts",
+        "docs/ACCOUNT_DELETION.md"
+      ],
+      "tests": [
+        "tests/account-deletion.test.ts",
+        "tests/account-deletion.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/app/api/account/delete/route.ts",
+        "src/lib/delete-account.ts",
+        "docs/ACCOUNT_DELETION.md",
+        "tests/account-deletion.test.ts",
+        "tests/account-deletion.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "本人再認証/MFA・Authハード削除・関連DB連鎖削除を検証。本番実削除と外部全保存先確認は未完了。",
+      "source_requirement": "退会は再認証し、資格情報・配信・保留ジョブをまず停止。その後本人由来データを全保存先から削除",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "DEL-02",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/app/api/account/delete/route.ts",
+        "src/lib/delete-account.ts",
+        "docs/ACCOUNT_DELETION.md"
+      ],
+      "tests": [
+        "tests/account-deletion.test.ts",
+        "tests/account-deletion.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/app/api/account/delete/route.ts",
+        "src/lib/delete-account.ts",
+        "docs/ACCOUNT_DELETION.md",
+        "tests/account-deletion.test.ts",
+        "tests/account-deletion.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "本人再認証/MFA・Authハード削除・関連DB連鎖削除を検証。本番実削除と外部全保存先確認は未完了。",
+      "source_requirement": "Auth/DB/Storageの原本・派生画像/DM/返信/通知/推薦キャッシュ/任意AIレポートを削除対象として棚卸しし、相手側送信DM本文も削除",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "DEL-03",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/app/api/account/delete/route.ts",
+        "src/lib/delete-account.ts",
+        "docs/ACCOUNT_DELETION.md"
+      ],
+      "tests": [
+        "tests/account-deletion.test.ts",
+        "tests/account-deletion.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/app/api/account/delete/route.ts",
+        "src/lib/delete-account.ts",
+        "docs/ACCOUNT_DELETION.md",
+        "tests/account-deletion.test.ts",
+        "tests/account-deletion.integration.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "本人再認証/MFA・Authハード削除・関連DB連鎖削除を検証。本番実削除と外部全保存先確認は未完了。",
+      "source_requirement": "退会後は残る会話表示から本人を識別させず、全文を残さない。削除後の最小構造だけ残すかは実装前に確認",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "DEL-04",
       "priority": "P1",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "docs/ACCOUNT_DELETION.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/ACCOUNT_DELETION.md"
+      ],
+      "reason": "バックアップ・運用ログ等の保持期限、削除再適用・例外説明は未整備。",
+      "source_requirement": "バックアップ・監査/通報証拠・再申請制限記録の削除期限を決める。全削除方針と保持要件を勝手に両立済みとせず、必要例外は説明・合意",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "SYS-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js"
+      ],
+      "tests": [
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js",
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "認可/権限/ヘッダー/キャッシュの確認あり。管理キーは復旧・監視・退会で広い権限を共用し、全要件の本番網羅試験・最小権限分離は未完了。",
+      "source_requirement": "改造可能なクライアントを信用せず、認証と認可を分離。原則拒否・最小権限。画面非表示のみで制御しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js"
+      ],
+      "tests": [
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js",
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "認可/権限/ヘッダー/キャッシュの確認あり。管理キーは復旧・監視・退会で広い権限を共用し、全要件の本番網羅試験・最小権限分離は未完了。",
+      "source_requirement": "Data API公開テーブルのRLS・操作別USING/WITH CHECK・所有者固定・列権限・GRANT/REVOKE/default privilegesを管理",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-03",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js"
+      ],
+      "tests": [
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js",
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "認可/権限/ヘッダー/キャッシュの確認あり。管理キーは復旧・監視・退会で広い権限を共用し、全要件の本番網羅試験・最小権限分離は未完了。",
+      "source_requirement": "Viewのsecurity_invoker等、関数のinvoker/definer・固定search_path・EXECUTE権限、RPC/Storage/Realtime全経路をレビュー",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-04",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js"
+      ],
+      "tests": [
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js",
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "認可/権限/ヘッダー/キャッシュの確認あり。管理キーは復旧・監視・退会で広い権限を共用し、全要件の本番網羅試験・最小権限分離は未完了。",
+      "source_requirement": "通常操作にservice_roleを使わない。秘密をコード/Git/クライアント/ログ/AI入力へ出さない。公開用キーと秘密キーを区別",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-05",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js"
+      ],
+      "tests": [
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js",
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "認可/権限/ヘッダー/キャッシュの確認あり。管理キーは復旧・監視・退会で広い権限を共用し、全要件の本番網羅試験・最小権限分離は未完了。",
+      "source_requirement": "XSS安全表示・強制CSP・Cookie認証のCSRF/Origin検査・CORS制限・HTTPS・安全なセッション保存/更新/失効",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-06",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js"
+      ],
+      "tests": [
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js",
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "認可/権限/ヘッダー/キャッシュの確認あり。管理キーは復旧・監視・退会で広い権限を共用し、全要件の本番網羅試験・最小権限分離は未完了。",
+      "source_requirement": "SQLパラメータ化・URL/パス/redirect検証・SSRF防止。エラーにSQL・トークン・内部構造を出さない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-07",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js"
+      ],
+      "tests": [
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "src/lib/server.ts",
+        "src/proxy.ts",
+        "src/lib/mfa-recovery-server.ts",
+        "src/lib/security-monitor.ts",
+        "src/app/api/account/delete/route.ts",
+        "public/sw.js",
+        "tests/leakage-audit.integration.ts",
+        "tests/security.test.ts",
+        "tests/pwa.test.ts",
+        "tests/http.integration.ts"
+      ],
+      "reason": "認可/権限/ヘッダー/キャッシュの確認あり。管理キーは復旧・監視・退会で広い権限を共用し、全要件の本番網羅試験・最小権限分離は未完了。",
+      "source_requirement": "利用者別HTML/RSC/API/画像/署名URL/認証応答を共有キャッシュしない。SWは公開静的資産許可リストを基本とする",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。",
+      "effective_requirement": "個人向け応答を共有キャッシュせず、SWはnetwork-only。オフラインでは案内だけを返す。"
     },
     {
       "id": "SYS-08",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170001_foundation.sql",
+        ".github/workflows/ci.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/secrets.yml"
+      ],
+      "tests": [
+        "tests/database.integration.ts",
+        "tests/leakage-audit.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170001_foundation.sql",
+        ".github/workflows/ci.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/secrets.yml",
+        "tests/database.integration.ts",
+        "tests/leakage-audit.integration.ts"
+      ],
+      "reason": "DB予算と自動検査あり。直接Auth等全経路制限、環境分離、運用手順の全履歴遵守は未確認。",
+      "source_requirement": "API/RPC/Storage/Auth/Realtime直接経路も制限。永続・原子的カウンタ、並列/一括/upsert迂回検証。BFFだけで完結としない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-09",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170001_foundation.sql",
+        ".github/workflows/ci.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/secrets.yml"
+      ],
+      "tests": [
+        "tests/database.integration.ts",
+        "tests/leakage-audit.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170001_foundation.sql",
+        ".github/workflows/ci.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/secrets.yml",
+        "tests/database.integration.ts",
+        "tests/leakage-audit.integration.ts"
+      ],
+      "reason": "DB予算と自動検査あり。直接Auth等全経路制限、環境分離、運用手順の全履歴遵守は未確認。",
+      "source_requirement": "本番/開発/preview分離、再現可能マイグレーション、依存/秘密/静的解析/権限テスト、Advisor確認",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-10",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "supabase/migrations/202610170001_foundation.sql",
+        ".github/workflows/ci.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/secrets.yml"
+      ],
+      "tests": [
+        "tests/database.integration.ts",
+        "tests/leakage-audit.integration.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "supabase/migrations/202610170001_foundation.sql",
+        ".github/workflows/ci.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/secrets.yml",
+        "tests/database.integration.ts",
+        "tests/leakage-audit.integration.ts"
+      ],
+      "reason": "DB予算と自動検査あり。直接Auth等全経路制限、環境分離、運用手順の全履歴遵守は未確認。",
+      "source_requirement": "AI生成コードを未検証案として差分レビュー。RLS無効化、無根拠な全件許可、テスト削除、警告隠し、架空結果は禁止",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-11",
       "priority": "P1",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "docs/SECURITY_IMPLEMENTATION_20261018.md",
+        "docs/RUNTIME_SECURITY_MONITOR.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md",
+        "docs/RUNTIME_SECURITY_MONITOR.md"
+      ],
+      "reason": "通報/運営管理、全費用上限・縮退、バックアップ取得と復元訓練は未整備/未確認。件数監視や緊急停止だけで達成にしない。",
+      "source_requirement": "通報・運営削除・警告・停止/解除・監査、管理者MFA・専用認可。編集可能プロフィールで管理者判定しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "SYS-12",
       "priority": "P1",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "docs/SECURITY_IMPLEMENTATION_20261018.md",
+        "docs/RUNTIME_SECURITY_MONITOR.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md",
+        "docs/RUNTIME_SECURITY_MONITOR.md"
+      ],
+      "reason": "通報/運営管理、全費用上限・縮退、バックアップ取得と復元訓練は未整備/未確認。件数監視や緊急停止だけで達成にしない。",
+      "source_requirement": "DB/配信/画像/メール/関数/LLMの利用量と費用上限を確認し、警告・縮退・停止を用意。アラートを課金上限としない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "SYS-13",
       "priority": "P1",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "docs/SECURITY_IMPLEMENTATION_20261018.md",
+        "docs/RUNTIME_SECURITY_MONITOR.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md",
+        "docs/RUNTIME_SECURITY_MONITOR.md"
+      ],
+      "reason": "通報/運営管理、全費用上限・縮退、バックアップ取得と復元訓練は未整備/未確認。件数監視や緊急停止だけで達成にしない。",
+      "source_requirement": "DBとStorage実体を別にバックアップ、暗号化・権限制限・復元試験・削除再適用・保持期限を管理",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "SYS-14",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "docs/INCIDENT_RESPONSE.md",
+        "src/lib/incident-policy.ts"
+      ],
+      "tests": [
+        "tests/incident-response.test.ts",
+        "tests/runtime-security.test.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/INCIDENT_RESPONSE.md",
+        "src/lib/incident-policy.ts",
+        "tests/incident-response.test.ts",
+        "tests/runtime-security.test.ts"
+      ],
+      "reason": "手順・停止・作成日時制限・通知を実装。実キー失効/交換と本番停止再開訓練は未実施。",
+      "source_requirement": "事故時の停止→証拠保全→キー/セッション失効→調査→修正→連絡判断→再開判定を準備",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "SYS-15",
       "priority": "P1",
       "level": "MUST",
       "status": "unverified",
-      "implementation": [],
+      "implementation": [
+        "docs/security-requirements.md"
+      ],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/security-requirements.md"
+      ],
+      "reason": "ASVS公式IDごとの適用判定と実装・証拠対応は未完了。準拠宣言はしない。",
+      "source_requirement": "ASVS 5.0.0を基準版とし、適用公式要件ID・本書ID・実装・テスト・証拠の対応表を作る。全適合を推測しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未実施・未整備・証拠不足を含む。"
     },
     {
       "id": "SYS-16",
       "priority": "P2",
       "level": "SHOULD",
-      "status": "unverified",
-      "implementation": [],
-      "tests": [],
-      "evidence": [],
-      "reason": null
+      "status": "implemented",
+      "implementation": [
+        "docs/MFA_IMPLEMENTATION.md",
+        "docs/RUNTIME_SECURITY_MONITOR.md"
+      ],
+      "tests": [
+        "tests/mfa.integration.ts",
+        "tests/runtime-security.test.ts"
+      ],
+      "evidence": [
+        "docs/SECURITY_RECONCILIATION_20261019.md",
+        "docs/MFA_IMPLEMENTATION.md",
+        "docs/RUNTIME_SECURITY_MONITOR.md",
+        "tests/mfa.integration.ts",
+        "tests/runtime-security.test.ts"
+      ],
+      "reason": "任意MFA・メール復旧・監視を実装。推薦悪用評価、担当/期限等は未整備。",
+      "source_requirement": "一般利用者MFA、監視/復旧自動化、推薦悪用検知を改善。延期理由・代替策・担当・期限を記録",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "コード照合と関連テストあり。ただし要件全体の達成判定ではない。"
     },
     {
       "id": "AI-01",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
+      "status": "not_applicable",
       "implementation": [],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "package.json",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "任意の週次LLM/PDFレポート機能は現行リリースで未採用・未公開。AIコーディングの禁止事項はSYS-10で別管理。将来有効化する前に本要件を再適用する。",
+      "source_requirement": "採用前に対象年齢・提供地域・入力利用/保持・契約条件・課金を公式資料で確認。今回の未成年利用と両立するサービスを選ぶ",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未確認"
     },
     {
       "id": "AI-02",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
+      "status": "not_applicable",
       "implementation": [],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "package.json",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "任意の週次LLM/PDFレポート機能は現行リリースで未採用・未公開。AIコーディングの禁止事項はSYS-10で別管理。将来有効化する前に本要件を再適用する。",
+      "source_requirement": "Gemini APIは候補にすぎない。2026-10-17確認の追加規約では18歳未満がアクセスする可能性のあるAPI Clientに制限があるため、現構成で利用可能と判断しない。成人向けボタンだけで解決としない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未確認"
     },
     {
       "id": "AI-03",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
+      "status": "not_applicable",
       "implementation": [],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "package.json",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "任意の週次LLM/PDFレポート機能は現行リリースで未採用・未公開。AIコーディングの禁止事項はSYS-10で別管理。将来有効化する前に本要件を再適用する。",
+      "source_requirement": "本人の明示的有効化と説明のもと、本人の必要最小限の週次集計だけ送信。DM/画像/他人の文章/メール/秘密は送信しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未確認"
     },
     {
       "id": "AI-04",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
+      "status": "not_applicable",
       "implementation": [],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "package.json",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "任意の週次LLM/PDFレポート機能は現行リリースで未採用・未公開。AIコーディングの禁止事項はSYS-10で別管理。将来有効化する前に本要件を再適用する。",
+      "source_requirement": "自由文は命令として実行せず、プロンプト注入を考慮。LLMにDB権限・外部ツール実行・任意URL取得を与えない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未確認"
     },
     {
       "id": "AI-05",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
+      "status": "not_applicable",
       "implementation": [],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "package.json",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "任意の週次LLM/PDFレポート機能は現行リリースで未採用・未公開。AIコーディングの禁止事項はSYS-10で別管理。将来有効化する前に本要件を再適用する。",
+      "source_requirement": "キーはサーバー限定。1人1週1ジョブ・重複防止・入力/出力トークン・時間・再試行・全体予算を制限。失敗で無限再実行しない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未確認"
     },
     {
       "id": "AI-06",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
+      "status": "not_applicable",
       "implementation": [],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "package.json",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "任意の週次LLM/PDFレポート機能は現行リリースで未採用・未公開。AIコーディングの禁止事項はSYS-10で別管理。将来有効化する前に本要件を再適用する。",
+      "source_requirement": "PDF/生成文は本人のみ閲覧・ダウンロード。公開Storageへ置かず、推測URL/ID差替えを拒否",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未確認"
     },
     {
       "id": "AI-07",
       "priority": "P0",
       "level": "MUST",
-      "status": "unverified",
+      "status": "not_applicable",
       "implementation": [],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "package.json",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "任意の週次LLM/PDFレポート機能は現行リリースで未採用・未公開。AIコーディングの禁止事項はSYS-10で別管理。将来有効化する前に本要件を再適用する。",
+      "source_requirement": "PDFは管理されたテンプレートへ安全な文字列として出力。スクリプト/任意HTML/外部画像/ローカルファイルを読み込ませない",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未確認"
     },
     {
       "id": "AI-08",
       "priority": "P1",
       "level": "MUST",
-      "status": "unverified",
+      "status": "not_applicable",
       "implementation": [],
       "tests": [],
-      "evidence": [],
-      "reason": null
+      "evidence": [
+        "package.json",
+        "docs/SECURITY_IMPLEMENTATION_20261018.md"
+      ],
+      "reason": "任意の週次LLM/PDFレポート機能は現行リリースで未採用・未公開。AIコーディングの禁止事項はSYS-10で別管理。将来有効化する前に本要件を再適用する。",
+      "source_requirement": "AI生成と明示し、存在しない学習実績の断定や有害/威圧的な評価を避ける。保持・退会削除・外部削除の限界を説明",
+      "reviewed_at": "2026-10-19",
+      "verification_scope": "未確認"
     }
-  ]
+  ],
+  "reviewed_at": "2026-10-19",
+  "reference_commit": "6b182fc",
+  "review_report": "docs/SECURITY_RECONCILIATION_20261019.md"
 }
