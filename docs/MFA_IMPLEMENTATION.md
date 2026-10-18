@@ -58,7 +58,7 @@ Supabase側に認証のレート制限も必要。UIだけの制限で直接Auth
 - ローカル隔離DB・ユニットテスト34件成功。MFA・復旧APIの未認証拒否を含むHTTPテスト1件も成功（計35件）。
 - HTTP検証は最初サンドボックスの接続禁止(EPERM)で実行できず、ローカル接続権限を付けた再実行で成功。アプリの失敗を隠して合格扱いにしたものではない。
 - TypeScript検査と本番ビルド成功。
-- 共有DBへSQL21/22を適用済み。mfa_guard_ready / recovery_guard_ready / admin_only_recovery の3項目がtrueであることを管理画面で確認。ローカルの復旧用サーバー設定は入力済み。Gmail SMTP verify（未送信）とSupabase管理APIの架空ID読取（データ変更なし）で接続成功。実メール・実Authでの登録・復旧検証は未完了。現状の公開サイトにMFAは未反映。
+- 共有DBへSQL21/22を適用済み。mfa_guard_ready / recovery_guard_ready / admin_only_recovery の3項目がtrueであることを管理画面で確認。ローカルの復旧用サーバー設定は入力済み。Gmail SMTP verify（未送信）とSupabase管理APIの架空ID読取（データ変更なし）で接続成功。実メール・実Authでの登録・復旧検証は未完了。2026-10-18にMFA対応版を公開。詳細は下記の公開記録を参照。
 
 専用GmailのSMTP項目は入力済み・パスワードは16文字空白なしを値を表示せず確認。復旧用Supabase Secretキーも入力済み。キーやパスワードの値は出力していない。
 
@@ -69,4 +69,12 @@ Supabase側に認証のレート制限も必要。UIだけの制限で直接Auth
 - ローカルで認証アプリを登録し、設定画面に「二要素認証：有効」「登録済み」を確認。
 - ログアウト後の再ログイン・6桁コード入力に成功したと利用者本人から報告あり。
 - メール復旧の実送信→コード入力→再登録の一連の試験は未実施。SMTP接続成功だけで到達確認済みとは扱わない。
-- Vercel本番への復旧用Secret・SMTP設定は保存許可の確認中。
+- 利用者の了承を得て、Vercelのstudy-circle本番用Secretに復旧設定6項目を保存済み。
+
+## 公開記録
+
+- 2026-10-18、公開用コード `71c2b2e` をGitHub mainへpush済み。
+- 復旧用Supabaseキー・専用Gmail SMTP設定6項目は利用者の許可を得てVercelに保存。CLIのメタデータで全項目がHidden / Secret / Productionであることを確認。秘密値は出力していない。
+- Vercel deployment `dpl_SUcp6vUjSqyTVZCPG5YvWvx1NGvn` READY、本番URL `https://study-circle-pi.vercel.app/` に反映。
+- 本番URLを対象としたHTTPテスト成功。未認証のデータ・MFA・復旧アクセス、Origin/CSRF拒否を確認。実ユーザーのパスワード・認証コードは使っていない。
+- 本番のメール復旧全工程（実送信・入力・再登録・完了通知）は未確認。SMTP認証成功、ローカル登録・ログイン成功と区別する。
