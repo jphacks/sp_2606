@@ -1,16 +1,20 @@
 import { NextResponse } from "next/server";
-import { pkceClient, saveSession, config } from "@/lib/server";
+import { pkceClient, saveSession, config, grantRecovery } from "@/lib/server";
 export async function GET(request: Request) {
   const c = config();
   if (!c) return NextResponse.redirect(new URL("/?auth=failed", request.url));
   const code = new URL(request.url).searchParams.get("code");
   if (code) {
     try {
-      const { client, persist } = await pkceClient();
+      const { client, persist, recovery } = await pkceClient();
       const { data, error } = await client.auth.exchangeCodeForSession(code);
       persist();
       if (!error && data.session) {
         await saveSession(data.session);
+        if (recovery) {
+          await grantRecovery(data.session.user.id, data.session.access_token);
+          return NextResponse.redirect(c.origin + "/reset-password");
+        }
         return NextResponse.redirect(c.origin + "/?auth=confirmed");
       }
     } catch {}

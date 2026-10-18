@@ -8,6 +8,8 @@ import {
   pkceClient,
   validateMutation,
   jsonBody,
+  canRecover,
+  clearRecoveryProof,
 } from "@/lib/server";
 import { loginSchema, signupSchema } from "@/lib/validation";
 import { z } from "zod";
@@ -44,28 +46,102 @@ export async function POST(
     }
     const body = await jsonBody(request);
     if (action === "recover") {
-      const parsed = z.object({ email: z.string().email().max(254) }).strict().safeParse(body);
-      if (!parsed.success) return NextResponse.json({ error: "メールアドレスを確認してください。" }, { status: 400 });
+      const parsed = z
+        .object({ email: z.string().email().max(254) })
+        .strict()
+        .safeParse(body);
+      if (!parsed.success)
+        return NextResponse.json(
+          { error: "メールアドレスを確認してください。" },
+          { status: 400 },
+        );
       const { client, persist } = await pkceClient();
-      const { error } = await client.auth.resetPasswordForEmail(parsed.data.email, {
-        redirectTo: c.origin + "/auth/callback",
+      const { error } = await client.auth.resetPasswordForEmail(
+        parsed.data.email,
+        {
+          redirectTo: c.origin + "/auth/callback",
+        },
+      );
+      persist("recovery");
+      if (error)
+        return NextResponse.json(
+          {
+            error:
+              "再設定メールを送信できませんでした。メール送信上限の可能性があります。時間をおいてお試しください。",
+          },
+          { status: 429 },
+        );
+      return NextResponse.json({
+        ok: true,
+        message:
+          "登録済みのアドレスには再設定メールが届きます。このブラウザでリンクを開いた後、パスワード設定画面へ進んでください。",
       });
-      persist();
-      if (error) return NextResponse.json({ error: "再設定メールを送信できませんでした。メール送信上限の可能性があります。時間をおいてお試しください。" }, { status: 429 });
-      return NextResponse.json({ ok: true, message: "登録済みのアドレスには再設定メールが届きます。このブラウザでリンクを開いた後、パスワード設定画面へ進んでください。" });
     }
     if (action === "password") {
-      const parsed = z.object({ password: z.string().min(12).max(128) }).strict().safeParse(body);
-      if (!parsed.success) return NextResponse.json({ error: "新しいパスワードは12〜128文字にしてください。" }, { status: 400 });
+      const parsed = z
+        .object({
+          password: z.string().min(12).max(128),
+          currentPassword: z.string().min(1).max(128).optional(),
+        })
+        .strict()
+        .safeParse(body);
+      if (!parsed.success)
+        return NextResponse.json(
+          { error: "新しいパスワードは12〜128文字にしてください。" },
+          { status: 400 },
+        );
       const s = await currentSession();
-      if (!s) return NextResponse.json({ error: "再設定メールのリンクを同じブラウザで開いてください。" }, { status: 401 });
+      if (!s)
+        return NextResponse.json(
+          { error: "再設定メールのリンクを同じブラウザで開いてください。" },
+          { status: 401 },
+        );
+      if (!(await canRecover(s.user.id, s.token))) {
+        if (!parsed.data.currentPassword || !s.user.email)
+          return NextResponse.json(
+            {
+              error:
+                "現在のパスワードを入力するか、再設定メールからやり直してください。",
+            },
+            { status: 403 },
+          );
+        const verifier = authClient();
+        const { data, error } = await verifier.auth.signInWithPassword({
+          email: s.user.email,
+          password: parsed.data.currentPassword,
+        });
+        if (error || !data.session || data.user?.id !== s.user.id)
+          return NextResponse.json(
+            { error: "現在のパスワードを確認してください。" },
+            { status: 403 },
+          );
+        await verifier.auth.signOut({ scope: "local" });
+      }
+      await clearRecoveryProof();
       const response = await fetch(c.url + "/auth/v1/user", {
-        method: "PUT", headers: { apikey: c.key, Authorization: "Bearer " + s.token, "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data), cache: "no-store",
+        method: "PUT",
+        headers: {
+          apikey: c.key,
+          Authorization: "Bearer " + s.token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password: parsed.data.password }),
+        cache: "no-store",
       });
-      if (!response.ok) return NextResponse.json({ error: "パスワードを変更できませんでした。再設定メールからやり直してください。" }, { status: 400 });
+      if (!response.ok)
+        return NextResponse.json(
+          {
+            error:
+              "パスワードを変更できませんでした。再設定メールからやり直してください。",
+          },
+          { status: 400 },
+        );
       await clearSession();
-      return NextResponse.json({ ok: true, message: "パスワードを変更しました。新しいパスワードでログインしてください。" });
+      return NextResponse.json({
+        ok: true,
+        message:
+          "パスワードを変更しました。新しいパスワードでログインしてください。",
+      });
     }
     if (action === "signup") {
       if (process.env.ALLOW_SIGNUP !== "true")

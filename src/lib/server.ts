@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { createClient, type Session } from "@supabase/supabase-js";
 import { randomBytes } from "node:crypto";
 import { encrypt, decrypt, equal } from "./session-crypto";
+import { issueRecoveryProof, verifyRecoveryProof } from "./recovery-proof";
 export function config() {
   const url = process.env.SUPABASE_URL,
     key = process.env.SUPABASE_PUBLISHABLE_KEY,
@@ -47,6 +48,7 @@ export function authClient() {
 export async function saveSession(session: Session, created = Date.now()) {
   const c = config();
   if (!c) throw new Error("not_configured");
+  await clearRecoveryProof();
   const data: Envelope = {
     access_token: session.access_token,
     refresh_token: session.refresh_token,
@@ -61,7 +63,27 @@ export async function saveSession(session: Session, created = Date.now()) {
   });
 }
 export async function clearSession() {
+  await clearRecoveryProof();
   (await cookies()).set(cookieName, "", { ...options, maxAge: 0 });
+}
+const recoveryCookie =
+  process.env.NODE_ENV === "production" ? "__Host-sc-recovery" : "sc-recovery";
+export async function clearRecoveryProof() {
+  (await cookies()).set(recoveryCookie, "", { ...options, maxAge: 0 });
+}
+export async function grantRecovery(userId: string, token: string) {
+  const c = config();
+  if (!c) throw new Error("not_configured");
+  (await cookies()).set(
+    recoveryCookie,
+    issueRecoveryProof(userId, token, c.secret),
+    { ...options, maxAge: 600 },
+  );
+}
+export async function canRecover(userId: string, token: string) {
+  const c = config();
+  const raw = (await cookies()).get(recoveryCookie)?.value;
+  return !!c && !!raw && verifyRecoveryProof(raw, userId, token, c.secret);
 }
 export async function csrf() {
   const jar = await cookies();
@@ -160,10 +182,11 @@ export async function pkceClient() {
   const jar = await cookies();
   const raw = jar.get("sc-pkce")?.value;
   const stored = raw
-    ? decrypt<{ values: Record<string, string>; created: number }>(
-        raw,
-        c.secret,
-      )
+    ? decrypt<{
+        values: Record<string, string>;
+        created: number;
+        purpose?: string;
+      }>(raw, c.secret)
     : null;
   const values =
     stored && Date.now() - stored.created < 3600000 ? stored.values : {};
@@ -188,13 +211,17 @@ export async function pkceClient() {
   });
   return {
     client,
-    persist: () => {
+    recovery:
+      !!stored &&
+      Date.now() - stored.created < 3600000 &&
+      stored.purpose === "recovery",
+    persist: (purpose?: "recovery") => {
       const verifier = Object.fromEntries(
         Object.entries(values).filter(([k]) => k.endsWith("-code-verifier")),
       );
       jar.set(
         "sc-pkce",
-        encrypt({ values: verifier, created: Date.now() }, c.secret),
+        encrypt({ values: verifier, created: Date.now(), purpose }, c.secret),
         { ...options, maxAge: 3600 },
       );
     },
