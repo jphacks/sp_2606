@@ -1,6 +1,6 @@
 # CoStep
 
-[公開デモ（CoStep）](https://study-circle-pi.vercel.app/)
+[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2026/07/IMG_5316.png)](https://www.youtube.com/watch?v=piaNsc6ilBI)
 
 ## 製品概要
 
