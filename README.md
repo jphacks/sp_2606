@@ -11,9 +11,9 @@
     <th align="center">分野ごとの学習時間を見える化</th>
   </tr>
   <tr>
-    <td align="center"><img src="docs/images/costep-connections-mobile.jpg" alt="学習経験・目標が近い仲間を表示するおすすめ画面" width="220"></td>
-    <td align="center"><img src="docs/images/costep-calendar-mobile.jpg" alt="学習した日と時間を色で確認できるカレンダー" width="220"></td>
-    <td align="center"><img src="docs/images/costep-study-graph-mobile.jpg" alt="分野別の積み上げ棒グラフと学習時間の内訳" width="220"></td>
+    <td align="center"><img src="docs/images/costep-connections.jpg" alt="学習経験・目標が近い仲間を表示するおすすめ画面" width="220"></td>
+    <td align="center"><img src="docs/images/costep-calendar.jpg" alt="学習した日と時間を色で確認できるカレンダー" width="220"></td>
+    <td align="center"><img src="docs/images/costep-study-graph.jpg" alt="分野別の積み上げ棒グラフと学習時間の内訳" width="220"></td>
   </tr>
 </table>
 
