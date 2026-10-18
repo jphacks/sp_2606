@@ -53,10 +53,12 @@ export async function GET() {
         { error: "二要素認証の準備が完了していません。" },
         { status: 503, headers },
       );
+    const capability = await s.db.rpc("mfa_email_recovery_mode");
     return NextResponse.json(
       {
         required: s.mfaRequired,
-        recoveryReady: recoveryConfigured(),
+        recoveryReady:
+          recoveryConfigured() && capability.data === "optional_reenroll",
         reenroll: s.mfaReenroll,
         factors: (s.user.factors || [])
           .filter((f) => f.factor_type === "totp")
@@ -143,7 +145,8 @@ export async function POST(request: Request) {
     });
     if (restored.error) throw restored.error;
     if (body.action === "enroll") {
-      if (!recoveryConfigured())
+      const capability = await s.db.rpc("mfa_email_recovery_mode");
+      if (!recoveryConfigured() || capability.data !== "optional_reenroll")
         return NextResponse.json(
           {
             error:

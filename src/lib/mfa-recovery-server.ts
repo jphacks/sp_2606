@@ -25,7 +25,11 @@ export function recoveryAdmin() {
     },
   });
 }
-export async function sendRecoveryEmail(email: string, code?: string) {
+export async function sendRecoveryEmail(
+  email: string,
+  code?: string,
+  outcome: "reenrolled" | "disabled" = "reenrolled",
+) {
   if (!recoveryConfigured()) throw new Error("recovery_not_configured");
   const port = Number(process.env.RECOVERY_SMTP_PORT || "465");
   const transport = nodemailer.createTransport({
@@ -52,10 +56,14 @@ export async function sendRecoveryEmail(email: string, code?: string) {
       to: email,
       subject: code
         ? "CoStep 二要素認証の復旧コード"
-        : "CoStep 二要素認証の再設定が完了しました",
+        : outcome === "disabled"
+          ? "CoStep アカウントの復旧が完了しました"
+          : "CoStep 二要素認証の再設定が完了しました",
       text: code
         ? `CoStepの復旧コードは ${code} です。\n10分間有効です。このコードを他の人に教えないでください。\n心当たりがなければ、このメールは無視してください。`
-        : "CoStepの二要素認証が新しい認証アプリで再設定されました。\n心当たりがなければ、メールアカウントを保護し、CoStepのパスワードを再設定してください。",
+        : outcome === "disabled"
+          ? "CoStepのアカウントを復旧し、二要素認証をオフにしました。端末を用意できたら設定から再度有効にできます。\n心当たりがなければ、メールアカウントを保護し、CoStepのパスワードを再設定してください。"
+          : "CoStepの二要素認証が新しい認証アプリで再設定されました。\n心当たりがなければ、メールアカウントを保護し、CoStepのパスワードを再設定してください。",
     });
   } finally {
     transport.close();

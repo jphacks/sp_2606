@@ -46,6 +46,12 @@ export async function POST(request: Request) {
         { error: "メール復旧の準備が完了していません。" },
         { status: 503, headers },
       );
+    const capability = await s.db.rpc("mfa_email_recovery_mode");
+    if (capability.error || capability.data !== "optional_reenroll")
+      return NextResponse.json(
+        { error: "復旧機能を更新中です。少し待ってから再度お試しください。" },
+        { status: 503, headers },
+      );
     const body = input.parse(await jsonBody(request, 4096));
     const limit = await s.db.rpc("consume_mfa_attempt", {
       p_action: body.action === "send" ? "recovery_send" : "recovery_verify",
@@ -147,18 +153,27 @@ export async function POST(request: Request) {
       ).toString("utf8"),
     );
     const sid = z.uuid().parse(claims.session_id);
-    const authorized = await admin.rpc("authorize_mfa_reenrollment", {
+    const authorized = await admin.rpc("complete_mfa_email_recovery", {
       p_user: s.user.id,
+      p_request: pending.requestId,
       p_session: sid,
     });
     if (authorized.error) throw authorized.error;
     await saveSession(login.session);
     await clearMfaRecoveryCookie();
+    let notificationSent = true;
+    try {
+      await sendRecoveryEmail(s.user.email, undefined, "disabled");
+    } catch {
+      notificationSent = false;
+    }
     return NextResponse.json(
       {
         ok: true,
-        reenroll: true,
-        message: "本人確認ができました。新しい認証アプリを登録してください。",
+        reenroll: false,
+        notificationSent,
+        message:
+          "復旧しました。二要素認証はオフになっています。端末を用意できたら設定から再度有効にできます。",
       },
       { headers },
     );

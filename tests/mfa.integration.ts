@@ -212,6 +212,85 @@ test("MFA direct SQL rejects aal1, locks email recovery, revokes old tokens and 
     await as(a, "aal2", oldSid, now + 120);
     await as(b);
     await assert.rejects(as(null));
+    // Lost-phone recovery now allows an aal1 session after all old factors are removed.
+    const req3 = "00000000-0000-4000-8000-000000000023";
+    const recoveredSid = "00000000-0000-4000-8000-000000000013";
+    await db.exec(
+      "reset role;update private.mfa_email_recovery set sent_at=now()-interval '61 seconds'",
+    );
+    await admin("select public.begin_mfa_email_recovery($1,$2,$3)", [
+      a,
+      req3,
+      hash,
+    ]);
+    assert.equal(
+      (
+        await admin("select public.verify_mfa_email_recovery($1,$2,$3) ok", [
+          a,
+          req3,
+          hash,
+        ])
+      ).rows[0].ok,
+      true,
+    );
+    await assert.rejects(
+      as(
+        a,
+        "aal1",
+        recoveredSid,
+        now,
+        "select public.complete_mfa_email_recovery($1,$2,$3)",
+        [a, req3, recoveredSid],
+      ),
+    );
+    await assert.rejects(
+      admin("select public.complete_mfa_email_recovery($1,$2,$3)", [
+        a,
+        req3,
+        recoveredSid,
+      ]),
+      "must remove old factors before unlocking",
+    );
+    await db.exec("reset role");
+    await db.query("delete from auth.mfa_factors where user_id=$1", [a]);
+    await assert.rejects(
+      admin("select public.complete_mfa_email_recovery($1,$2,$3)", [
+        a,
+        req2,
+        recoveredSid,
+      ]),
+      "a different recovery request cannot unlock",
+    );
+    await assert.rejects(as(a, "aal1", recoveredSid, now));
+    await admin("select public.complete_mfa_email_recovery($1,$2,$3)", [
+      a,
+      req3,
+      recoveredSid,
+    ]);
+    await as(a, "aal1", recoveredSid, now);
+    await assert.rejects(
+      as(a, "aal2", oldSid, now - 5),
+      "old JWT stays revoked after MFA is disabled",
+    );
+    await as(a, "aal1", newSid, now + 120);
+    await assert.rejects(
+      admin("select public.complete_mfa_email_recovery($1,$2,$3)", [
+        a,
+        req3,
+        recoveredSid,
+      ]),
+      "completion cannot replay",
+    );
+    await db.exec("reset role");
+    await db.query(
+      "insert into auth.mfa_factors(user_id,status,factor_type) values($1,'verified','totp')",
+      [a],
+    );
+    await assert.rejects(
+      as(a, "aal1", recoveredSid, now),
+      "reenabling MFA requires its code again",
+    );
+    await as(a, "aal2", recoveredSid, now);
   } finally {
     await db.close();
   }

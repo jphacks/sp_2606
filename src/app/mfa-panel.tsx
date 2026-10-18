@@ -102,7 +102,7 @@ export function MfaChallenge({
         </p>
       )}
       <p className="form-note">
-        端末をなくした場合は、登録メールで本人確認して、新しい認証アプリを登録できます。
+        端末をなくした場合は、登録メールで本人確認して二要素認証をオフにし、利用を再開できます。
       </p>
       <button
         className="text-button"
@@ -209,7 +209,7 @@ export default function MfaSettings({
             有効にすると、次回のログインから認証アプリの確認コードが必要です。ログイン状態が続いている間は入力不要です。
           </p>
           <p className="form-note">
-            端末紛失時は登録メールの復旧コードで本人確認し、新しい認証アプリを登録できます。予備の認証アプリも登録できます（2つまで）。
+            端末紛失時は登録メールの復旧コードで本人確認して二要素認証をオフにでき、端末を用意できたら再設定できます。予備の認証アプリも登録できます（2つまで）。
           </p>
           {!recoveryReady && (
             <p className="form-note">
@@ -459,10 +459,10 @@ export function MfaRecovery({
     <section className="mfa-challenge card">
       <h1>認証アプリの復旧</h1>
       <p>
-        登録メールに復旧コードを送ります。本人確認後、新しい認証アプリを登録できます。
+        登録メールに復旧コードを送ります。本人確認後、二要素認証をオフにして利用を再開できます。
       </p>
       <p className="form-note">
-        コードの確認が完了すると、古い認証アプリと既存のログイン状態は無効になります。再登録が終わるまでは投稿やDMを開けません。
+        コードの確認が完了すると、古い認証アプリと既存のログイン状態は無効になります。新しい端末を用意できたら、設定から二要素認証を再び有効にしてください。
       </p>
       <fieldset disabled={busy}>
         <form onSubmit={(e) => void submit(e, "send")}>
@@ -497,7 +497,7 @@ export function MfaRecovery({
               />
             </label>
             <CodeInput />
-            <button className="primary wide">確認して認証アプリを再登録</button>
+            <button className="primary wide">確認して利用を再開</button>
           </form>
         )}
         <button type="button" className="text-button" onClick={onBack}>
