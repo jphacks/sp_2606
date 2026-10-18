@@ -5,6 +5,7 @@ export default function PasswordReset() {
   const [session, setSession] = useState<{
     csrf: string;
     user: unknown;
+    recoveryUser?: unknown;
     recoveryAuthorized: boolean;
   } | null>(null);
   const [message, setMessage] = useState("");
@@ -20,7 +21,8 @@ export default function PasswordReset() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    const action = session?.user ? "password" : "recover";
+    const action =
+      session?.user || session?.recoveryUser ? "password" : "recover";
     if (
       action === "password" &&
       data.get("password") !== data.get("confirmation")
@@ -66,7 +68,7 @@ export default function PasswordReset() {
       <h1>パスワード再設定</h1>
       {!done && (
         <form onSubmit={submit}>
-          {session?.user ? (
+          {session?.user || session?.recoveryUser ? (
             <>
               <p>新しいパスワードを設定してください。</p>
               {!session.recoveryAuthorized && (
@@ -129,7 +131,7 @@ export default function PasswordReset() {
           <button className="primary" disabled={busy || !session}>
             {busy
               ? "処理中…"
-              : session?.user
+              : session?.user || session?.recoveryUser
                 ? "新しいパスワードを保存"
                 : "再設定メールを送る"}
           </button>

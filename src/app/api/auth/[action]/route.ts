@@ -28,7 +28,7 @@ export async function POST(
       );
     const { action } = await params;
     if (action === "logout") {
-      const s = await currentSession();
+      const s = await currentSession(true);
       if (s) {
         const r = await fetch(c.url + "/auth/v1/logout?scope=global", {
           method: "POST",
@@ -90,13 +90,22 @@ export async function POST(
           { error: "新しいパスワードは12〜128文字にしてください。" },
           { status: 400 },
         );
-      const s = await currentSession();
+      const s = await currentSession(true);
       if (!s)
         return NextResponse.json(
           { error: "再設定メールのリンクを同じブラウザで開いてください。" },
           { status: 401 },
         );
-      if (!(await canRecover(s.user.id, s.token))) {
+      const recovered = await canRecover(s.user.id, s.token);
+      if (s.mfaRequired && !recovered)
+        return NextResponse.json(
+          {
+            error:
+              "先に二要素認証を完了するか、再設定メールのリンクを開いてください。",
+          },
+          { status: 403 },
+        );
+      if (!recovered) {
         if (!parsed.data.currentPassword || !s.user.email)
           return NextResponse.json(
             {
@@ -208,7 +217,7 @@ export async function POST(
           { status: 401 },
         );
       await saveSession(data.session);
-      const s = await currentSession();
+      const s = await currentSession(true);
       if (!s)
         return NextResponse.json(
           { error: "このアカウントでは利用できません。" },

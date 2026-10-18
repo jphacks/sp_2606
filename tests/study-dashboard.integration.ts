@@ -14,7 +14,7 @@ test("study dashboard aggregates all rows and enforces memo visibility, approved
     for (const f of (await readdir(dir))
       .filter((f) => f.endsWith(".sql"))
       .sort())
-      await db.exec(await readFile(new URL(f, dir), "utf8"));
+      await db.exec("do $$begin if not exists(select 1 from pg_roles where rolname='service_role') then create role service_role; end if;end$$; create table if not exists auth.mfa_factors(id uuid primary key default gen_random_uuid(),user_id uuid references auth.users(id),status text,factor_type text);" + await readFile(new URL(f, dir), "utf8"));
     await db.query("insert into auth.users(id) values($1),($2)", [a, b]);
     async function as(user: string | null, sql: string, args: unknown[] = []) {
       await db.exec("reset role;set role " + (user ? "authenticated" : "anon"));

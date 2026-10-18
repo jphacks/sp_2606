@@ -1399,7 +1399,7 @@ label textarea {
   color: #a1ac9c;
 }
 .comment p {
-  font-size: 11px;
+  font-size: 13px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   line-height: 1.9;
@@ -2359,3 +2359,14 @@ html.pull-refresh-enabled { overscroll-behavior-y: contain; }
 .post-head { align-items: flex-start; }
 .post-head > .post-head-actions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; margin-left: auto; }
 .post-head .post-created-at { margin: 0; color: #65738a; font-size: 10px; line-height: 1.6; white-space: nowrap; }
+
+.mfa-challenge { max-width: 440px; margin: 48px auto; }
+.mfa-settings { margin-bottom: 16px; }
+.mfa-settings h2 { display: flex; align-items: center; gap: 6px; }
+.mfa-settings fieldset, .mfa-challenge fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.mfa-factor { padding: 12px 0; border-bottom: 1px solid #e3e9f2; }
+.mfa-factor summary, .mfa-enrollment summary { cursor: pointer; padding: 10px 0; font-size: 13px; }
+.mfa-settings form { margin-top: 12px; }
+.mfa-secret { display: block; overflow-wrap: anywhere; user-select: all; padding: 12px; background: #f4f6fa; }
+.mfa-enrollment img { max-width: 100%; height: auto; display: block; margin: 12px auto; }
+@media (max-width: 480px) { .mfa-challenge { margin: 24px 12px; } }

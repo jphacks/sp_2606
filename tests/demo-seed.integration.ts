@@ -13,7 +13,7 @@ test("opt-in demo seed: repeatable, no login credentials, real-data isolation, f
     for (const f of (await readdir(directory))
       .filter((f) => f.endsWith(".sql"))
       .sort())
-      await db.exec(await readFile(new URL(f, directory), "utf8"));
+      await db.exec("do $$begin if not exists(select 1 from pg_roles where rolname='service_role') then create role service_role; end if;end$$; create table if not exists auth.mfa_factors(id uuid primary key default gen_random_uuid(),user_id uuid references auth.users(id),status text,factor_type text);" + await readFile(new URL(f, directory), "utf8"));
     await db.query(
       "insert into auth.users(id,email) values($1,'real-test@example.invalid')",
       [viewer],

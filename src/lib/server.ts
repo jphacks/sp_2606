@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { createClient, type Session } from "@supabase/supabase-js";
 import { randomBytes } from "node:crypto";
 import { encrypt, decrypt, equal } from "./session-crypto";
+import { needsMfa } from "./mfa-policy";
 import { issueRecoveryProof, verifyRecoveryProof } from "./recovery-proof";
 export function config() {
   const url = process.env.SUPABASE_URL,
@@ -64,6 +65,13 @@ export async function saveSession(session: Session, created = Date.now()) {
 }
 export async function clearSession() {
   await clearRecoveryProof();
+  (await cookies()).set(
+    process.env.NODE_ENV === "production"
+      ? "__Host-sc-mfa-recovery"
+      : "sc-mfa-recovery",
+    "",
+    { ...options, maxAge: 0 },
+  );
   (await cookies()).set(cookieName, "", { ...options, maxAge: 0 });
 }
 const recoveryCookie =
@@ -113,7 +121,7 @@ export async function jsonBody(request: Request, maxBytes = 16384) {
   if (Buffer.byteLength(raw) > maxBytes) throw new Error("too_large");
   return JSON.parse(raw);
 }
-export async function currentSession() {
+export async function currentSession(allowMfaPending = false) {
   const c = config();
   if (!c) return null;
   const raw = (await cookies()).get(cookieName)?.value;
@@ -157,7 +165,25 @@ export async function currentSession() {
     auth: { persistSession: false, autoRefreshToken: false },
     global: { headers: { Authorization: `Bearer ${e.access_token}` } },
   });
-  const { data: settings, error: denied } = await db.rpc("get_settings");
+  const gate = await db.rpc("mfa_status");
+  if (
+    gate.error &&
+    gate.error.code !== "PGRST202" &&
+    gate.error.code !== "42883"
+  )
+    return null;
+  if (gate.data?.revoked) {
+    await clearSession();
+    return null;
+  }
+  const mfaReenroll = gate.data?.reenroll === true;
+  const mfaCanEnroll = gate.data?.can_enroll === true;
+  const mfaRequired =
+    needsMfa(e.access_token, data.user.factors) || gate.data?.required === true;
+  if (mfaRequired && !allowMfaPending) return null;
+  const { data: settings, error: denied } = mfaRequired
+    ? { data: gate.data, error: gate.error }
+    : await db.rpc("get_settings");
   if (denied) {
     await clearSession();
     return null;
@@ -174,7 +200,17 @@ export async function currentSession() {
       ),
     },
   );
-  return { db, user: data.user, settings, token: e.access_token };
+  return {
+    db,
+    user: data.user,
+    settings,
+    token: e.access_token,
+    refreshToken: e.refresh_token,
+    created: e.created,
+    mfaRequired,
+    mfaReenroll,
+    mfaCanEnroll,
+  };
 }
 export async function pkceClient() {
   const c = config();

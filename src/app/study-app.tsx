@@ -43,6 +43,7 @@ import CommentsPanel from "./comments-panel";
 import LearningFieldsEditor from "./learning-fields-editor";
 import GoalsEditor from "./goals-editor";
 import FieldSearch from "./field-search";
+import MfaSettings, { MfaChallenge, MfaRecovery } from "./mfa-panel";
 import BackgroundBadge from "./background-badge";
 import ActivityFields from "./activity-fields";
 import { usePullRefresh } from "./use-pull-refresh";
@@ -63,6 +64,10 @@ import {
 type SessionInfo = {
   configured: boolean;
   signup_enabled: boolean;
+  mfa_required?: boolean;
+  mfa_reenroll?: boolean;
+  mfa_can_enroll?: boolean;
+  mfa_factors?: { id: string; name: string }[];
   user: { id: string } | null;
   csrf: string;
   error?: string;
@@ -445,6 +450,29 @@ export default function StudyApp() {
     { id: "messages", label: "トーク", icon: MessageCircle },
     { id: "settings", label: "プロフィールと設定", icon: Settings },
   ];
+  if (session?.mfa_reenroll && session.mfa_can_enroll)
+    return (
+      <main className="mfa-challenge">
+        <MfaSettings csrf={session.csrf} onChanged={refreshSession} reenroll />
+      </main>
+    );
+  if (session?.mfa_reenroll)
+    return (
+      <MfaRecovery
+        csrf={session.csrf}
+        onSuccess={refreshSession}
+        onBack={() => void logout()}
+      />
+    );
+  if (session?.mfa_required)
+    return (
+      <MfaChallenge
+        csrf={session.csrf}
+        factors={session.mfa_factors || []}
+        onSuccess={refreshSession}
+        onLogout={logout}
+      />
+    );
   if (!session?.user)
     return (
       <main className="auth-page auth-redesign">
@@ -1199,186 +1227,197 @@ export default function StudyApp() {
                   />
                 )}
                 {view === "settings" && (
-                  <form
-                    className="card settings-form"
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-                      if (busy || saveState) return;
-                      const f = new FormData(e.currentTarget);
-                      if (
-                        f.get("visibility") !== data.settings.visibility &&
-                        !confirm(
-                          "公開範囲の変更は過去の文章にも適用されます。変更しますか？",
-                        )
-                      )
-                        return;
-                      const learningFields = learningFieldsSchema.safeParse(
-                        JSON.parse(String(f.get("learning_fields") || "[]")),
-                      );
-                      if (!learningFields.success) {
-                        setError(
-                          "学習分野を1つ以上選び、経験を入力してください。",
-                        );
-                        return;
-                      }
-                      const goals = goalsSchema.safeParse(
-                        JSON.parse(String(f.get("goals") || "[]")),
-                      );
-                      if (!goals.success) {
-                        setError(
-                          "目標の開始月・達成目標月と、技術の到達レベルを確認してください。",
-                        );
-                        return;
-                      }
-                      saveFocus.current =
-                        document.activeElement instanceof HTMLElement
-                          ? document.activeElement
-                          : null;
-                      setSaveState("saving");
-                      const ok = await mutate("profile", {
-                        attributes: {
-                          background: f.get("background"),
-                          university: f.get("university"),
-                          faculty: f.get("faculty"),
-                          work: f.get("work"),
-                          prefecture: f.get("prefecture"),
-                        },
-                        display_name: f.get("display_name"),
-                        learning_fields: learningFields.data,
-                        goals: goals.data,
-                        bio: f.get("bio"),
-                        visibility: f.get("visibility"),
-                        dm_policy: f.get("dm_policy"),
-                        recommend: f.get("recommend") === "on",
-                      });
-                      setSaveState(ok ? "saved" : null);
-                      if (ok) {
-                        if (!data.settings.profile_completed) {
-                          setOwner("");
-                          setView("feed");
-                        }
-                      }
-                    }}
-                    key={
-                      me.id +
-                      data.settings.visibility +
-                      JSON.stringify(me.learning_fields)
-                    }
-                  >
-                    {!data.settings.profile_completed && (
-                      <p className="form-note">
-                        最初にプロフィールと文章の公開範囲を設定してください。保存後に投稿できます。
-                      </p>
-                    )}
-                    <PwaInstall />
-                    <div className="section-title">
-                      <h2>基本プロフィール</h2>
-                      <span className="tag">ログイン済み全員に公開</span>
-                    </div>
-                    <ProfileAttributesEditor initial={me.attributes} />
-                    <AvatarEditor
-                      id={me.id}
-                      name={me.display_name}
-                      csrf={session?.csrf || ""}
+                  <>
+                    <MfaSettings
+                      csrf={session.csrf}
+                      onChanged={async () => {
+                        setData(null);
+                        await refreshSession();
+                      }}
                     />
-                    <div className="form-grid">
+                    <form
+                      className="card settings-form"
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        if (busy || saveState) return;
+                        const f = new FormData(e.currentTarget);
+                        if (
+                          f.get("visibility") !== data.settings.visibility &&
+                          !confirm(
+                            "公開範囲の変更は過去の文章にも適用されます。変更しますか？",
+                          )
+                        )
+                          return;
+                        const learningFields = learningFieldsSchema.safeParse(
+                          JSON.parse(String(f.get("learning_fields") || "[]")),
+                        );
+                        if (!learningFields.success) {
+                          setError(
+                            "学習分野を1つ以上選び、経験を入力してください。",
+                          );
+                          return;
+                        }
+                        const goals = goalsSchema.safeParse(
+                          JSON.parse(String(f.get("goals") || "[]")),
+                        );
+                        if (!goals.success) {
+                          setError(
+                            "目標の開始月・達成目標月と、技術の到達レベルを確認してください。",
+                          );
+                          return;
+                        }
+                        saveFocus.current =
+                          document.activeElement instanceof HTMLElement
+                            ? document.activeElement
+                            : null;
+                        setSaveState("saving");
+                        const ok = await mutate("profile", {
+                          attributes: {
+                            background: f.get("background"),
+                            university: f.get("university"),
+                            faculty: f.get("faculty"),
+                            work: f.get("work"),
+                            prefecture: f.get("prefecture"),
+                          },
+                          display_name: f.get("display_name"),
+                          learning_fields: learningFields.data,
+                          goals: goals.data,
+                          bio: f.get("bio"),
+                          visibility: f.get("visibility"),
+                          dm_policy: f.get("dm_policy"),
+                          recommend: f.get("recommend") === "on",
+                        });
+                        setSaveState(ok ? "saved" : null);
+                        if (ok) {
+                          if (!data.settings.profile_completed) {
+                            setOwner("");
+                            setView("feed");
+                          }
+                        }
+                      }}
+                      key={
+                        me.id +
+                        data.settings.visibility +
+                        JSON.stringify(me.learning_fields)
+                      }
+                    >
+                      {!data.settings.profile_completed && (
+                        <p className="form-note">
+                          最初にプロフィールと文章の公開範囲を設定してください。保存後に投稿できます。
+                        </p>
+                      )}
+                      <PwaInstall />
+                      <div className="section-title">
+                        <h2>基本プロフィール</h2>
+                        <span className="tag">ログイン済み全員に公開</span>
+                      </div>
+                      <ProfileAttributesEditor initial={me.attributes} />
+                      <AvatarEditor
+                        id={me.id}
+                        name={me.display_name}
+                        csrf={session?.csrf || ""}
+                      />
+                      <div className="form-grid">
+                        <label>
+                          表示名
+                          <input
+                            name="display_name"
+                            defaultValue={me.display_name}
+                            required
+                            maxLength={30}
+                          />
+                        </label>
+                      </div>
+                      <LearningFieldsEditor
+                        key={JSON.stringify(profileFields(me))}
+                        initialFields={profileFields(me)}
+                      />
+                      <GoalsEditor
+                        key={JSON.stringify(me.goals || [])}
+                        initialGoals={me.goals || []}
+                      />
                       <label>
-                        表示名
-                        <input
-                          name="display_name"
-                          defaultValue={me.display_name}
-                          required
-                          maxLength={30}
+                        自己紹介
+                        <textarea
+                          name="bio"
+                          defaultValue={me.bio}
+                          maxLength={500}
+                          rows={3}
                         />
                       </label>
-                    </div>
-                    <LearningFieldsEditor
-                      key={JSON.stringify(profileFields(me))}
-                      initialFields={profileFields(me)}
-                    />
-                    <GoalsEditor
-                      key={JSON.stringify(me.goals || [])}
-                      initialGoals={me.goals || []}
-                    />
-                    <label>
-                      自己紹介
-                      <textarea
-                        name="bio"
-                        defaultValue={me.bio}
-                        maxLength={500}
-                        rows={3}
-                      />
-                    </label>
-                    <hr />
-                    <h2>公開範囲とつながり</h2>
-                    <label>
-                      文章と画像を見せる相手
-                      <select
-                        name="visibility"
-                        defaultValue={data.settings.visibility}
-                      >
-                        {Object.entries(visibilityLabels).map(([k, v]) => (
-                          <option key={k} value={k}>
-                            {v}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <p className="form-note">
-                      過去のつぶやき・学習メモにも適用します。「フォロワーのみ」は承認済みのフォロワーが閲覧できます。フォローバックは不要です。学習時間とプロフィールの公開範囲は変わりません。
-                    </p>
-                    <label>
-                      DMの受信範囲
-                      <select
-                        name="dm_policy"
-                        defaultValue={data.settings.dm_policy}
-                      >
-                        <option value="mutual">相互フォローのみ</option>
-                        <option value="anyone">誰でも（リクエスト）</option>
-                      </select>
-                    </label>
-                    <p className="form-note">
-                      送信のたびに相手の最新設定を確認します。相互フォローを解除すると、過去の会話でも送信できなくなる場合があります。
-                    </p>
-                    <label className="check-label">
-                      <input
-                        type="checkbox"
-                        name="recommend"
-                        defaultChecked={me.recommend}
-                      />
-                      おすすめユーザーに自分を表示する
-                    </label>
-                    <button className="primary" disabled={busy}>
-                      <Check size={17} />
-                      変更を保存する
-                    </button>
-                    <hr />
-                    <h2>ブロック中</h2>
-                    <p>
-                      <a href="/reset-password">パスワードを再設定する</a>
-                    </p>
-                    {data.connections.blocked.length ? (
-                      data.connections.blocked.map((id) => (
-                        <div className="blocked-row" key={id}>
-                          <span>ブロックしたユーザー</span>
-                          <button
-                            type="button"
-                            className="text-button"
-                            onClick={() =>
-                              void mutate("block", {
-                                target: id,
-                                enabled: false,
-                              })
-                            }
-                          >
-                            解除する
-                          </button>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="muted">ブロック中のユーザーはいません。</p>
-                    )}
-                  </form>
+                      <hr />
+                      <h2>公開範囲とつながり</h2>
+                      <label>
+                        文章と画像を見せる相手
+                        <select
+                          name="visibility"
+                          defaultValue={data.settings.visibility}
+                        >
+                          {Object.entries(visibilityLabels).map(([k, v]) => (
+                            <option key={k} value={k}>
+                              {v}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <p className="form-note">
+                        過去のつぶやき・学習メモにも適用します。「フォロワーのみ」は承認済みのフォロワーが閲覧できます。フォローバックは不要です。学習時間とプロフィールの公開範囲は変わりません。
+                      </p>
+                      <label>
+                        DMの受信範囲
+                        <select
+                          name="dm_policy"
+                          defaultValue={data.settings.dm_policy}
+                        >
+                          <option value="mutual">相互フォローのみ</option>
+                          <option value="anyone">誰でも（リクエスト）</option>
+                        </select>
+                      </label>
+                      <p className="form-note">
+                        送信のたびに相手の最新設定を確認します。相互フォローを解除すると、過去の会話でも送信できなくなる場合があります。
+                      </p>
+                      <label className="check-label">
+                        <input
+                          type="checkbox"
+                          name="recommend"
+                          defaultChecked={me.recommend}
+                        />
+                        おすすめユーザーに自分を表示する
+                      </label>
+                      <button className="primary" disabled={busy}>
+                        <Check size={17} />
+                        変更を保存する
+                      </button>
+                      <hr />
+                      <h2>ブロック中</h2>
+                      <p>
+                        <a href="/reset-password">パスワードを再設定する</a>
+                      </p>
+                      {data.connections.blocked.length ? (
+                        data.connections.blocked.map((id) => (
+                          <div className="blocked-row" key={id}>
+                            <span>ブロックしたユーザー</span>
+                            <button
+                              type="button"
+                              className="text-button"
+                              onClick={() =>
+                                void mutate("block", {
+                                  target: id,
+                                  enabled: false,
+                                })
+                              }
+                            >
+                              解除する
+                            </button>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="muted">
+                          ブロック中のユーザーはいません。
+                        </p>
+                      )}
+                    </form>
+                  </>
                 )}
               </>
             )}

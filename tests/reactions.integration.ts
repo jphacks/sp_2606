@@ -15,7 +15,7 @@ test("reactions: idempotent toggles, visibility, blocks, suspension, private acc
     for (const f of (await readdir(directory))
       .filter((f) => f.endsWith(".sql"))
       .sort())
-      await db.exec(await readFile(new URL(f, directory), "utf8"));
+      await db.exec("do $$begin if not exists(select 1 from pg_roles where rolname='service_role') then create role service_role; end if;end$$; create table if not exists auth.mfa_factors(id uuid primary key default gen_random_uuid(),user_id uuid references auth.users(id),status text,factor_type text);" + await readFile(new URL(f, directory), "utf8"));
     await db.query("insert into auth.users(id) values($1),($2),($3)", [
       a,
       b,
