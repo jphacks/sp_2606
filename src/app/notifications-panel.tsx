@@ -221,14 +221,27 @@ export default function NotificationsPanel({
               </>
             ) : (
               <>
-                <button
-                  type="button"
-                  className="text-button"
-                  disabled={loading || !data?.unread}
-                  onClick={() => void markRead()}
-                >
-                  ここまで既読にする
-                </button>
+                {!!data?.unread ? (
+                  <>
+                    <button
+                      type="button"
+                      className="text-button"
+                      disabled={loading}
+                      onClick={() => void markRead()}
+                    >
+                      {loading ? "更新中…" : "未読の印を消す"}
+                    </button>
+                    <p className="muted">
+                      通知は残したまま、未読の印とベルの件数を消します。
+                    </p>
+                  </>
+                ) : (
+                  data && (
+                    <p className="muted" role="status">
+                      すべて確認済みです。
+                    </p>
+                  )
+                )}
                 {!data && !error && <p>読み込み中…</p>}
                 {data && !data.items.length && <p>通知はありません。</p>}
                 {data?.items.map((item) => (

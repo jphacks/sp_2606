@@ -269,14 +269,21 @@ export default function StudyApp() {
     refresh?: () => void,
   ) {
     const reaction = reactions?.find((item) => item.post_id === post.id);
-    const liked = reaction?.liked ?? false;
+    const ownPost = post.owner_id === data?.me.id;
+    const liked = !ownPost && (reaction?.liked ?? false);
     return (
       <button
         type="button"
         className={"reaction-button" + (liked ? " is-liked" : "")}
-        aria-label={liked ? "いいねを取り消す" : "いいねする"}
+        aria-label={
+          ownPost
+            ? "自分の投稿にはいいねできません"
+            : liked
+              ? "いいねを取り消す"
+              : "いいねする"
+        }
         aria-pressed={liked}
-        disabled={busy}
+        disabled={busy || ownPost}
         onClick={() =>
           void mutate("reaction", { post: post.id, enabled: !liked }).then(
             (ok) => {
